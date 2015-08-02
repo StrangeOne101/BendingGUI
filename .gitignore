@@ -41,3 +41,38 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+.settings
+
+#Files to ignore
+.classpath
+.project
+bendingPlayers.yml
+BuildTools.log.txt
+bukkit.yml
+commands.yml
+converted.yml
+eula.txt
+*.jar
+help.yml
+*.log
+*.json
+*.properties
+*.bat
+spigot.yml
+permissions.yml
+apache-maven-3.2.5
+BuildData
+Bukkit
+CraftBukkit
+crash-reports
+logs
+NewWorld
+NewWorld_nether
+NewWorld_the_end
+OldWorld
+plugins
+Spigot
+target
+work
+Worlds
+

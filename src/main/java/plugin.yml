@@ -1,0 +1,29 @@
+name: BendingGUI
+main: com.strangeone101.bendinggui.BendingGUI
+version: 1.0.2
+depend: [ProjectKorra]
+prefix: BendingGUI
+commands:
+  bendinggui:
+    description: Open the Bending GUI menu
+    aliases: [gui, bg]
+    usage: |
+             /<command> 
+             /<command> player <player>
+             /<command> choose 
+permissions:
+  bendinggui.*:
+    description: Access to all BendingGUI commands and rights
+    children:
+      bendinggui.command: true
+      bendinggui.view: true
+      bendinggui.admin: true
+  bendinggui.command:
+    description: Allows players to access the gui
+    default: true
+  bendinggui.view:
+    description: Allows players to view the bending of other players
+    default: true
+  bendinggui.admin: 
+    description: Allows players to modify other player\'s bending through the gui
+    default: op
