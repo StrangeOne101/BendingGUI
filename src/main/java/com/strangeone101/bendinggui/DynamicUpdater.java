@@ -1,62 +1,114 @@
 package com.strangeone101.bendinggui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import com.projectkorra.ProjectKorra.GeneralMethods;
-import com.projectkorra.ProjectKorra.Ability.AbilityModuleManager;
+import com.strangeone101.bendinggui.menus.MenuBendingOptions;
 
-public class PlayerGuiData 
+public class DynamicUpdater 
 {
+	@Deprecated
 	protected OfflinePlayer player;
+	@Deprecated
 	protected int page = 0;
+	@Deprecated
 	public List<String> abilityData = new ArrayList<String>();
 	
-	protected static HashMap<UUID, PlayerGuiData> guiData = new HashMap<UUID, PlayerGuiData>();
+	@Deprecated
+	protected MenuBendingOptions menu;
+	
+	protected static HashMap<UUID, MenuBendingOptions> guiData = new HashMap<UUID, MenuBendingOptions>();
+	protected static HashMap<UUID, List<UUID>> players = new HashMap<UUID, List<UUID>>();
+	protected static HashMap<UUID, Integer> pages = new HashMap<UUID, Integer>();
 	
 	
-	protected PlayerGuiData(OfflinePlayer player)
+	//@Deprecated
+	/*protected DynamicUpdater(OfflinePlayer player)
 	{
 		this.player = player;
 		if (!guiData.containsKey(player.getUniqueId()))
 		{
 			guiData.put(player.getUniqueId(), this);
 		}
+	}*/
+	
+	/**Gets the menu for the player given.*/
+	public static MenuBendingOptions getMenu(OfflinePlayer player)
+	{
+		if (guiData.keySet().contains(player.getUniqueId()))
+		{
+			return guiData.get(player.getUniqueId());
+		}
+		return null;
 	}
 	
+	/**Update everyone elses Menu with the one provided.*/
+	public static void updateMenu(OfflinePlayer player, MenuBendingOptions menu)
+	{
+		guiData.put(player.getUniqueId(), menu);
+		if (!players.containsKey(player.getUniqueId()))
+		{
+			players.put(player.getUniqueId(), new ArrayList<UUID>());
+		}
+		for (UUID id : players.get(player.getUniqueId()))
+		{
+			if (Bukkit.getPlayer(id) == null)
+			{
+				players.get(player.getUniqueId()).remove(id);
+				continue;
+			}
+			if (Bukkit.getPlayer(id).getOpenInventory() == null || Bukkit.getPlayer(id).getOpenInventory().getTopInventory() == null || !(Bukkit.getPlayer(id).getOpenInventory().getTopInventory() instanceof MenuBendingOptions))
+			{
+				players.get(player.getUniqueId()).remove(id);
+				continue;
+			}
+			
+			if (((MenuBendingOptions)Bukkit.getPlayer(id).getOpenInventory().getTopInventory()).getMenuPlayer().getUniqueId() == player.getUniqueId())
+			{
+				continue;
+			}
+			
+			MenuBendingOptions menu1 = (MenuBendingOptions)Bukkit.getPlayer(id).getOpenInventory().getTopInventory();
+			menu1.updateFromMenu(menu);
+		}
+	}
+	
+	@Deprecated
 	public void setPage(int page)
 	{
 		this.page = page;
 	}
 	
+	@Deprecated
 	public int getPage()
 	{
 		return page;
 	}
 	
+	@Deprecated
 	public UUID getPlayerUUID()
 	{
 		return player.getUniqueId();
 	}
 	
-	public static PlayerGuiData getData(OfflinePlayer player)
+	/*public static DynamicUpdater getData(OfflinePlayer player)
 	{
 		if (!guiData.containsKey(player.getUniqueId()))
 		{
-			return new PlayerGuiData(player);
+			return new DynamicUpdater(player);
 		}
 		return guiData.get(player.getUniqueId());
-	}
+	}*/
 	
 	/**This is required because of a stupid bug when right clicking on a block
 	 * with the GUI makes it fail 600 times for no reason at all. Not a fix,
 	 * simply a workaround.*/
+	/*@Deprecated
 	public static void updateAbilityData(final OfflinePlayer player)
 	{
 		Runnable runnable = new Runnable() {
@@ -116,5 +168,17 @@ public class PlayerGuiData
 		};
 		Thread thread = new Thread(runnable);
 		thread.start();
+	}*/
+	
+	public static void setPage(OfflinePlayer player, int page)
+	{
+		pages.put(player.getUniqueId(), page);
+	}
+	
+	public static int getPage(OfflinePlayer player)
+	{
+		if (pages.containsKey(player.getUniqueId()))
+			return pages.get(player.getUniqueId());
+		return 1;
 	}
 }

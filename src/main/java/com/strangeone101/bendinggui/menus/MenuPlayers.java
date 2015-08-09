@@ -13,14 +13,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 
-import com.projectkorra.ProjectKorra.BendingPlayer;
-import com.projectkorra.ProjectKorra.Element;
-import com.projectkorra.ProjectKorra.GeneralMethods;
-import com.projectkorra.ProjectKorra.Ability.StockAbilities;
+import com.projectkorra.projectkorra.BendingPlayer;
+import com.projectkorra.projectkorra.Element;
+import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.ability.StockAbility;
 import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.Config;
-import com.strangeone101.bendinggui.MenuItem;
 import com.strangeone101.bendinggui.MenuBase;
+import com.strangeone101.bendinggui.MenuItem;
 import com.strangeone101.bendinggui.RunnablePlayer;
 
 public class MenuPlayers extends MenuBase 
@@ -160,17 +160,17 @@ public class MenuPlayers extends MenuBase
 				if (((Player)player).hasPermission("bending.earth.metalbending") && Config.showSubElementsOnUser) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.MetalClips.toString()) + "Metalbend");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.MetalClips.toString()) + "Metalbend");
 				}
 				if (((Player)player).hasPermission("bending.earth.lavabending") && Config.showSubElementsOnUser) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.LavaFlow.toString()) + "Lavabend");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.LavaFlow.toString()) + "Lavabend");
 				}
 				if (((Player)player).hasPermission("bending.earth.sandbending") && Config.showSubElementsOnUser) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.SandSpout.toString()) + "Sandbend");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.SandSpout.toString()) + "Sandbend");
 				}
 				if (b && Config.showSubElementsOnUser) 
 				{
@@ -193,12 +193,12 @@ public class MenuPlayers extends MenuBase
 				if (((Player)player).hasPermission("bending.fire.lightningbending")) 
 				{
 					b = true;
-					list.add("Can use " + GeneralMethods.getAbilityColor(StockAbilities.Lightning.toString()) + "Lightning");
+					list.add("Can use " + GeneralMethods.getAbilityColor(StockAbility.Lightning.toString()) + "Lightning");
 				}
 				if (((Player)player).hasPermission("bending.fire.combustionbending")) 
 				{
 					b = true;
-					list.add("Can " + GeneralMethods.getAbilityColor(StockAbilities.Combustion.toString()) + "Combust");
+					list.add("Can " + GeneralMethods.getAbilityColor(StockAbility.Combustion.toString()) + "Combust");
 				}
 				if (b && Config.showSubElementsOnUser) 
 				{
@@ -222,17 +222,17 @@ public class MenuPlayers extends MenuBase
 				if (((Player)player).hasPermission("bending.water.bloodbending")) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.Bloodbending.toString()) + "Bloodbend");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.Bloodbending.toString()) + "Bloodbend");
 				}
 				if (((Player)player).hasPermission("bending.water.plantbending")) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.Surge.toString()) + "Plantbend");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.Surge.toString()) + "Plantbend");
 				}
 				if (((Player)player).hasPermission("bending.water.healing")) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.HealingWaters.toString()) + "Heal");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.HealingWaters.toString()) + "Heal");
 				}
 				if (b && Config.showSubElementsOnUser) 
 				{

@@ -1,12 +1,12 @@
 package com.strangeone101.bendinggui.nms;
 
 import net.minecraft.server.v1_8_R2.NBTTagCompound;
+
 import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 public class NMSManager_RC2 implements INMSManager 
 {
-
 	public ItemStack addGlow(ItemStack itemstack) 
 	{
 		net.minecraft.server.v1_8_R2.ItemStack stack = this.toNMSStack(itemstack);

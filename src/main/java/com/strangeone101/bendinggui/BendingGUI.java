@@ -1,4 +1,5 @@
 package com.strangeone101.bendinggui;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
@@ -25,14 +27,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.projectkorra.ProjectKorra.Element;
-import com.projectkorra.ProjectKorra.GeneralMethods;
-import com.projectkorra.ProjectKorra.SubElement;
-import com.projectkorra.ProjectKorra.Ability.AbilityModuleManager;
-import com.projectkorra.ProjectKorra.airbending.AirMethods;
-import com.projectkorra.ProjectKorra.earthbending.EarthMethods;
-import com.projectkorra.ProjectKorra.firebending.FireMethods;
-import com.projectkorra.ProjectKorra.waterbending.WaterMethods;
+import com.projectkorra.projectkorra.Element;
+import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.ProjectKorra;
+import com.projectkorra.projectkorra.SubElement;
+import com.projectkorra.projectkorra.ability.AbilityModuleManager;
+import com.projectkorra.projectkorra.airbending.AirMethods;
+import com.projectkorra.projectkorra.earthbending.EarthMethods;
+import com.projectkorra.projectkorra.firebending.FireMethods;
+import com.projectkorra.projectkorra.waterbending.WaterMethods;
 import com.strangeone101.bendinggui.menus.MenuBendingOptions;
 import com.strangeone101.bendinggui.menus.MenuElementSelect;
 import com.strangeone101.bendinggui.nms.INMSManager;
@@ -42,7 +45,6 @@ import com.strangeone101.bendinggui.nms.NMSManager_RC3;
 import com.strangeone101.bendinggui.nms.NMSManager_RC4;
 import com.strangeone101.bendinggui.nms.NMSManager_RC5;
 
-
 public class BendingGUI extends JavaPlugin implements Listener
 {
 	public static boolean pageArrowMoveMouse = false;
@@ -50,7 +52,7 @@ public class BendingGUI extends JavaPlugin implements Listener
 	 * in the future.*/
 	public static boolean enableOfflinePlayers = false; 
 	
-	public static Logger log = Logger.getLogger("BendingGUI");
+	public static Logger log;
 	
 	public static BendingGUI INSTANCE;
 	
@@ -144,105 +146,119 @@ public class BendingGUI extends JavaPlugin implements Listener
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) 
 	{
-		if (!loaded) return false;
-		if (command.getName().equalsIgnoreCase("gui") || command.getName().equalsIgnoreCase("bg") || command.getName().equalsIgnoreCase("bendinggui") || command.getName().equalsIgnoreCase("bendgui"))
+		if (!loaded || !this.isEnabled()) return false;
+		try
 		{
-			if (!(sender instanceof Player) && args.length == 0)
+			if (command.getName().equalsIgnoreCase("gui") || command.getName().equalsIgnoreCase("bg") || command.getName().equalsIgnoreCase("bendinggui") || command.getName().equalsIgnoreCase("bendgui"))
 			{
-				sender.sendMessage("Only players can run this command!");
-				return false;
-			}
-			
-			if (!sender.hasPermission("bendinggui.command"))
-			{
-				sender.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
-				return true;
-			}
-			Player player = (Player) sender;
-			if (args.length == 0)
-			{
-				if (Config.guiRequireItem)
-				{
-					if (player.getInventory().contains(getGuiItem()))
-					{
-						player.getInventory().remove(getGuiItem());
-					}
-					player.getInventory().addItem(getGuiItem());
-					player.sendMessage(ChatColor.GREEN + Config.getGiveMessage);
-				}
-				else
-				{
-					MenuBendingOptions menu = new MenuBendingOptions(player);
-					menu.openMenu(player);
-				}
-				/*MenuBendingOptions menu = new MenuBendingOptions(player);
-				menu.openMenu(player);*/
-				return true;
-			}
-			else if (args[0].equalsIgnoreCase("choose"))
-			{
-				if (args.length == 2)
-				{
-					if (player.hasPermission("bending.admin.choose"))
-					{
-						Player playero = Bukkit.getPlayer(args[1]);
-						if (playero != null)
-						{
-							MenuElementSelect menu = new MenuElementSelect(playero);
-							menu.openMenu(player);
-						}
-						else
-						{
-							player.sendMessage(ChatColor.RED + "Error while finding player!");
-						}
-					}
-					else
-					{
-						player.sendMessage(ChatColor.RED + "You don't have permission to choose other players element!");
-					}
-					return true;
-				}
-				if (!(sender instanceof Player))
+				if (!(sender instanceof Player) && args.length == 0)
 				{
 					sender.sendMessage("Only players can run this command!");
 					return false;
 				}
-				if (GeneralMethods.getBendingPlayer(player.getName()).getElements().isEmpty() || player.hasPermission("bending.admin.rechoose"))
+				
+				if (!sender.hasPermission("bendinggui.command"))
 				{
-					MenuElementSelect menu = new MenuElementSelect(player);
-					menu.openMenu(player);
+					sender.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
+					return true;
 				}
-				else if (!player.hasPermission("bending.admin.rechoose"))
+				Player player = (Player) sender;
+				if (args.length == 0)
 				{
-					player.sendMessage(ChatColor.RED + "You have already chosen an element!");
-				}
-			}
-			else if (args[0].equalsIgnoreCase("player"))
-			{
-				if (args.length == 2)
-				{
-					if (player.hasPermission("bendinggui.admin"))
+					if (Config.guiRequireItem)
 					{
-						Player playero = Bukkit.getPlayer(args[1]);
-						if (playero != null)
+						if (player.getInventory().contains(getGuiItem()))
 						{
-							MenuBendingOptions menu = new MenuBendingOptions(playero);
-							menu.openMenu(player);
+							player.getInventory().remove(getGuiItem());
 						}
-						else
-						{
-							player.sendMessage(ChatColor.RED + "Error while finding player!");
-						}
+						player.getInventory().addItem(getGuiItem());
+						player.sendMessage(ChatColor.GREEN + Config.getGiveMessage);
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + "You don't have permission to edit other players bending!");
+						MenuBendingOptions menu = new MenuBendingOptions(player);
+						menu.openMenu(player);
 					}
+					/*MenuBendingOptions menu = new MenuBendingOptions(player);
+					menu.openMenu(player);*/
 					return true;
 				}
+				else if (args[0].equalsIgnoreCase("choose") || args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("ch"))
+				{
+					if (args.length == 2)
+					{
+						if (player.hasPermission("bending.admin.choose"))
+						{
+							Player playero = Bukkit.getPlayer(args[1]);
+							if (playero != null)
+							{
+								MenuElementSelect menu = new MenuElementSelect(playero);
+								menu.openMenu(player);
+							}
+							else
+							{
+								player.sendMessage(ChatColor.RED + "Error while finding player!");
+							}
+						}
+						else
+						{
+							player.sendMessage(ChatColor.RED + "You don't have permission to choose other players element!");
+						}
+						return true;
+					}
+					if (!(sender instanceof Player))
+					{
+						sender.sendMessage("Only players can run this command!");
+						return false;
+					}
+					if (GeneralMethods.getBendingPlayer(player.getName()).getElements().isEmpty() || player.hasPermission("bending.command.rechoose"))
+					{
+						MenuElementSelect menu = new MenuElementSelect(player);
+						menu.openMenu(player);
+					}
+					else if (!player.hasPermission("bending.admin.rechoose"))
+					{
+						player.sendMessage(ChatColor.RED + "You have already chosen an element!");
+					}
+				}
+				else if (args[0].equalsIgnoreCase("version") || args[0].equalsIgnoreCase("v") || args[0].equalsIgnoreCase("ver"))
+				{
+					sender.sendMessage(ChatColor.YELLOW + "BendingGUI is version " + getDescription().getVersion() + ", running on ProjectKorra " + ProjectKorra.plugin.getDescription().getVersion());
+				}
+				else
+				{
+					Player playero = Bukkit.getPlayer(args[1]);
+					if (playero == null && player.hasPermission("bendinggui.admin"))
+					{
+						sender.sendMessage(ChatColor.RED + "Error while finding player!");
+						return true;
+					}
+					else if (playero != null && !player.hasPermission("bendinggui.admin"))
+					{
+						player.sendMessage(ChatColor.RED + "You don't have permission to edit other players bending!");
+					}
+					else if (playero == null)
+					{
+						sender.sendMessage(ChatColor.RED + "Command usage is /gui or /gui <choose/version>");
+					}
+					else
+					{
+						MenuBendingOptions menu = new MenuBendingOptions(playero);
+						menu.openMenu(player);
+					}
+					return true;
+					
+				}
+				return true;
 			}
-			return true;
 		}
+		catch (Exception e)
+		{
+			sender.sendMessage(ChatColor.RED + "BendingGUI appears to be broken at the moment. Please report this to your server admin or to the plugin developer!");
+			log.severe("Something went wrong!");
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 	
@@ -250,17 +266,20 @@ public class BendingGUI extends JavaPlugin implements Listener
 	public void onEnable() 
 	{
 		INSTANCE = this;
-		
-		if (Bukkit.getPluginManager().getPlugin("ProjectKorra") == null)
+		log = getLogger();
+		if (Bukkit.getPluginManager().getPlugin("ProjectKorra") == null || !Bukkit.getPluginManager().getPlugin("ProjectKorra").isEnabled())
 		{
-			log.severe("[BendingGUI] ProjectKorra plugin not installed! This plugin is completely useless without it!");
+			log.severe("ProjectKorra plugin not installed! This plugin is completely useless without it!");
 			this.setEnabled(false);
 			return;
 		}
 		
+		
+		
+		
 		if (getNMSManager() == null)
 		{
-			log.severe("[BendingGUI] This plugin is not compatible with your version of Spigot/Bukkit! Please update it or inform the plugin developer about this!");
+			log.severe("This plugin is not compatible with your version of Spigot/Bukkit! Please update it or inform the plugin developer about this!");
 			this.setEnabled(false);
 			try {
 				throw new ExceptionInInitializerError("Plugin incompatible with version :" + Bukkit.getBukkitVersion() + ". Must update!");
@@ -269,13 +288,58 @@ public class BendingGUI extends JavaPlugin implements Listener
 			}
 			return;
 		}
+		
+		if (!checkVersion())
+		{
+			this.setEnabled(false);
+			return;
+		}
+		
 		getServer().getPluginManager().registerEvents(this, this);
 		Config.load();
 		Descriptions.load();
 		Descriptions.save();
-		log.log(Level.INFO, "[BendingGUI] BendingGUI Fully Loaded!");
+		
+		log.log(Level.INFO, "BendingGUI Fully Loaded!");
 		
 		loaded = true;
+	}
+	
+	public boolean checkVersion()
+	{
+		String version = ProjectKorra.plugin.getDescription().getVersion();
+		String varg1 = version.split(" ")[0];
+		if (varg1.startsWith("1.6.0"))
+		{
+			log.severe("BendingGUI does not support version ProjectKorra 1.6.0! Please upgrade to version 1.7.0 or higher!");
+			return false;
+		}
+		else if (!varg1.startsWith("1.7."))
+		{
+			log.warning("The version of ProjectKorra installed is not fully supported yet! Do not be surprised if something breaks!");
+		}
+		else if (version.toLowerCase().contains("beta"))
+		{
+			try
+			{
+				int betav = Integer.parseInt(version.split(" ", 3)[2]);
+				if (betav <= 12)
+				{
+					log.severe("This version of BendingGUI is made for ProjectKorra 1.7.0 Beta 13 or higher!");
+					return false;
+				}
+			}
+			catch (IndexOutOfBoundsException e)
+			{
+				log.warning("Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.");
+			}
+			catch (NumberFormatException e)
+			{
+				log.warning("Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.");
+			}
+			
+		}
+		return true;
 	}
 	
 	/**Makes a description list for items. Use BendingGUI.getDescriptions now instead!*/
@@ -411,5 +475,19 @@ public class BendingGUI extends JavaPlugin implements Listener
 		else if (!WaterMethods.canPlantbend(p) && WaterMethods.isPlantbendingAbility(ability)) return false;
 		else if (!GeneralMethods.canBind(p.getName(), ability)) return false;
 		return true;
+	}
+	
+	
+	@EventHandler
+	public void onClose(InventoryCloseEvent e)
+	{
+		if (e.getInventory() instanceof MenuBendingOptions)
+		{
+			MenuBendingOptions menu = (MenuBendingOptions) e.getInventory();
+			if (DynamicUpdater.players.containsKey(menu.getMenuPlayer().getUniqueId()) && DynamicUpdater.players.get(menu.getOpenPlayer().getUniqueId()).contains(menu.getOpenPlayer()))
+			{
+				DynamicUpdater.players.get(menu.getOpenPlayer().getUniqueId()).remove(menu.getOpenPlayer());
+			}
+		}
 	}
 }

@@ -7,8 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
-import com.strangeone101.bendinggui.MenuItem;
 import com.strangeone101.bendinggui.MenuBase;
+import com.strangeone101.bendinggui.MenuItem;
 import com.strangeone101.bendinggui.RunnablePlayer;
 
 public class MenuConfirm extends MenuBase 

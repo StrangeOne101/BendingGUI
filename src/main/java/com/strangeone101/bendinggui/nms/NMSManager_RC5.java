@@ -1,6 +1,7 @@
 package com.strangeone101.bendinggui.nms;
 
 import net.minecraft.server.v1_8_R5.NBTTagCompound;
+
 import org.bukkit.craftbukkit.v1_8_R5.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 

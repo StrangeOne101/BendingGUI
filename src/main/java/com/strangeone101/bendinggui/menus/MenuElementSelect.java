@@ -13,13 +13,13 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
-import com.projectkorra.ProjectKorra.Element;
-import com.projectkorra.ProjectKorra.GeneralMethods;
-import com.projectkorra.ProjectKorra.CustomEvents.PlayerChangeElementEvent;
-import com.projectkorra.ProjectKorra.CustomEvents.PlayerChangeElementEvent.Result;
+import com.projectkorra.projectkorra.Element;
+import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.event.PlayerChangeElementEvent;
+import com.projectkorra.projectkorra.event.PlayerChangeElementEvent.Result;
 import com.strangeone101.bendinggui.Config;
-import com.strangeone101.bendinggui.MenuItem;
 import com.strangeone101.bendinggui.MenuBase;
+import com.strangeone101.bendinggui.MenuItem;
 import com.strangeone101.bendinggui.RunnablePlayer;
 
 public class MenuElementSelect extends MenuBase 

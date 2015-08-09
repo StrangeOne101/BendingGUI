@@ -8,33 +8,28 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import net.minecraft.server.v1_8_R3.NBTBase;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.projectkorra.ProjectKorra.BendingPlayer;
-import com.projectkorra.ProjectKorra.Element;
-import com.projectkorra.ProjectKorra.GeneralMethods;
-import com.projectkorra.ProjectKorra.MultiAbilityManager;
-import com.projectkorra.ProjectKorra.SubElement;
-import com.projectkorra.ProjectKorra.Ability.AbilityModuleManager;
-import com.projectkorra.ProjectKorra.Ability.StockAbilities;
-import com.strangeone101.bendinggui.Descriptions;
+import com.projectkorra.projectkorra.BendingPlayer;
+import com.projectkorra.projectkorra.Element;
+import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.SubElement;
+import com.projectkorra.projectkorra.ability.AbilityModuleManager;
+import com.projectkorra.projectkorra.ability.StockAbility;
+import com.projectkorra.projectkorra.ability.multiability.MultiAbilityManager;
 import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.Config;
-import com.strangeone101.bendinggui.MenuItem;
-import com.strangeone101.bendinggui.PlayerGuiData;
+import com.strangeone101.bendinggui.Descriptions;
 import com.strangeone101.bendinggui.MenuBase;
+import com.strangeone101.bendinggui.MenuItem;
+import com.strangeone101.bendinggui.DynamicUpdater;
 
 public class MenuBendingOptions extends MenuBase
 {
@@ -130,6 +125,7 @@ public class MenuBendingOptions extends MenuBase
 					abilityIndexInt = -1;
 				}
 				update();
+				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
 		String desc = "";
@@ -225,7 +221,7 @@ public class MenuBendingOptions extends MenuBase
 				if (MultiAbilityManager.playerAbilities.containsKey(player.getName()))
 				{
 					closeMenu(player);
-					player.sendMessage(ChatColor.RED + "You cannot modify binds right now!");
+					player.sendMessage(ChatColor.RED + "You cannot modify your binds right now!");
 				}
 				else if (thePlayer instanceof Player)
 				{
@@ -263,6 +259,7 @@ public class MenuBendingOptions extends MenuBase
 						abilityIndexInt = -1;
 					}
 					update();
+					DynamicUpdater.updateMenu(thePlayer, getInstance());
 				}
 			}
 		};
@@ -297,6 +294,7 @@ public class MenuBendingOptions extends MenuBase
 					mode = mode == Mode.DELETE ? Mode.NONE : Mode.DELETE;
 				}
 				update();
+				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
 		item.setDescriptions(Arrays.asList(new String[] {ChatColor.GRAY + "Allows you to remove bound moves to your slots.",
@@ -322,9 +320,10 @@ public class MenuBendingOptions extends MenuBase
 			{
 				mode = mode == Mode.INFO ? Mode.NONE : Mode.INFO;
 				update();
+				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
-		item.setDescriptions(Arrays.asList(new String[] {ChatColor.GRAY + "Click for more infomation and on bending moves.",
+		item.setDescriptions(Arrays.asList(new String[] {ChatColor.GRAY + "When toggled on, click on an ability for more information.",
 		ChatColor.GRAY + "Click to turn " + (this.mode == Mode.INFO ? "off again" : "on")}));
 		if (this.mode == Mode.INFO)
 		{
@@ -349,7 +348,8 @@ public class MenuBendingOptions extends MenuBase
 				//to that players which stops functionality for admins looking at other player's bindings
 				if (movePage == getMaxPages() - 1 && isRightDirection) return;
 				movePage = isRightDirection ? movePage + 1 : movePage - 1;
-				PlayerGuiData.getData(thePlayer).setPage(movePage);
+				DynamicUpdater.setPage(thePlayer, movePage);
+				//DynamicUpdater.getData(thePlayer).setPage(movePage);
 				if (BendingGUI.pageArrowMoveMouse)
 				{
 					MenuBendingOptions menu = new MenuBendingOptions(thePlayer);
@@ -363,6 +363,7 @@ public class MenuBendingOptions extends MenuBase
 				{
 					update();
 				}
+				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
 		item.setDescriptions(Arrays.asList(new String[] {ChatColor.GRAY + "Click to go to the " + (isRightDirection ? "next" : "previous") + " page of moves."}));
@@ -390,6 +391,7 @@ public class MenuBendingOptions extends MenuBase
 				{
 					switchMenu(player, new MenuElementSelect(openPlayer, instance));
 				}
+				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
 		String s = this.openPlayer.getName() == this.thePlayer.getName() ? "you" : this.thePlayer.getName();
@@ -473,6 +475,7 @@ public class MenuBendingOptions extends MenuBase
 				catch (IllegalAccessException e) {e.printStackTrace();}
 				
 				update();
+				DynamicUpdater.updateMenu(thePlayer, getInstance());
 				//Bukkit.getServer().dispatchCommand(p, "bending toggle");
 			}
 		};
@@ -529,17 +532,17 @@ public class MenuBendingOptions extends MenuBase
 				if (((Player)thePlayer).hasPermission("bending.earth.metalbending") && Config.showSubElementsOnUser) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.MetalClips.toString()) + "Metalbend");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.MetalClips.toString()) + "Metalbend");
 				}
 				if (((Player)thePlayer).hasPermission("bending.earth.lavabending") && Config.showSubElementsOnUser) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.LavaFlow.toString()) + "Lavabend");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.LavaFlow.toString()) + "Lavabend");
 				}
 				if (((Player)thePlayer).hasPermission("bending.earth.sandbending") && Config.showSubElementsOnUser) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.SandSpout.toString()) + "Sandbend");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.SandSpout.toString()) + "Sandbend");
 				}
 				if (b && Config.showSubElementsOnUser) 
 				{
@@ -562,12 +565,12 @@ public class MenuBendingOptions extends MenuBase
 				if (((Player)thePlayer).hasPermission("bending.fire.lightningbending")) 
 				{
 					b = true;
-					list.add("Can use " + GeneralMethods.getAbilityColor(StockAbilities.Lightning.toString()) + "Lightning");
+					list.add("Can use " + GeneralMethods.getAbilityColor(StockAbility.Lightning.toString()) + "Lightning");
 				}
 				if (((Player)thePlayer).hasPermission("bending.fire.combustionbending")) 
 				{
 					b = true;
-					list.add("Can " + GeneralMethods.getAbilityColor(StockAbilities.Combustion.toString()) + "Combust");
+					list.add("Can " + GeneralMethods.getAbilityColor(StockAbility.Combustion.toString()) + "Combust");
 				}
 				if (b && Config.showSubElementsOnUser) 
 				{
@@ -591,17 +594,17 @@ public class MenuBendingOptions extends MenuBase
 				if (((Player)thePlayer).hasPermission("bending.water.bloodbending")) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.Bloodbending.toString()) + "Bloodbend");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.Bloodbending.toString()) + "Bloodbend");
 				}
 				if (((Player)thePlayer).hasPermission("bending.water.plantbending")) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.Surge.toString()) + "Plantbend");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.Surge.toString()) + "Plantbend");
 				}
 				if (((Player)thePlayer).hasPermission("bending.water.healing")) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbilities.HealingWaters.toString()) + "Heal");
+					list.add(GeneralMethods.getAbilityColor(StockAbility.HealingWaters.toString()) + "Heal");
 				}
 				if (b && Config.showSubElementsOnUser) 
 				{
@@ -661,6 +664,7 @@ public class MenuBendingOptions extends MenuBase
 		ChatColor c = BendingGUI.getAbilityElement(move) == Element.Air ? ChatColor.GRAY : (BendingGUI.getAbilityElement(move) == Element.Chi ? ChatColor.GOLD : (BendingGUI.getAbilityElement(move) == Element.Earth ? ChatColor.GREEN : (BendingGUI.getAbilityElement(move) == Element.Fire ? ChatColor.RED : (BendingGUI.getAbilityElement(move) == Element.Water ? ChatColor.BLUE : ChatColor.LIGHT_PURPLE))));
 		player.sendMessage(c + move.toString() + ChatColor.YELLOW + " bound to slot " + (slot + 1) + "!");
 	}
+	
 	
 	/**Updates the GUI by re-initializing*/
 	public void update()
@@ -742,14 +746,14 @@ public class MenuBendingOptions extends MenuBase
 			//Hopefully fix bug
 			if (this.playerMoves.isEmpty())
 			{
-				if (!PlayerGuiData.getData(player).abilityData.isEmpty())
+				/*if (!DynamicUpdater.getData(player).abilityData.isEmpty())
 				{
-					this.playerMoves = PlayerGuiData.getData(player).abilityData;
-					PlayerGuiData.updateAbilityData(player);
+					//this.playerMoves = DynamicUpdator.getData(player).abilityData;
+					//DynamicUpdator.updateAbilityData(player);
 				}
 				else
 				{
-					BukkitRunnable run = new BukkitRunnable() {
+					*/BukkitRunnable run = new BukkitRunnable() {
 
 						public void run() 
 						{
@@ -758,19 +762,19 @@ public class MenuBendingOptions extends MenuBase
 					};
 					run.runTaskLater(BendingGUI.INSTANCE, 200L);
 					 //Try again
-				}
+				//}
 			}
-			else
+			/*else
 			{
-				PlayerGuiData.getData(player).abilityData = this.playerMoves;
-			}
+				DynamicUpdater.getData(player).abilityData = this.playerMoves;
+			}*/
 			
 			int maxPage = this.getMaxPages();
 			
-			int p = PlayerGuiData.getData(player).getPage();
-			if (p > this.getMaxPages() + 1)
+			int p = DynamicUpdater.getPage(thePlayer);
+			if (p > this.getMaxPages())
 			{
-				p = this.getMaxPages() + 1;
+				p = this.getMaxPages() - 1;
 			}
 			movePage = p;
 			
@@ -864,7 +868,7 @@ public class MenuBendingOptions extends MenuBase
 		if (this.openPlayer != null)
 		{
 			//If they can modify bending, give them the edit elements page
-			if (this.openPlayer.hasPermission("bending.admin.add") || this.openPlayer.hasPermission("bending.admin.remove"))
+			if (this.openPlayer.hasPermission("bending.admin.add") || this.openPlayer.hasPermission("bending.admin.remove") || this.openPlayer.hasPermission("bending.command.rechoose"))
 			{
 				this.addMenuItem(this.getEditElements(), 3 * 9 + 4);
 			}
@@ -910,7 +914,7 @@ public class MenuBendingOptions extends MenuBase
 	}*/
 	
 	/**Add NBT data to the stack*/
-	public void addNBTData(int x, int y, String key, Object data)
+	/*public void addNBTData(int x, int y, String key, Object data)
 	{
 		net.minecraft.server.v1_8_R3.ItemStack stack = CraftItemStack.asNMSCopy(this.getInventory().getItem(y * 9 + x));
 		NBTTagCompound tag = null;
@@ -929,7 +933,7 @@ public class MenuBendingOptions extends MenuBase
         stack.setTag(tag);
         ItemStack stack1 = CraftItemStack.asCraftMirror(stack);
         this.getInventory().setItem(y * 9 + x, stack1);
-	}
+	}*/
 	
 	@Override
 	public void openMenu(Player player) 
@@ -943,10 +947,10 @@ public class MenuBendingOptions extends MenuBase
 			return;
 		}
 		
-		int p = PlayerGuiData.getData(player).getPage();
-		if (p > this.getMaxPages() + 1)
+		int p = DynamicUpdater.getPage(thePlayer);
+		if (p > this.getMaxPages())
 		{
-			p = this.getMaxPages() + 1;
+			p = this.getMaxPages();
 		}
 		this.movePage = p;
 		
@@ -982,8 +986,34 @@ public class MenuBendingOptions extends MenuBase
 	    return ((this.playerMoves.size() - 3) / 7) + 1;
 	}
 	
+	public MenuBendingOptions getInstance()
+	{
+		return this;
+	}
+	
+	public OfflinePlayer getOpenPlayer()
+	{
+		return openPlayer;
+	}
+	
+	public OfflinePlayer getMenuPlayer()
+	{
+		return thePlayer;
+	}
+	
 	public enum Mode
 	{
 		NONE, DELETE, INFO
+	}
+	
+	/**Transfers important information over from the argument menu to this current menu*/
+	public void updateFromMenu(MenuBendingOptions menu)
+	{
+		this.abilityIndex = menu.abilityIndex;
+		this.abilityIndexInt = menu.abilityIndexInt;
+		this.hasBeenToggled = menu.hasBeenToggled;
+		this.mode = menu.mode;
+		this.movePage = menu.movePage;
+		this.slotIndex = menu.slotIndex;
 	}
 }

@@ -14,8 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.util.FileUtil;
 
-import com.projectkorra.ProjectKorra.Element;
-import com.projectkorra.ProjectKorra.SubElement;
+import com.projectkorra.projectkorra.Element;
+import com.projectkorra.projectkorra.SubElement;
 
 public class Config 
 {
