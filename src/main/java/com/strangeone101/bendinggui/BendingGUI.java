@@ -226,6 +226,7 @@ public class BendingGUI extends JavaPlugin implements Listener
                     if (sender.hasPermission("bendinggui.version"))
                     {
                         sender.sendMessage(ChatColor.YELLOW + "BendingGUI is version " + getDescription().getVersion() + ", running on ProjectKorra " + ProjectKorra.plugin.getDescription().getVersion());
+                        if (!checkVersion()) sender.sendMessage(ChatColor.RED + "Support for this version of ProjectKorra is not guarenteed.");
                         return true;
                     }
 					player.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
@@ -323,13 +324,6 @@ public class BendingGUI extends JavaPlugin implements Listener
 		
 		loaded = true;
 	}
-    
-    public void reload()
-    {
-        Config.load();
-		Descriptions.load();
-		Descriptions.save();
-    }
 	
 	public void reload()
 	{
