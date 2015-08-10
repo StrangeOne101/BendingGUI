@@ -223,8 +223,27 @@ public class BendingGUI extends JavaPlugin implements Listener
 				}
 				else if (args[0].equalsIgnoreCase("version") || args[0].equalsIgnoreCase("v") || args[0].equalsIgnoreCase("ver"))
 				{
-					sender.sendMessage(ChatColor.YELLOW + "BendingGUI is version " + getDescription().getVersion() + ", running on ProjectKorra " + ProjectKorra.plugin.getDescription().getVersion());
+                    if (sender.hasPermission("bendinggui.version"))
+                    {
+                        sender.sendMessage(ChatColor.YELLOW + "BendingGUI is version " + getDescription().getVersion() + ", running on ProjectKorra " + ProjectKorra.plugin.getDescription().getVersion());
+                        return true;
+                    }
+					player.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
 				}
+                else if (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("r") || args[0].equalsIgnoreCase("rel"))
+                {
+                    if (sender.hasPermission("bendinggui.reload"))
+                    {
+                        reload();
+                        player.sendMessage(ChatColor.YELLOW + "BendingGUI Reloaded!");
+                        return true;
+                    }
+                    player.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
+                }
+                else if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("h"))
+                {
+                    sender.sendMessage(ChatColor.YELLOW + "Command usage is /gui or /gui <choose/version/reload> or /gui [player]");    
+                }
 				else
 				{
 					Player playero = Bukkit.getPlayer(args[1]);
@@ -239,7 +258,7 @@ public class BendingGUI extends JavaPlugin implements Listener
 					}
 					else if (playero == null)
 					{
-						sender.sendMessage(ChatColor.RED + "Command usage is /gui or /gui <choose/version>");
+						sender.sendMessage(ChatColor.RED + "Command usage is /gui or /gui <choose/version/reload>");
 					}
 					else
 					{
@@ -304,6 +323,13 @@ public class BendingGUI extends JavaPlugin implements Listener
 		
 		loaded = true;
 	}
+    
+    public void reload()
+    {
+        Config.load();
+		Descriptions.load();
+		Descriptions.save();
+    }
 	
 	public boolean checkVersion()
 	{

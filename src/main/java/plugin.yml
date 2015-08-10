@@ -1,6 +1,6 @@
 name: BendingGUI
 main: com.strangeone101.bendinggui.BendingGUI
-version: 1.0.4
+version: 1.0.5
 depend: [ProjectKorra]
 prefix: BendingGUI
 commands:
@@ -9,8 +9,10 @@ commands:
     aliases: [gui, bg]
     usage: |
              /<command> 
-             /<command> player <player>
-             /<command> choose 
+             /<command> choose
+             /<command> version
+             /<command> reload 
+             /<command> <player>
 permissions:
   bendinggui.*:
     description: Access to all BendingGUI commands and rights
@@ -18,6 +20,8 @@ permissions:
       bendinggui.command: true
       bendinggui.view: true
       bendinggui.admin: true
+      bendinggui.version: true
+      bendinggui.reload: true
   bendinggui.command:
     description: Allows players to access the gui
     default: true
@@ -26,4 +30,13 @@ permissions:
     default: true
   bendinggui.admin: 
     description: Allows players to modify other player\'s bending through the gui
+    default: op
+    children:
+      bendinggui.version: true
+      bendinggui.reload: true
+  bendinggui.version:
+    description: Allows the player to check the version of BendingGUI and if it's compatible
+    default: op
+  bendinggui.reload:
+    description: Allows the player to reload the config of BendingGUI.
     default: op
