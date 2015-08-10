@@ -37,7 +37,7 @@ import com.projectkorra.projectkorra.earthbending.EarthMethods;
 import com.projectkorra.projectkorra.firebending.FireMethods;
 import com.projectkorra.projectkorra.waterbending.WaterMethods;
 import com.strangeone101.bendinggui.menus.MenuBendingOptions;
-import com.strangeone101.bendinggui.menus.MenuElementSelect;
+import com.strangeone101.bendinggui.menus.MenuSelectElement;
 import com.strangeone101.bendinggui.nms.INMSManager;
 import com.strangeone101.bendinggui.nms.NMSManager_RC1;
 import com.strangeone101.bendinggui.nms.NMSManager_RC2;
@@ -192,7 +192,7 @@ public class BendingGUI extends JavaPlugin implements Listener
 							Player playero = Bukkit.getPlayer(args[1]);
 							if (playero != null)
 							{
-								MenuElementSelect menu = new MenuElementSelect(playero);
+								MenuSelectElement menu = new MenuSelectElement(playero);
 								menu.openMenu(player);
 							}
 							else
@@ -213,7 +213,7 @@ public class BendingGUI extends JavaPlugin implements Listener
 					}
 					if (GeneralMethods.getBendingPlayer(player.getName()).getElements().isEmpty() || player.hasPermission("bending.command.rechoose"))
 					{
-						MenuElementSelect menu = new MenuElementSelect(player);
+						MenuSelectElement menu = new MenuSelectElement(player);
 						menu.openMenu(player);
 					}
 					else if (!player.hasPermission("bending.admin.rechoose"))
@@ -330,6 +330,14 @@ public class BendingGUI extends JavaPlugin implements Listener
 		Descriptions.load();
 		Descriptions.save();
     }
+	
+	public void reload()
+	{
+		Config.load();
+		Descriptions.load();
+		Descriptions.save();
+		log.log(Level.INFO, "BendingGUI Reloaded!");
+	}
 	
 	public boolean checkVersion()
 	{

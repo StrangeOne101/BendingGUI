@@ -389,7 +389,7 @@ public class MenuBendingOptions extends MenuBase
 				}
 				else if (!b && player.hasPermission("bending.command.rechoose"))
 				{
-					switchMenu(player, new MenuElementSelect(openPlayer, instance));
+					switchMenu(player, new MenuSelectElement(openPlayer, instance));
 				}
 				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
@@ -688,7 +688,7 @@ public class MenuBendingOptions extends MenuBase
 		
 		if (GeneralMethods.getBendingPlayer(player.getName()).getElements() == null || GeneralMethods.getBendingPlayer(player.getName()).getElements().isEmpty()) //Somehow this needs to be here
 		{
-			this.switchMenu(openPlayer, new MenuElementSelect(thePlayer));
+			this.switchMenu(openPlayer, new MenuSelectElement(thePlayer));
 			return;
 		}
 		else if (!GeneralMethods.getBendingPlayer(player.getName()).isToggled() || this.hasBeenToggled)
@@ -943,7 +943,7 @@ public class MenuBendingOptions extends MenuBase
 		if (this.redirect)
 		{
 			player.sendMessage(ChatColor.GREEN + "You aren't a bender yet! Please choose an element!");
-			this.switchMenu(player, new MenuElementSelect(thePlayer));
+			this.switchMenu(player, new MenuSelectElement(thePlayer));
 			return;
 		}
 		

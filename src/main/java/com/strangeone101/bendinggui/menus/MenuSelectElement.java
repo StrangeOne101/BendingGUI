@@ -22,19 +22,19 @@ import com.strangeone101.bendinggui.MenuBase;
 import com.strangeone101.bendinggui.MenuItem;
 import com.strangeone101.bendinggui.RunnablePlayer;
 
-public class MenuElementSelect extends MenuBase 
+public class MenuSelectElement extends MenuBase 
 {
 	public OfflinePlayer thePlayer;
 	public MenuBase menu = null;
 	public Player openPlayer;
 	
-	public MenuElementSelect(OfflinePlayer player) 
+	public MenuSelectElement(OfflinePlayer player) 
 	{
 		super("Please select an element!", 3);
 		this.thePlayer = player;
 	}
 	
-	public MenuElementSelect(OfflinePlayer player, MenuBase previousMenu)
+	public MenuSelectElement(OfflinePlayer player, MenuBase previousMenu)
 	{
 		this(player);
 		this.menu = previousMenu;
@@ -94,7 +94,7 @@ public class MenuElementSelect extends MenuBase
 		else if (element == Element.Fire) {mat = new MaterialData(Material.BLAZE_POWDER); c1 = ChatColor.RED; c2 = ChatColor.DARK_RED;}
 		else if (element == Element.Water) {mat = new MaterialData(Material.WATER_BUCKET); c1 = ChatColor.BLUE; c2 = ChatColor.DARK_BLUE;}	
 		final ChatColor c3 = c1;
-		final MenuElementSelect instance = this;
+		final MenuSelectElement instance = this;
 		final MenuConfirm confirm = new MenuConfirm(this, new RunnablePlayer() {
 			@Override
 			public void run(Player player) 
