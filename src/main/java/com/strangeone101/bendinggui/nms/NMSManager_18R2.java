@@ -5,7 +5,7 @@ import net.minecraft.server.v1_8_R2.NBTTagCompound;
 import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
-public class NMSManager_RC2 implements INMSManager 
+public class NMSManager_18R2 implements INMSManager 
 {
 	public ItemStack addGlow(ItemStack itemstack) 
 	{
@@ -15,15 +15,7 @@ public class NMSManager_RC2 implements INMSManager
 		{
 			tag = stack.getTag();
 		}
-		/*NBTTagCompound display = new NBTTagCompound();
-        display.setString("Name", stack.getName());
-        NBTTagList lore = new NBTTagList();
-        for (String s : stack.)
-        {
-        	lore.add(new NBTTagString(s));
-        }
-        display.set("Lore", lore);
-        tag.set("display", display);*/
+
 		tag.set("ench", new NBTTagCompound());
 		return this.toBukkitStack(stack);
 	}

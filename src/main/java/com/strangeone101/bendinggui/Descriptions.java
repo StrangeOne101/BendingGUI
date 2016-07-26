@@ -9,8 +9,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.projectkorra.projectkorra.ability.StockAbility;
-
 public class Descriptions 
 {
 	private final static String DEFAULT = "***Description Coming Soon!***";
@@ -19,68 +17,67 @@ public class Descriptions
 	
 	protected static void addDefaults()
 	{
-		descmap.put(StockAbility.AirBlast.toString(), "Releases a blast of air that pushing all mobs and items");
-		descmap.put(StockAbility.AirBubble.toString(), "Allows the user to keep a bubble of air around them while traveling underwater");
-		descmap.put(StockAbility.AcrobatStance.toString(), "Makes the users faster and stronger but uses more energy in the process");
-		descmap.put(StockAbility.AirBurst.toString(), "Creates a powerful gust of air that can blow away your enimies");
-		descmap.put(StockAbility.AirScooter.toString(), "Allows the user to ride a ball of air to scale across terrain fast");
-		descmap.put(StockAbility.AirShield.toString(), "Allows the user to make a shield of air around them");
-		descmap.put(StockAbility.AirSpout.toString(), "Allows the user to walk on a spout of air");
-		descmap.put(StockAbility.AirSuction.toString(), "Pulls all mobs and items towards the the user");
-		descmap.put(StockAbility.AirSwipe.toString(), "Releases a wider gust of air, pushing mobs and items");
-		descmap.put(StockAbility.Flight.toString(), "Allows the user to fly by holding sneak (SHIFT)");	
-		descmap.put(StockAbility.Suffocate.toString(), "Bends the air right out of another player's lungs");	
-		descmap.put(StockAbility.Tornado.toString(), "Creates a tornado of air that will misplace other users");	
+		descmap.put("AirBlast", "Releases a blast of air that pushing all mobs and items");
+		descmap.put("AirBubble", "Allows the user to keep a bubble of air around them while traveling underwater");
+		descmap.put("AcrobatStance", "Makes the users faster and stronger but uses more energy in the process");
+		descmap.put("AirBurst", "Creates a powerful gust of air that can blow away your enimies");
+		descmap.put("AirScooter", "Allows the user to ride a ball of air to scale across terrain fast");
+		descmap.put("AirSpout", "Allows the user to walk on a spout of air");
+		descmap.put("AirSuction", "Pulls all mobs and items towards the the user");
+		descmap.put("AirSwipe", "Releases a wider gust of air, pushing mobs and items");
+		descmap.put("Flight", "Allows the user to fly by holding sneak (SHIFT)");	
+		descmap.put("Suffocate", "Bends the air right out of another player's lungs");	
+		descmap.put("Tornado", "Creates a tornado of air that will misplace other users");	
 		
-		descmap.put(StockAbility.Bloodbending.toString(), "Allows the user to manipulate other players and mobs with their bending");
-		descmap.put(StockAbility.HealingWaters.toString(), "Allows the user to heal with water");	
-		descmap.put(StockAbility.IceBlast.toString(), "Blasts a chunk of ice towards your target");	
-		descmap.put(StockAbility.IceSpike.toString(), "Pulls a spike of ice up from bellow your enemy");	
-		descmap.put(StockAbility.OctopusForm.toString(), "Creates a octopus of water around the user");	
-		descmap.put(StockAbility.PhaseChange.toString(), "Allows the user to freeze and melt water");	
-		descmap.put(StockAbility.PlantArmor.toString(), "Uses leaves and plants to create armor for the user");	
-		descmap.put(StockAbility.Surge.toString(), "Creates a wave or a shield of water and ice");	
-		descmap.put(StockAbility.Torrent.toString(), "Creates a ring of water around the user which can be used to freeze targets or push them away");	
-		descmap.put(StockAbility.WaterArms.toString(), "Allows the user to use water to create arms with lots of different abilities");
-		descmap.put(StockAbility.WaterBubble.toString(), "Allows the user to travel underwater with a bubble of air around them");
-		descmap.put(StockAbility.WaterManipulation.toString(), "Allows the user to fire water at a target");
-		descmap.put(StockAbility.WaterSpout.toString(), "Allows the user to stand on a spout of water");
+		descmap.put("Bloodbending", "Allows the user to manipulate other players and mobs with their bending");
+		descmap.put("HealingWaters", "Allows the user to heal with water");	
+		descmap.put("IceBlast", "Blasts a chunk of ice towards your target");	
+		descmap.put("IceSpike", "Pulls a spike of ice up from bellow your enemy");	
+		descmap.put("OctopusForm", "Creates a octopus of water around the user");	
+		descmap.put("PhaseChange", "Allows the user to freeze and melt water");	
+		descmap.put("PlantArmor", "Uses leaves and plants to create armor for the user");	
+		descmap.put("Surge", "Creates a wave or a shield of water and ice");	
+		descmap.put("Torrent", "Creates a ring of water around the user which can be used to freeze targets or push them away");	
+		descmap.put("WaterArms", "Allows the user to use water to create arms with lots of different abilities");
+		descmap.put("WaterBubble", "Allows the user to travel underwater with a bubble of air around them");
+		descmap.put("WaterManipulation", "Allows the user to fire water at a target");
+		descmap.put("WaterSpout", "Allows the user to stand on a spout of water");
 		
-		descmap.put(StockAbility.Blaze.toString(), "Releases a powerful ring of fire around you");
-		descmap.put(StockAbility.Combustion.toString(), "Creates a fire-like projectile with their the user's mind");
-		descmap.put(StockAbility.FireBlast.toString(), "Blasts a ball of fire towards your enemy");	
-		descmap.put(StockAbility.FireBurst.toString(), "Sets fire to everything around you");	
-		descmap.put(StockAbility.FireJet.toString(), "Allows the user to fly for short distances with fire");	
-		descmap.put(StockAbility.FireShield.toString(), "Allows the user to create a shield of fire in front of them");	
-		descmap.put(StockAbility.HeatControl.toString(), "Allows the user to put out fire and not burn");	
-		descmap.put(StockAbility.Illumination.toString(), "Allows the bender to see by holding a flame");	
-		descmap.put(StockAbility.Lightning.toString(), "Allows the user to release a stike of lightning");	
+		descmap.put("Blaze", "Releases a powerful ring of fire around you");
+		descmap.put("Combustion", "Creates a fire-like projectile with their the user's mind");
+		descmap.put("FireBlast", "Blasts a ball of fire towards your enemy");	
+		descmap.put("FireBurst", "Sets fire to everything around you");	
+		descmap.put("FireJet", "Allows the user to fly for short distances with fire");	
+		descmap.put("FireShield", "Allows the user to create a shield of fire in front of them");	
+		descmap.put("HeatControl", "Allows the user to put out fire and not burn");	
+		descmap.put("Illumination", "Allows the bender to see by holding a flame");	
+		descmap.put("Lightning", "Allows the user to release a stike of lightning");	
 		
-		descmap.put(StockAbility.Catapult.toString(), "Allows the user to catapult themselves through the air by launching themselves up from the earth");
-		descmap.put(StockAbility.Collapse.toString(), "Collapses or pulls down the earth");
-		descmap.put(StockAbility.EarthArmor.toString(), "Uses earth as armor for short periods of time");
-		descmap.put(StockAbility.EarthBlast.toString(), "Blasts a chunk of earth wherever the user wants it to go");
-		descmap.put(StockAbility.EarthGrab.toString(), "Allows the user to trap other mobs and players in earth");
-		descmap.put(StockAbility.EarthSmash.toString(), "Allows the user to grab a huge chunk of earth and throw it");
-		descmap.put(StockAbility.EarthTunnel.toString(), "Allows the user to tunnel through the earth");	
-		descmap.put(StockAbility.RaiseEarth.toString(), "Creates walls or collums of earth in front of the user");
-		descmap.put(StockAbility.SandSpout.toString(), "Creates a spout of sand for the user to stand on while bliding users bellow");	
-		descmap.put(StockAbility.Shockwave.toString(), "Releases a powerful shockwave of earth that sends targets flying");
-		descmap.put(StockAbility.Tremorsense.toString(), "Allows the user to see nearby airpockets (caves)");	
+		descmap.put("Catapult", "Allows the user to catapult themselves through the air by launching themselves up from the earth");
+		descmap.put("Collapse", "Collapses or pulls down the earth");
+		descmap.put("EarthArmor", "Uses earth as armor for short periods of time");
+		descmap.put("EarthBlast", "Blasts a chunk of earth wherever the user wants it to go");
+		descmap.put("EarthGrab", "Allows the user to trap other mobs and players in earth");
+		descmap.put("EarthSmash", "Allows the user to grab a huge chunk of earth and throw it");
+		descmap.put("EarthTunnel", "Allows the user to tunnel through the earth");	
+		descmap.put("RaiseEarth", "Creates walls or collums of earth in front of the user");
+		descmap.put("SandSpout", "Creates a spout of sand for the user to stand on while bliding users bellow");	
+		descmap.put("Shockwave", "Releases a powerful shockwave of earth that sends targets flying");
+		descmap.put("Tremorsense", "Allows the user to see nearby airpockets (caves)");	
 		
-		descmap.put(StockAbility.Extraction.toString(), "Allows the user to extract metals directly from the ore");
-		descmap.put(StockAbility.LavaFlow.toString(), "Turns earth into a pool or lava or creates a ring of lava around the user");	
-		descmap.put(StockAbility.MetalClips.toString(), "Allows the user to fire slices of metal at a target and capture them");	
+		descmap.put("Extraction", "Allows the user to extract metals directly from the ore");
+		descmap.put("LavaFlow", "Turns earth into a pool or lava or creates a ring of lava around the user");	
+		descmap.put("MetalClips", "Allows the user to fire slices of metal at a target and capture them");	
 		
-		descmap.put(StockAbility.HighJump.toString(), "Makes the user jump high in the air");	
-		descmap.put(StockAbility.Paralyze.toString(), "Allows the user to paralyze other benders and block their bending");	
-		descmap.put(StockAbility.QuickStrike.toString(), "Allows the user to attack quickly with a chance to chi block the target");	
-		descmap.put(StockAbility.RapidPunch.toString(), "Allows the user to attack faster while dealing more damage");	
-		descmap.put(StockAbility.Smokescreen.toString(), "Releases smoke and blinds all nearby players");	
-		descmap.put(StockAbility.SwiftKick.toString(), "Damages the target with a high chance of blocking their chi, if the user is in the air");	
-		descmap.put(StockAbility.WarriorStance.toString(), "Makes the user's attacks more powerful but also makes the user more vulnerable");
+		descmap.put("HighJump", "Makes the user jump high in the air");	
+		descmap.put("Paralyze", "Allows the user to paralyze other benders and block their bending");	
+		descmap.put("QuickStrike", "Allows the user to attack quickly with a chance to chi block the target");	
+		descmap.put("RapidPunch", "Allows the user to attack faster while dealing more damage");	
+		descmap.put("Smokescreen", "Releases smoke and blinds all nearby players");	
+		descmap.put("SwiftKick", "Damages the target with a high chance of blocking their chi, if the user is in the air");	
+		descmap.put("WarriorStance", "Makes the user's attacks more powerful but also makes the user more vulnerable");
 		
-		descmap.put(StockAbility.AvatarState.toString(), "Users in the Avatar State are much more powerful than normal benders. Their bending power is multiplied heavily and they take far less damage from attacks.");
+		descmap.put("AvatarState", "Users in the Avatar State are much more powerful than normal benders. Their bending power is multiplied heavily and they take far less damage from attacks.");
 		
 		
 		descmap.put("AirBlade", "Creates a powerful blade of air that damages mobs and players");
@@ -118,6 +115,7 @@ public class Descriptions
 		descmap.put("LightningBurst", "Allows the user to charge lightning and release it in all directions at once");
 		
 		descmap.put("Maelstrom", "Creates a whirlpool that sucks all mobs and players into it");
+		descmap.put("Drain", "Fill up all bottles in your inventory from the water in plants around you!");
 		descmap.put("WakeFishing", "Allows the user to use waterbending to fish");
 		descmap.put("WaterGimbal", "Creates wall of fire that blocks all incoming projectiles and mobs");
 		descmap.put("PlantDrain", "Drains all nearby plants of water to create water for waterbending");
@@ -134,8 +132,36 @@ public class Descriptions
 		
 		descmap.put("SpiritBeam", "Releases a powerful blast as the spirit of the avatar. The user must be in the AvatarState to use this move.");
 		descmap.put("ElementSphere", "Creates a sphere of all the elements around the user, allowing them to use all four at once");
-			
 		
+		descmap.put("LoonyBlast", "Use Loonergy to blast away enemies with extreme power!");
+		descmap.put("ToonShield", "Shield yourself from any attack with the power of Loonergy!");
+		
+		descmap.put("CactusBlast", "Fight in the desert by throwing cactus!");
+		descmap.put("Sandstorm", "Allows the user to whip up a sandstorm!");
+		descmap.put("EarthBurrow", "Allows the user to burrow themselves in the ground");
+		
+		descmap.put("Combo-AirSlam", "Kick your enemy up in the air then kick them away!");
+		descmap.put("Combo-AirStream", "Creates a current of air that can be controlled by the player for a while");
+		descmap.put("Combo-AirSweep", "Create a sweeping current of air that can sweep enemies off their feet!");
+		descmap.put("Combo-Twister", "Create a twister to suck up and blow away your opponents!");
+		descmap.put("Combo-SwiftStream", "Pull all enemies along with you as you fly!");
+		
+		descmap.put("Combo-Crevice", "Creates a crevice in the ground that can swallow players!");
+		descmap.put("Combo-MagmaBlast", "Fire balls of magma at your enemies!");
+		
+		descmap.put("Combo-FireKick", "Create a small arc of fire from your feet!");
+		descmap.put("Combo-FireSpin", "Create a huge ring of fire around you that does damage and huge knockback!");
+		descmap.put("Combo-FireWheel", "Hurl a spinning wheel of fire towards your enemies!");
+		descmap.put("Combo-JetBlaze", "Blaze it up as you launch from your powerful FireJet!");
+		descmap.put("Combo-JetBlast", "Launch with a boom as your launch with a powerful FireJet!");
+		
+		descmap.put("Combo-WaterFlow", "Create a huge torrent of water that can sweep away your enemies!");
+		descmap.put("Combo-Maelstrom", "Suck everyone and everything up in a deep whirlpool!");
+		descmap.put("Combo-WaterGimbal", "Control two torrents of water at once!");
+		descmap.put("Combo-IceBullet", "Make a dome of ice and that can shoot shards of ice!");
+		descmap.put("Combo-IceWave", "Freeze your WaterWave to damage enemies that you hit!");
+		
+		descmap.put("Combo-Immobilize", "Freeze your enemies for a few seconds!");
 	}
 	
 	public static void load()

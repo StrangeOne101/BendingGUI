@@ -10,42 +10,27 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.projectkorra.projectkorra.Element;
-import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.Element.SubElement;
 import com.projectkorra.projectkorra.ProjectKorra;
-import com.projectkorra.projectkorra.SubElement;
-import com.projectkorra.projectkorra.ability.AbilityModuleManager;
-import com.projectkorra.projectkorra.airbending.AirMethods;
-import com.projectkorra.projectkorra.earthbending.EarthMethods;
-import com.projectkorra.projectkorra.firebending.FireMethods;
-import com.projectkorra.projectkorra.waterbending.WaterMethods;
-import com.strangeone101.bendinggui.menus.MenuBendingOptions;
-import com.strangeone101.bendinggui.menus.MenuSelectElement;
+import com.strangeone101.bendinggui.command.GuiCommand;
 import com.strangeone101.bendinggui.nms.INMSManager;
-import com.strangeone101.bendinggui.nms.NMSManager_RC1;
-import com.strangeone101.bendinggui.nms.NMSManager_RC2;
-import com.strangeone101.bendinggui.nms.NMSManager_RC3;
-import com.strangeone101.bendinggui.nms.NMSManager_RC4;
-import com.strangeone101.bendinggui.nms.NMSManager_RC5;
+import com.strangeone101.bendinggui.nms.NMSManager_110R1;
+import com.strangeone101.bendinggui.nms.NMSManager_110R2;
+import com.strangeone101.bendinggui.nms.NMSManager_18R1;
+import com.strangeone101.bendinggui.nms.NMSManager_18R2;
+import com.strangeone101.bendinggui.nms.NMSManager_18R3;
+import com.strangeone101.bendinggui.nms.NMSManager_19R1;
+import com.strangeone101.bendinggui.nms.NMSManager_19R2;
 
-public class BendingGUI extends JavaPlugin implements Listener
+public class BendingGUI extends JavaPlugin
 {
 	public static boolean pageArrowMoveMouse = false;
 	/**This is an option so little work has to be done if GeneralMethods.getBendingPlayer(...) supports OfflinePlayers
@@ -57,6 +42,11 @@ public class BendingGUI extends JavaPlugin implements Listener
 	public static BendingGUI INSTANCE;
 	
 	public static boolean loaded = false;
+	public static boolean enabled = true;
+	public static boolean jedcore = false;
+	public static String versionInfo;
+	
+	public static List<Element> elementOrder;
 
 	public static ItemStack getGuiItem()
 	{
@@ -78,71 +68,6 @@ public class BendingGUI extends JavaPlugin implements Listener
 		return stack;
 	}
 	
-	@EventHandler(priority = EventPriority.LOW)
-	public void onItemRightClick(PlayerInteractEvent e)
-	{
-		if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-		{
-			if (e.getItem() != null && e.getItem().isSimilar(getGuiItem()))
-			{
-				MenuBendingOptions menu = new MenuBendingOptions(e.getPlayer());
-				menu.openMenu(e.getPlayer());
-			}
-			/*else if (e.getItem() != null && e.getItem().isSimilar(getAdminGuiItem(null)))
-			{
-				MenuBendingOptions menu = new MenuBendingOptions(Bukkit.getOfflinePlayer(e.getItem().getItemMeta().getDisplayName().split("\\(")[1].split("\\")[0]));
-				menu.openMenu(e.getPlayer());
-			}*/
-		}		
-	}
-	
-	@EventHandler(priority = EventPriority.LOW)
-	public void onMenuItemClicked(InventoryClickEvent event) 
-	{
-		try
-		{
-			Inventory inventory = event.getInventory();
-	        if (inventory.getHolder() instanceof MenuBase) 
-	        {
-	            MenuBase menu = (MenuBase) inventory.getHolder();
-	            if (event.getWhoClicked() instanceof Player) 
-	            {
-	                Player player = (Player) event.getWhoClicked();
-	                if (event.getSlotType() != InventoryType.SlotType.OUTSIDE) 
-	                {
-	                	int index = event.getRawSlot();
-	                    if (index < inventory.getSize()) 
-	                    {
-	                    	if (event.getCursor().getType() != Material.AIR)
-	                    	{
-	                    		event.setCancelled(true);
-	                    		menu.closeMenu(player);
-	                    		player.sendMessage(ChatColor.RED + "The bending gui cannot be tampered with!");
-	                    	}
-	                    	MenuItem item = menu.getMenuItem(index);
-	                    	if (item != null)
-	                    	{
-	                    		item.isShiftClicked = event.isShiftClick();
-	                    		item.onClick(player);
-	                    		event.setCancelled(true);
-	                    	}
-	                    }
-	                    else
-	                    {
-	                    	menu.setLastClickedSlot(index);
-	                    }
-	                }
-	            }
-	        }
-		}
-		catch (Exception e)
-		{
-			event.getWhoClicked().closeInventory();
-			event.getWhoClicked().sendMessage(ChatColor.RED + "An error occured while processing the clickevent. Please report this to your admin or the plugin developer!");
-		}
-    }
-	
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) 
 	{
@@ -151,132 +76,13 @@ public class BendingGUI extends JavaPlugin implements Listener
 		{
 			if (command.getName().equalsIgnoreCase("gui") || command.getName().equalsIgnoreCase("bg") || command.getName().equalsIgnoreCase("bendinggui") || command.getName().equalsIgnoreCase("bendgui"))
 			{
-				if (!(sender instanceof Player) && args.length == 0)
-				{
-					sender.sendMessage("Only players can run this command!");
-					return false;
-				}
-				
-				if (!sender.hasPermission("bendinggui.command"))
-				{
-					sender.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
-					return true;
-				}
-				Player player = (Player) sender;
-				if (args.length == 0)
-				{
-					if (Config.guiRequireItem)
-					{
-						if (player.getInventory().contains(getGuiItem()))
-						{
-							player.getInventory().remove(getGuiItem());
-						}
-						player.getInventory().addItem(getGuiItem());
-						player.sendMessage(ChatColor.GREEN + Config.getGiveMessage);
-					}
-					else
-					{
-						MenuBendingOptions menu = new MenuBendingOptions(player);
-						menu.openMenu(player);
-					}
-					/*MenuBendingOptions menu = new MenuBendingOptions(player);
-					menu.openMenu(player);*/
-					return true;
-				}
-				else if (args[0].equalsIgnoreCase("choose") || args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("ch"))
-				{
-					if (args.length == 2)
-					{
-						if (player.hasPermission("bending.admin.choose"))
-						{
-							Player playero = Bukkit.getPlayer(args[1]);
-							if (playero != null)
-							{
-								MenuSelectElement menu = new MenuSelectElement(playero);
-								menu.openMenu(player);
-							}
-							else
-							{
-								player.sendMessage(ChatColor.RED + "Error while finding player!");
-							}
-						}
-						else
-						{
-							player.sendMessage(ChatColor.RED + "You don't have permission to choose other players element!");
-						}
-						return true;
-					}
-					if (!(sender instanceof Player))
-					{
-						sender.sendMessage("Only players can run this command!");
-						return false;
-					}
-					if (GeneralMethods.getBendingPlayer(player.getName()).getElements().isEmpty() || player.hasPermission("bending.command.rechoose"))
-					{
-						MenuSelectElement menu = new MenuSelectElement(player);
-						menu.openMenu(player);
-					}
-					else if (!player.hasPermission("bending.admin.rechoose"))
-					{
-						player.sendMessage(ChatColor.RED + "You have already chosen an element!");
-					}
-				}
-				else if (args[0].equalsIgnoreCase("version") || args[0].equalsIgnoreCase("v") || args[0].equalsIgnoreCase("ver"))
-				{
-                    if (sender.hasPermission("bendinggui.version"))
-                    {
-                        sender.sendMessage(ChatColor.YELLOW + "BendingGUI is version " + getDescription().getVersion() + ", running on ProjectKorra " + ProjectKorra.plugin.getDescription().getVersion());
-                        if (!checkVersion()) sender.sendMessage(ChatColor.RED + "Support for this version of ProjectKorra is not guarenteed.");
-                        return true;
-                    }
-					player.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
-				}
-                else if (args[0].equalsIgnoreCase("reload") || args[0].equalsIgnoreCase("r") || args[0].equalsIgnoreCase("rel"))
-                {
-                    if (sender.hasPermission("bendinggui.reload"))
-                    {
-                        reload();
-                        player.sendMessage(ChatColor.YELLOW + "BendingGUI Reloaded!");
-                        return true;
-                    }
-                    player.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
-                }
-                else if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("h"))
-                {
-                    sender.sendMessage(ChatColor.YELLOW + "Command usage is /gui or /gui <choose/version/reload> or /gui [player]");    
-                }
-				else
-				{
-					Player playero = Bukkit.getPlayer(args[1]);
-					if (playero == null && player.hasPermission("bendinggui.admin"))
-					{
-						sender.sendMessage(ChatColor.RED + "Error while finding player!");
-						return true;
-					}
-					else if (playero != null && !player.hasPermission("bendinggui.admin"))
-					{
-						player.sendMessage(ChatColor.RED + "You don't have permission to edit other players bending!");
-					}
-					else if (playero == null)
-					{
-						sender.sendMessage(ChatColor.RED + "Command usage is /gui or /gui <choose/version/reload>");
-					}
-					else
-					{
-						MenuBendingOptions menu = new MenuBendingOptions(playero);
-						menu.openMenu(player);
-					}
-					return true;
-					
-				}
-				return true;
+				return GuiCommand.executeCommand(sender, Arrays.asList(args));
 			}
 		}
 		catch (Exception e)
 		{
-			sender.sendMessage(ChatColor.RED + "BendingGUI appears to be broken at the moment. Please report this to your server admin or to the plugin developer!");
-			log.severe("Something went wrong!");
 			e.printStackTrace();
+			sender.sendMessage(ChatColor.RED + "There is a problem with BendingGUI right now. Please report this to your admin or the plugin developer!");
 		}
 		
 		return false;
@@ -287,6 +93,7 @@ public class BendingGUI extends JavaPlugin implements Listener
 	{
 		INSTANCE = this;
 		log = getLogger();
+		getServer().getPluginManager().registerEvents(new Listener(), this);
 		if (Bukkit.getPluginManager().getPlugin("ProjectKorra") == null || !Bukkit.getPluginManager().getPlugin("ProjectKorra").isEnabled())
 		{
 			log.severe("ProjectKorra plugin not installed! This plugin is completely useless without it!");
@@ -294,13 +101,14 @@ public class BendingGUI extends JavaPlugin implements Listener
 			return;
 		}
 		
+		if (Bukkit.getPluginManager().getPlugin("JedCore") != null) jedcore = true;
 		
-		
-		
+		versionInfo = checkVersion();
+
 		if (getNMSManager() == null)
 		{
 			log.severe("This plugin is not compatible with your version of Spigot/Bukkit! Please update it or inform the plugin developer about this!");
-			this.setEnabled(false);
+			enabled = false;
 			try {
 				throw new ExceptionInInitializerError("Plugin incompatible with version :" + Bukkit.getBukkitVersion() + ". Must update!");
 			} catch (ExceptionInInitializerError e) {
@@ -309,22 +117,101 @@ public class BendingGUI extends JavaPlugin implements Listener
 			return;
 		}
 		
-		if (!checkVersion())
+		if (!versionInfo.equals(""))
 		{
-			this.setEnabled(false);
+			String error = versionInfo;
+			if (error.startsWith("!")) {
+				log.severe(error.substring(1));
+				enabled = false;
+				try {
+					throw new VersionIncompatibilityException();
+				} catch (VersionIncompatibilityException e) {
+					e.printStackTrace();
+				}
+				
+			} else {
+				log.warning(error);
+			}
 			return;
 		}
 		
-		getServer().getPluginManager().registerEvents(this, this);
+		/**Loop through all combos and record elements for later use.*/
+		/*Collection<ComboAbilityInfo> combos = ComboManager.getComboAbilities().values();
+		for (ComboAbilityInfo combo : combos) 
+		{
+			Element elementmain = null;
+			Element elementsub = null;
+			Element elementFinal = Element.AVATAR;
+			for (AbilityInformation abilityinfo : combo.getAbilities())
+			{
+				Element abilityelement = CoreAbility.getAbility(abilityinfo.getAbilityName()).getElement();
+				SubElement sub = null;
+				if (abilityelement instanceof SubElement)
+				{
+					sub = (SubElement) abilityelement;
+					abilityelement = sub.getParentElement();
+				}
+				
+				if (abilityelement == null) 
+				{
+					abilityelement = Element.AVATAR;
+				}
+
+
+				if (elementmain == null) elementmain = abilityelement;
+				else if (elementmain != abilityelement) 
+				{
+					elementFinal = Element.AVATAR; 
+					break;
+				}
+				else if (sub != null) 
+				{
+					elementsub = sub;
+				}
+			}
+			
+			if (elementFinal == null) elementFinal = elementmain;
+			MenuCombos.comboElements.put(combo.getName(), elementFinal);
+		}*/
+		
+		
 		Config.load();
 		Descriptions.load();
 		Descriptions.save();
+		loadElementOrder();
+		new GuiCommand();
 		
-		log.log(Level.INFO, "BendingGUI Fully Loaded!");
+		log.log(Level.INFO, enabled ? "BendingGUI Fully Loaded!" : "BendingGUI loaded but functional.");
 		
 		loaded = true;
 	}
 	
+	public void loadElementOrder() 
+	{
+		elementOrder = new ArrayList<Element>();
+		
+		elementOrder.add(Element.AIR);    elementOrder.add(Element.FLIGHT);    elementOrder.add(Element.SPIRITUAL);
+		if (Element.getAddonSubElements(Element.AIR).length > 0) elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.AIR)));
+		elementOrder.add(Element.EARTH);  elementOrder.add(Element.SAND);       elementOrder.add(Element.METAL);    elementOrder.add(Element.LAVA);
+		if (Element.getAddonSubElements(Element.EARTH).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.EARTH)));
+		elementOrder.add(Element.FIRE);  elementOrder.add(Element.LIGHTNING);       elementOrder.add(Element.COMBUSTION);
+		if (Element.getAddonSubElements(Element.FIRE).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.FIRE))); 
+		elementOrder.add(Element.WATER);  elementOrder.add(Element.ICE);     elementOrder.add(Element.HEALING);  elementOrder.add(Element.PLANT);     elementOrder.add(Element.BLOOD);
+		if (Element.getAddonSubElements(Element.WATER).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.WATER))); 
+		elementOrder.add(Element.CHI); 
+		if (Element.getAddonSubElements(Element.CHI).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.CHI))); 
+		
+		for (Element e : Element.getAddonElements())
+		{
+			if (e == null) continue;
+			elementOrder.add(e);
+			if (Element.getAddonSubElements(e).length > 0) elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(e)));
+		}	
+		
+		elementOrder.add(Element.AVATAR);
+		//log.info("Debug: " + makeListFancy(elementOrder));
+	}
+
 	public void reload()
 	{
 		Config.load();
@@ -333,45 +220,65 @@ public class BendingGUI extends JavaPlugin implements Listener
 		log.log(Level.INFO, "BendingGUI Reloaded!");
 	}
 	
-	public boolean checkVersion()
+	public String checkVersion()
 	{
 		String version = ProjectKorra.plugin.getDescription().getVersion();
 		String varg1 = version.split(" ")[0];
-		if (varg1.startsWith("1.6.0"))
+		if (varg1.startsWith("1.4.0") || varg1.startsWith("1.5.0") || varg1.startsWith("1.6.0") || varg1.startsWith("1.7.0"))
 		{
-			log.severe("BendingGUI does not support version ProjectKorra 1.6.0! Please upgrade to version 1.7.0 or higher!");
-			return false;
+			return "!BendingGUI does not support version ProjectKorra " + varg1 + "! Please upgrade to version 1.8.0 Beta 10 or higher!";
 		}
-		else if (!varg1.startsWith("1.7."))
+		else if (!varg1.startsWith("1.8.") && !varg1.startsWith("1.9."))
 		{
-			log.warning("The version of ProjectKorra installed is not fully supported yet! Do not be surprised if something breaks!");
+			return "The version of ProjectKorra installed is not fully supported yet! Do not be surprised if something breaks!";
 		}
 		else if (version.toLowerCase().contains("beta"))
 		{
 			try
 			{
 				int betav = Integer.parseInt(version.split(" ", 3)[2]);
-				if (betav <= 12)
+				if (betav <= 9)
 				{
-					log.severe("This version of BendingGUI is made for ProjectKorra 1.7.0 Beta 13 or higher!");
-					return false;
+					return "!This version of BendingGUI is made for ProjectKorra 1.8.0 or ProjectKorra 1.9.0 Beta 1! The version you have will not work!";
 				}
 			}
 			catch (IndexOutOfBoundsException e)
 			{
-				log.warning("Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.");
+				return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
 			}
 			catch (NumberFormatException e)
 			{
-				log.warning("Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.");
+				return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
 			}
-			
 		}
-		return true;
+		else if (version.toLowerCase().contains("alpha"))
+		{
+			try
+			{
+				int betav = Integer.parseInt(version.split(" ", 3)[2]);
+				if (betav > 1)
+				{
+					log.warning("This version of BendingGUI is made for ProjectKorra 1.8.0 Beta 11 OR ProjectKorra 1.9.0 Beta 1. You are running a higher version which may not be fully supported yet!");
+				}
+			}
+			catch (IndexOutOfBoundsException e)
+			{
+				return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
+			}
+			catch (NumberFormatException e)
+			{
+				return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
+			}
+		}
+		else
+		{
+			return "This version of BendingGUI is made for ProjectKorra 1.8.0 Beta 11 OR ProjectKorra 1.9.0 Aplha 1. You are running a higher version which may not be fully supported yet.";
+		}
+		return "";
 	}
 	
 	/**Makes a description list for items. Use BendingGUI.getDescriptions now instead!*/
-	@Deprecated
+	/*@Deprecated
 	public List<String> formatDescription(String string, ChatColor color)
 	{
 		List<String> s = new ArrayList<String>();
@@ -381,7 +288,8 @@ public class BendingGUI extends JavaPlugin implements Listener
 			else s.add(color + s1 + "\n");
 		}
 		return s;
-	}
+	}*/
+	
 	/**Makes a description list for items.*/
 	public static List<String> getDescriptions(String description, ChatColor color, int length)
 	{
@@ -395,56 +303,12 @@ public class BendingGUI extends JavaPlugin implements Listener
 		return l;
 	}
 	
-	public static Element getAbilityElement(String ability)
-	{
-		if (AbilityModuleManager.airbendingabilities.contains(ability)) return Element.Air;
-		if (AbilityModuleManager.waterbendingabilities.contains(ability)) return Element.Water;
-		if (AbilityModuleManager.firebendingabilities.contains(ability)) return Element.Fire;
-		if (AbilityModuleManager.earthbendingabilities.contains(ability)) return Element.Earth;
-		if (AbilityModuleManager.chiabilities.contains(ability)) return Element.Chi;
-		return null;
-	}
-	
-	@Deprecated
-	/**Use getSubElement(...) instead!\n\nReturns if an ability is the sub element provided*/
-	public static boolean isSubElement(String ability, SubElement element)
-	{
-		if (element == SubElement.Bloodbending) return AbilityModuleManager.bloodabilities.contains(ability);
-		else if (element == SubElement.Combustion) return AbilityModuleManager.combustionabilities.contains(ability);
-		else if (element == SubElement.Flight) return AbilityModuleManager.flightabilities.contains(ability);
-		else if (element == SubElement.Healing) return AbilityModuleManager.healingabilities.contains(ability);
-		else if (element == SubElement.Icebending) return AbilityModuleManager.iceabilities.contains(ability);
-		else if (element == SubElement.Lavabending) return AbilityModuleManager.lavaabilities.contains(ability);
-		else if (element == SubElement.Lightning) return AbilityModuleManager.lightningabilities.contains(ability);
-		else if (element == SubElement.Metalbending) return AbilityModuleManager.metalabilities.contains(ability);
-		else if (element == SubElement.Plantbending) return AbilityModuleManager.plantabilities.contains(ability);
-		else if (element == SubElement.Sandbending) return AbilityModuleManager.sandabilities.contains(ability);
-		else if (element == SubElement.SpiritualProjection) return AbilityModuleManager.spiritualprojectionabilities.contains(ability);
-		return false;
-	}
-	
-	public static SubElement getSubElement(String ability)
-	{
-		if (AbilityModuleManager.bloodabilities.contains(ability)) return SubElement.Bloodbending;
-		else if (AbilityModuleManager.combustionabilities.contains(ability)) return SubElement.Combustion;
-		else if (AbilityModuleManager.flightabilities.contains(ability)) return SubElement.Flight;
-		else if (AbilityModuleManager.healingabilities.contains(ability)) return SubElement.Healing;
-		else if (AbilityModuleManager.iceabilities.contains(ability)) return SubElement.Icebending;
-		else if (AbilityModuleManager.lavaabilities.contains(ability)) return SubElement.Lavabending;
-		else if (AbilityModuleManager.lightningabilities.contains(ability)) return SubElement.Lightning;
-		else if (AbilityModuleManager.metalabilities.contains(ability)) return SubElement.Metalbending;
-		else if (AbilityModuleManager.plantabilities.contains(ability)) return SubElement.Plantbending;
-		else if (AbilityModuleManager.sandabilities.contains(ability)) return SubElement.Sandbending;
-		else if (AbilityModuleManager.spiritualprojectionabilities.contains(ability)) return SubElement.SpiritualProjection;
-		return null;
-	}
-	
-	public String makeListFancy(List<String> list)
+	public String makeListFancy(List<? extends Object> list)
 	{
 		String s = "";
 		for (int i = 0; i < list.size(); i++)
 		{
-			if (i == 0) {s = list.get(0);}
+			if (i == 0) {s = list.get(0).toString();}
 			else if (i == list.size() - 1) {s = s + " and " + list.get(i);}
 			else {s = s + ", " + list.get(i);}
 		}
@@ -461,23 +325,31 @@ public class BendingGUI extends JavaPlugin implements Listener
 	        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
 	        if (version.equals("v1_8_R1")) 
 		    {
-		        return new NMSManager_RC1();
+		        return new NMSManager_18R1();
 		    } 
 		    else if (version.equals("v1_8_R2")) 
 		    {
-		        return new NMSManager_RC2();
+		        return new NMSManager_18R2();
 		    }
 		    else if (version.equals("v1_8_R3")) 
 		    {
-		    	return new NMSManager_RC3();
+		    	return new NMSManager_18R3();
 		    }
-		    else if (version.equals("v1_8_R4")) 
+		    else if (version.equals("v1_9_R1")) 
 		    {
-		    	return new NMSManager_RC4();
+		    	return new NMSManager_19R1();
 		    }
-		    else if (version.equals("v1_8_R5")) 
+		    else if (version.equals("v1_9_R2")) 
 		    {
-		    	return new NMSManager_RC5();
+		    	return new NMSManager_19R2();
+		    }
+		    else if (version.equals("v1_10_R1")) 
+		    {
+		    	return new NMSManager_110R1();
+		    }
+		    else if (version.equals("v1_10_R2")) 
+		    {
+		    	return new NMSManager_110R2();
 		    }
 	    } 
 	    catch (ArrayIndexOutOfBoundsException e) 
@@ -485,37 +357,41 @@ public class BendingGUI extends JavaPlugin implements Listener
 	        return null;
 	    }
 	    return null;
+	}	
+	
+	public static ChatColor getColor(Element element)
+	{
+		if (element instanceof SubElement) element = ((SubElement)element).getParentElement();
+		if (element == Element.WATER) return ChatColor.BLUE;
+		if (element == Element.CHI) return ChatColor.GOLD;
+		if (element == Element.EARTH) return ChatColor.GREEN;
+		if (element == Element.FIRE) return ChatColor.RED;
+		if (element == Element.AIR) return ChatColor.GRAY;
+		if (element == Element.AVATAR) return ChatColor.LIGHT_PURPLE;
+		return element.getColor();
 	}
 	
-	/**Returns if a player can bind a move. This needs to be used because PK's has flaws.*/
-	public static boolean canBind(Player p, String ability)
+	public static ChatColor getColorLight(Element element)
 	{
-		if (!EarthMethods.canLavabend(p) && EarthMethods.isLavabendingAbility(ability)) return false;
-		else if (!EarthMethods.canMetalbend(p) && EarthMethods.isMetalbendingAbility(ability)) return false;
-		else if (!EarthMethods.canSandbend(p) && EarthMethods.isSandbendingAbility(ability)) return false;
-		else if (!AirMethods.canAirFlight(p) && AirMethods.isFlightAbility(ability)) return false;
-		else if (!AirMethods.canUseSpiritualProjection(p) && AirMethods.isSpiritualProjectionAbility(ability)) return false;
-		else if (!FireMethods.canCombustionbend(p) && FireMethods.isCombustionbendingAbility(ability)) return false;
-		else if (!FireMethods.canLightningbend(p) && FireMethods.isLightningbendingAbility(ability)) return false;
-		else if (!WaterMethods.canBloodbend(p) && WaterMethods.isBloodbendingAbility(ability)) return false;
-		else if (!WaterMethods.canIcebend(p) && WaterMethods.isIcebendingAbility(ability)) return false;
-		else if (!WaterMethods.canWaterHeal(p) && WaterMethods.isHealingAbility(ability)) return false;
-		else if (!WaterMethods.canPlantbend(p) && WaterMethods.isPlantbendingAbility(ability)) return false;
-		else if (!GeneralMethods.canBind(p.getName(), ability)) return false;
-		return true;
+		if (element instanceof SubElement) element = ((SubElement)element).getParentElement();
+		if (element == Element.WATER) return ChatColor.BLUE;
+		if (element == Element.CHI) return ChatColor.YELLOW;
+		if (element == Element.EARTH) return ChatColor.GREEN;
+		if (element == Element.FIRE) return ChatColor.RED;
+		if (element == Element.AIR) return ChatColor.GRAY;
+		if (element == Element.AVATAR) return ChatColor.LIGHT_PURPLE;
+		return element.getColor();
 	}
-	
-	
-	@EventHandler
-	public void onClose(InventoryCloseEvent e)
+
+	public static ChatColor getColorDeep(Element element)
 	{
-		if (e.getInventory() instanceof MenuBendingOptions)
-		{
-			MenuBendingOptions menu = (MenuBendingOptions) e.getInventory();
-			if (DynamicUpdater.players.containsKey(menu.getMenuPlayer().getUniqueId()) && DynamicUpdater.players.get(menu.getOpenPlayer().getUniqueId()).contains(menu.getOpenPlayer()))
-			{
-				DynamicUpdater.players.get(menu.getOpenPlayer().getUniqueId()).remove(menu.getOpenPlayer());
-			}
-		}
+		if (element instanceof SubElement) element = ((SubElement)element).getParentElement();
+		if (element == Element.WATER) return ChatColor.DARK_BLUE;
+		if (element == Element.CHI) return ChatColor.GOLD;
+		if (element == Element.EARTH) return ChatColor.DARK_GREEN;
+		if (element == Element.FIRE) return ChatColor.DARK_RED;
+		if (element == Element.AIR) return ChatColor.GRAY;
+		if (element == Element.AVATAR) return ChatColor.DARK_PURPLE;
+		return element.getColor();
 	}
 }

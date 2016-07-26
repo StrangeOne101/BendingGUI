@@ -15,12 +15,11 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.util.FileUtil;
 
 import com.projectkorra.projectkorra.Element;
-import com.projectkorra.projectkorra.SubElement;
+import com.projectkorra.projectkorra.Element.SubElement;
 
 public class Config 
 {
 	//public static List<SubElement> subElementsEnableIcons = Arrays.asList(new SubElement[] {SubElement.Lavabending, SubElement.Icebending});
-	public static HashMap<SubElement, MaterialData> subElementIcons = new HashMap<SubElement, MaterialData>();
 	public static HashMap<Element, MaterialData> elementIcons = new HashMap<Element, MaterialData>();
 	public static MaterialData avatarIcon = new MaterialData(Material.BEACON);
 	
@@ -34,63 +33,45 @@ public class Config
 	public static ItemStack guiItem = new ItemStack(Material.COMPASS);
 	public static boolean guiItemEnchanted = false;
 	
+	public static boolean alerts = true;
+	public static boolean quickSnoop = true;
+	
 	public static boolean showSubElementsOnUser = false;
 	public static String getGiveMessage = "Right click the compass to configure your bending!";
 	
 	@SuppressWarnings({ "deprecation" })
 	public static void load()
 	{
-		subElementIcons.put(SubElement.Icebending, new MaterialData(Material.ICE));
-		subElementIcons.put(SubElement.Lavabending, new MaterialData(Material.STAINED_CLAY, (byte)1));
-		subElementIcons.put(SubElement.Bloodbending, new MaterialData(Material.STAINED_CLAY, (byte)14));
-		subElementIcons.put(SubElement.Metalbending, new MaterialData(Material.IRON_BLOCK));
-		subElementIcons.put(SubElement.Lightning, new MaterialData(Material.NETHERRACK));
-		subElementIcons.put(SubElement.Combustion, new MaterialData(Material.NETHERRACK));
-		subElementIcons.put(SubElement.Flight, new MaterialData(Material.QUARTZ_BLOCK));
-		subElementIcons.put(SubElement.Healing, new MaterialData(Material.STAINED_CLAY, (byte)11));
-		subElementIcons.put(SubElement.Plantbending, new MaterialData(Material.LEAVES));
-		subElementIcons.put(SubElement.Sandbending, new MaterialData(Material.SAND));
-		subElementIcons.put(SubElement.SpiritualProjection, new MaterialData(Material.QUARTZ_BLOCK));
+		elementIcons.put(Element.ICE, new MaterialData(Material.ICE));
+		elementIcons.put(Element.LAVA, new MaterialData(Material.STAINED_CLAY, (byte)1));
+		elementIcons.put(Element.BLOOD, new MaterialData(Material.STAINED_CLAY, (byte)14));
+		elementIcons.put(Element.METAL, new MaterialData(Material.IRON_BLOCK));
+		elementIcons.put(Element.LIGHTNING, new MaterialData(Material.NETHERRACK));
+		elementIcons.put(Element.COMBUSTION, new MaterialData(Material.NETHERRACK));
+		elementIcons.put(Element.FLIGHT, new MaterialData(Material.QUARTZ_BLOCK));
+		elementIcons.put(Element.HEALING, new MaterialData(Material.STAINED_CLAY, (byte)11));
+		elementIcons.put(Element.PLANT, new MaterialData(Material.LEAVES));
+		elementIcons.put(Element.SAND, new MaterialData(Material.SAND));
+		elementIcons.put(Element.SPIRITUAL, new MaterialData(Material.QUARTZ_BLOCK));
 		
-		elementIcons.put(Element.Air, new MaterialData(Material.QUARTZ_BLOCK));
-		elementIcons.put(Element.Water, new MaterialData(Material.STAINED_CLAY, (byte)11));
-		elementIcons.put(Element.Fire, new MaterialData(Material.NETHERRACK));
-		elementIcons.put(Element.Earth, new MaterialData(Material.GRASS));
-		elementIcons.put(Element.Chi, new MaterialData(Material.STAINED_CLAY, (byte)4));
+		elementIcons.put(Element.AIR, new MaterialData(Material.QUARTZ_BLOCK));
+		elementIcons.put(Element.WATER, new MaterialData(Material.STAINED_CLAY, (byte)11));
+		elementIcons.put(Element.FIRE, new MaterialData(Material.NETHERRACK));
+		elementIcons.put(Element.EARTH, new MaterialData(Material.GRASS));
+		elementIcons.put(Element.CHI, new MaterialData(Material.STAINED_CLAY, (byte)4));
 		
 		FileConfiguration config = new YamlConfiguration();
 		try {
 			config.load(new File(BendingGUI.INSTANCE.getDataFolder(), "config.yml"));
 			
-			/*List<String> list1 = config.getStringList("Icons.EnabledSubElements");
-			//List<SubElement> subelements = new ArrayList<SubElement>();
-			for (String s : list1)
+			for (Element e : Element.getSubElements())
 			{
-				if (s == list1.get(0))
-				{
-					subElementsEnableIcons = new ArrayList<SubElement>();
-				}
-				if (s.equalsIgnoreCase("lava") || s.equalsIgnoreCase("lavabending")) subElementsEnableIcons.add(SubElement.Lavabending);
-				else if (s.equalsIgnoreCase("ice") || s.equalsIgnoreCase("icebending")) subElementsEnableIcons.add(SubElement.Icebending);
-				else if (s.equalsIgnoreCase("metal") || s.equalsIgnoreCase("metalbending")) subElementsEnableIcons.add(SubElement.Metalbending);
-				else if (s.equalsIgnoreCase("plant") || s.equalsIgnoreCase("plantbending")) subElementsEnableIcons.add(SubElement.Plantbending);
-				else if (s.equalsIgnoreCase("sand") || s.equalsIgnoreCase("sandbending")) subElementsEnableIcons.add(SubElement.Sandbending);
-				else if (s.equalsIgnoreCase("blood") || s.equalsIgnoreCase("bloodbending")) subElementsEnableIcons.add(SubElement.Bloodbending);
-				else if (s.equalsIgnoreCase("combustion")) subElementsEnableIcons.add(SubElement.Combustion);
-				else if (s.equalsIgnoreCase("flight")) subElementsEnableIcons.add(SubElement.Flight);
-				else if (s.equalsIgnoreCase("healing")) subElementsEnableIcons.add(SubElement.Healing);
-				else if (s.equalsIgnoreCase("lightning")) subElementsEnableIcons.add(SubElement.Lightning);
-				else if (s.equalsIgnoreCase("spirit")) subElementsEnableIcons.add(SubElement.SpiritualProjection);
-			}*/
-			
-			for (SubElement e : SubElement.values())
-			{
-				String stringicon = config.getString("Icons.SubElements." + e.toString(), saveMaterialData(subElementIcons.get(e)));
+				String stringicon = config.getString("Icons.SubElements." + e.toString(), saveMaterialData(elementIcons.get(e)));
 				MaterialData icon = loadMaterialData(stringicon);
-				subElementIcons.put(e, icon);
+				elementIcons.put(e, icon);
 			}
 			
-			for (Element e1 : elementIcons.keySet())
+			for (Element e1 : Element.getMainElements())
 			{
 				String stringicon = config.getString("Icons.Elements." + e1.toString(), saveMaterialData(elementIcons.get(e1)));
 				MaterialData icon = loadMaterialData(stringicon);
@@ -103,6 +84,9 @@ public class Config
 			earthDesc = config.getString("General.Description.Earth", earthDesc);
 			airDesc = config.getString("General.Description.Air", airDesc);
 			chiDesc = config.getString("General.Description.Chi", chiDesc);
+			
+			alerts = config.getBoolean("Admin.Alerts", alerts);
+			quickSnoop = config.getBoolean("Admin.QuickSnoop", quickSnoop);
 			
 			guiRequireItem = config.getBoolean("Gui.RequireItem", guiRequireItem);
 			//guiItemEnchanted = config.getBoolean("Gui.Item.EnchantedGlow", guiItemEnchanted);
@@ -133,14 +117,10 @@ public class Config
 			file.delete();
 		}
 		
-		//config.set("Icons.EnabledSubElements", getEnabledIcons());
-		for (SubElement e : subElementIcons.keySet())
-		{
-			config.set("Icons.SubElements." + e.toString(), saveMaterialData(subElementIcons.get(e)));
-		}
 		for (Element e1 : elementIcons.keySet())
 		{
-			config.set("Icons.Elements." + e1.toString(), saveMaterialData(elementIcons.get(e1)));
+			if (e1 instanceof SubElement) config.set("Icons.SubElements." + e1.toString(), saveMaterialData(elementIcons.get(e1)));
+			else config.set("Icons.Elements." + e1.toString(), saveMaterialData(elementIcons.get(e1)));
 		}
 		config.set("Icons.Elements.Avatar", saveMaterialData(avatarIcon));
 		
@@ -156,7 +136,11 @@ public class Config
 		config.set("Gui.RequireItem", guiRequireItem);
 		config.set("Gui.GiveMessage", getGiveMessage);
 		
+		config.set("Admin.Alerts", alerts);
+		config.set("Admin.QuickSnoop", quickSnoop);
+		
 		config.set("Gui.UserIcon.ShowSubelements", showSubElementsOnUser);
+		
 		try 
 		{
 			config.save(new File(BendingGUI.INSTANCE.getDataFolder(), "config.yml"));
@@ -197,6 +181,7 @@ public class Config
 	@SuppressWarnings("deprecation")
 	protected static MaterialData loadMaterialData(String data)
 	{
+		if (data == null || data.equals("")) return new MaterialData(Material.STONE);
 		Material material = Material.getMaterial(data.contains(":") ? data.split("\\:")[0] : data);
 		byte b = data.contains(":") ? Byte.parseByte(data.split("\\:")[1]) : (byte)0;
 		return new MaterialData(material, b);

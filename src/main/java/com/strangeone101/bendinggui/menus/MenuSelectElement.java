@@ -13,10 +13,13 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
+import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.Element.SubElement;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent.Result;
+import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.Config;
 import com.strangeone101.bendinggui.MenuBase;
 import com.strangeone101.bendinggui.MenuItem;
@@ -25,7 +28,7 @@ import com.strangeone101.bendinggui.RunnablePlayer;
 public class MenuSelectElement extends MenuBase 
 {
 	public OfflinePlayer thePlayer;
-	public MenuBase menu = null;
+	public MenuBase menu_ = null;
 	public Player openPlayer;
 	
 	public MenuSelectElement(OfflinePlayer player) 
@@ -37,24 +40,24 @@ public class MenuSelectElement extends MenuBase
 	public MenuSelectElement(OfflinePlayer player, MenuBase previousMenu)
 	{
 		this(player);
-		this.menu = previousMenu;
+		this.menu_ = previousMenu;
 	}
 	
 	public void update()
 	{
-		this.addMenuItem(this.getChooseElement(Element.Fire), 2 + 9);
-		this.addMenuItem(this.getChooseElement(Element.Water), 3 + 9);
-		this.addMenuItem(this.getChooseElement(Element.Chi), 4 + 9);
-		this.addMenuItem(this.getChooseElement(Element.Earth), 5 + 9);
-		this.addMenuItem(this.getChooseElement(Element.Air), 6 + 9);
+		this.addMenuItem(this.getChooseElement(Element.FIRE), 2 + 9);
+		this.addMenuItem(this.getChooseElement(Element.WATER), 3 + 9);
+		this.addMenuItem(this.getChooseElement(Element.CHI), 4 + 9);
+		this.addMenuItem(this.getChooseElement(Element.EARTH), 5 + 9);
+		this.addMenuItem(this.getChooseElement(Element.AIR), 6 + 9);
 		
-		if (menu != null)
+		if (menu_ != null)
 		{
 			MenuItem item = new MenuItem(ChatColor.YELLOW + "Return to Menu", new MaterialData(Material.ARROW)) {
 				@Override
 				public void onClick(Player player) 
 				{
-					switchMenu(player, menu);
+					switchMenu(player, menu_);
 				}
 			};
 			this.addMenuItem(item, 18);
@@ -89,26 +92,33 @@ public class MenuSelectElement extends MenuBase
 		ChatColor c1 = ChatColor.YELLOW;
 		ChatColor c2 = ChatColor.GOLD;
 		final boolean b1 = thePlayer == openPlayer;
-		if (element == Element.Air) {mat = new MaterialData(Material.STRING); c1 = ChatColor.WHITE; c2 = ChatColor.GRAY;}
-		else if (element == Element.Earth) {mat = new MaterialData(Material.GRASS); c1 = ChatColor.GREEN; c2 = ChatColor.DARK_GREEN;}
-		else if (element == Element.Fire) {mat = new MaterialData(Material.BLAZE_POWDER); c1 = ChatColor.RED; c2 = ChatColor.DARK_RED;}
-		else if (element == Element.Water) {mat = new MaterialData(Material.WATER_BUCKET); c1 = ChatColor.BLUE; c2 = ChatColor.DARK_BLUE;}	
+		if (element == Element.AIR) {mat = new MaterialData(Material.STRING); c1 = ChatColor.WHITE; c2 = ChatColor.GRAY;}
+		else if (element == Element.EARTH) {mat = new MaterialData(Material.GRASS); c1 = ChatColor.GREEN; c2 = ChatColor.DARK_GREEN;}
+		else if (element == Element.FIRE) {mat = new MaterialData(Material.BLAZE_POWDER); c1 = ChatColor.RED; c2 = ChatColor.DARK_RED;}
+		else if (element == Element.WATER) {mat = new MaterialData(Material.WATER_BUCKET); c1 = ChatColor.BLUE; c2 = ChatColor.DARK_BLUE;}	
 		final ChatColor c3 = c1;
 		final MenuSelectElement instance = this;
 		final MenuConfirm confirm = new MenuConfirm(this, new RunnablePlayer() {
 			@Override
 			public void run(Player player) 
 			{
-				if (thePlayer instanceof Player && !(((Player)thePlayer).hasPermission("bending." + element.toString().toLowerCase())) && thePlayer.getName().equals(openPlayer.getName()))
+				if (thePlayer instanceof Player && !(((Player)thePlayer).hasPermission("bending." + element.getName().toLowerCase())) && thePlayer.getName().equals(openPlayer.getName()))
 				{
 					player.sendMessage(ChatColor.RED + "You don't have permission to choose this element!");
 					player.closeInventory();
 					return;
 				}
-				GeneralMethods.getBendingPlayer(thePlayer.getName()).setElement(element);
-				GeneralMethods.removeUnusableAbilities(thePlayer.getName());
-				if (thePlayer instanceof Player) ((Player)thePlayer).sendMessage(ChatColor.YELLOW + "You are now a " + c3 + (element == Element.Chi ? "chiblocker" : element.toString().toLowerCase() + ChatColor.YELLOW + " bender!"));
-				GeneralMethods.saveElements(GeneralMethods.getBendingPlayer(thePlayer.getName()));
+				BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer);
+				bPlayer.setElement(element);
+				for (SubElement sub : Element.getAllSubElements()) {
+					if (sub.getParentElement() == element && bPlayer.hasSubElementPermission(sub)) {
+						bPlayer.addSubElement(sub);
+					}
+				}
+				GeneralMethods.removeUnusableAbilities(bPlayer.getName());
+				String aORan = "aeiouAEIOU".indexOf(element.getName().charAt(0)) >= 0 ? "an " : "a ";
+				if (thePlayer instanceof Player) ((Player)thePlayer).sendMessage(ChatColor.YELLOW + "You are now " + aORan + BendingGUI.getColor(element) + (element == Element.CHI ? "chiblocker" + ChatColor.YELLOW + "!": element.getName().toLowerCase()) + ChatColor.YELLOW + " bender!");
+				GeneralMethods.saveElements(BendingPlayer.getBendingPlayer(thePlayer));
 				if (thePlayer instanceof Player)
 				{
 					Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent((Player)thePlayer, (Player)thePlayer, element, Result.CHOOSE));
@@ -124,7 +134,7 @@ public class MenuSelectElement extends MenuBase
 			}
 		}, Arrays.asList(new String[] {ChatColor.GRAY + "Are you sure you want to choose " + c3 + element.toString().toUpperCase() + ChatColor.RESET + ChatColor.GRAY + "?", ChatColor.GRAY + "This cannot be changed!"})
 		, Arrays.asList(new String[] {ChatColor.GRAY + "Return to the previous menu"}));
-		MenuItem item = new MenuItem(c1 + "Choose " + c2 + ChatColor.BOLD + (element == Element.Chi ? "CHIBLOCKER" : element.toString().toUpperCase()), mat) {
+		MenuItem item = new MenuItem(c1 + "Choose " + c2 + ChatColor.BOLD + (element == Element.CHI ? "CHIBLOCKER" : ChatColor.stripColor(element.toString().toUpperCase())), mat) {
 
 			@Override
 			public void onClick(Player player) 
@@ -137,11 +147,11 @@ public class MenuSelectElement extends MenuBase
 						closeMenu(openPlayer);
 						return;
 					}
-					openPlayer.sendMessage(ChatColor.YELLOW + "You have made " + thePlayer.getName() + " a " + c3 + (element == Element.Chi ? "Chiblocker" : element.toString()));
+					openPlayer.sendMessage(ChatColor.YELLOW + "You have made " + thePlayer.getName() + " a " + c3 + (element == Element.CHI ? "Chiblocker" : element.toString()));
 				}
 				else
 				{
-					if (GeneralMethods.getBendingPlayer(thePlayer.getName()) != null && !GeneralMethods.getBendingPlayer(thePlayer.getName()).getElements().isEmpty() && !openPlayer.hasPermission("bending.command.rechoose"))
+					if (BendingPlayer.getBendingPlayer(thePlayer) != null && !BendingPlayer.getBendingPlayer(thePlayer).getElements().isEmpty() && !openPlayer.hasPermission("bending.command.rechoose"))
 					{
 						openPlayer.sendMessage(ChatColor.RED + "You don't have permission to change your element!");
 						closeMenu(openPlayer);
@@ -151,33 +161,18 @@ public class MenuSelectElement extends MenuBase
 				confirm.openMenu(openPlayer);
 			}
 		};
-		switch (element)
-		{
-		case Fire:
-			item.setDescriptions(this.getDesc(Config.fireDesc));
-			break;
-		case Water:
-			item.setDescriptions(this.getDesc(Config.waterDesc));
-			break;
-		case Air:
-			item.setDescriptions(this.getDesc(Config.airDesc));
-			break;
-		case Earth:
-			item.setDescriptions(this.getDesc(Config.earthDesc));
-			break;
-		case Chi:
-			item.setDescriptions(this.getDesc(Config.chiDesc));
-			break;
-		default:
-			break;
-		}
+		if (element == Element.FIRE) item.setDescriptions(this.getDesc(Config.fireDesc));
+		else if (element == Element.WATER) item.setDescriptions(this.getDesc(Config.waterDesc));
+		else if (element == Element.AIR) item.setDescriptions(this.getDesc(Config.airDesc));
+		else if (element == Element.EARTH) item.setDescriptions(this.getDesc(Config.earthDesc));
+		else if (element == Element.CHI) item.setDescriptions(this.getDesc(Config.chiDesc));
 		
 		return item;
 	}
 	
 	protected List<String> getDesc(String line)
 	{
-		int maxLenght = 55;
+		int maxLenght = 45;
 		Pattern p = Pattern.compile("\\G\\s*(.{1,"+maxLenght+"})(?=\\s|$)", Pattern.DOTALL);
 		Matcher m = p.matcher(line);
 		List<String> l = new ArrayList<String>();
@@ -192,7 +187,7 @@ public class MenuSelectElement extends MenuBase
 	{
 		openPlayer = player; 
 		
-		if (GeneralMethods.getBendingPlayer(thePlayer.getName()).isPermaRemoved())
+		if (BendingPlayer.getBendingPlayer(thePlayer).isPermaRemoved())
 		{
 			if (openPlayer.getName().equals(thePlayer.getName()))
 			{

@@ -3,6 +3,7 @@ package com.strangeone101.bendinggui;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -18,6 +19,8 @@ public class MenuBase implements InventoryHolder {
     protected String title;
     protected int size;
     protected int lastClickedSlot = -1;
+    
+    public ChatColor GRAY = ChatColor.GRAY;
     
     /**
      * Creates a new BaseMenu with the given title and number of rows of slots
@@ -46,7 +49,8 @@ public class MenuBase implements InventoryHolder {
         ItemStack stack = item.getItemStack();
         if (item.isEnchanted)
         {
-        	stack = BendingGUI.getNMSManager().addGlow(item.getItemStack());
+        	//stack = BendingGUI.getNMSManager().addGlow(item.getItemStack());
+        	stack = BendingGUI.getNMSManager().addGlow(stack);
         }
 		this.getInventory().setItem(index, stack);
         items.put(index, item);

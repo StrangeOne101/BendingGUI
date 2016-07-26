@@ -1,11 +1,8 @@
 package com.strangeone101.bendinggui.menus;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -17,25 +14,31 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.jedk1.jedcore.scoreboard.BendingBoard;
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
+import com.projectkorra.projectkorra.Element.SubElement;
 import com.projectkorra.projectkorra.GeneralMethods;
-import com.projectkorra.projectkorra.SubElement;
-import com.projectkorra.projectkorra.ability.AbilityModuleManager;
-import com.projectkorra.projectkorra.ability.StockAbility;
-import com.projectkorra.projectkorra.ability.multiability.MultiAbilityManager;
+import com.projectkorra.projectkorra.ability.CoreAbility;
+import com.projectkorra.projectkorra.ability.util.ComboManager;
+import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
+import com.projectkorra.projectkorra.ability.util.ComboManager.AbilityInformation;
+import com.projectkorra.projectkorra.ability.util.ComboManager.ComboAbilityInfo;
+import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.Config;
 import com.strangeone101.bendinggui.Descriptions;
 import com.strangeone101.bendinggui.MenuBase;
 import com.strangeone101.bendinggui.MenuItem;
+import com.strangeone101.bendinggui.Util;
 import com.strangeone101.bendinggui.DynamicUpdater;
 
 public class MenuBendingOptions extends MenuBase
 {
 	/**Had to move to Strings to be compatible with ProjectKorra. That's how moves are handled now.*/
 	private List<String> playerMoves = new ArrayList<String>();
-	private int movePage = 0;
+	private List<String> playerCombos = new ArrayList<String>();
+	int movePage = 0;
 	
 	private String abilityIndex = null; //What ability is currently selected
 	private int abilityIndexInt = -1;      //Used only for glow
@@ -49,12 +52,14 @@ public class MenuBendingOptions extends MenuBase
 	protected boolean redirect = false;
 	protected boolean hasBeenToggled = false;
 	
+	protected boolean combos = false;
+	
 	
 	public MenuBendingOptions(OfflinePlayer player) 
 	{
 		super("Bending Options", 4);
 		this.thePlayer = player;
-		if (GeneralMethods.getBendingPlayer(player.getName()).getElements().isEmpty())
+		if (BendingPlayer.getBendingPlayer(player.getName()).getElements().isEmpty())
 		{
 			redirect = true;
 		}	
@@ -64,26 +69,32 @@ public class MenuBendingOptions extends MenuBase
 	public MenuItem getItemForMove(OfflinePlayer player, final String move, final int index)
 	{
 		MaterialData mat = new MaterialData(Material.STAINED_GLASS, (byte)4);
-		if (BendingGUI.getAbilityElement(move) == Element.Air) {mat = Config.elementIcons.get(Element.Air);}
-		else if (BendingGUI.getAbilityElement(move) == Element.Earth) {mat = Config.elementIcons.get(Element.Earth);}
-		else if (BendingGUI.getAbilityElement(move) == Element.Fire) {mat = Config.elementIcons.get(Element.Fire);}
-		else if (BendingGUI.getAbilityElement(move) == Element.Water) {mat = Config.elementIcons.get(Element.Water);}
-		else if (BendingGUI.getAbilityElement(move) == Element.Chi) {mat = Config.elementIcons.get(Element.Chi);}
+		Element mainElement = CoreAbility.getAbility(move).getElement();
+		if (mainElement == Element.AIR) {mat = Config.elementIcons.get(Element.AIR);}
+		else if (mainElement == Element.EARTH) {mat = Config.elementIcons.get(Element.EARTH);}
+		else if (mainElement == Element.FIRE) {mat = Config.elementIcons.get(Element.FIRE);}
+		else if (mainElement == Element.WATER) {mat = Config.elementIcons.get(Element.WATER);}
+		else if (mainElement == Element.CHI) {mat = Config.elementIcons.get(Element.CHI);}
 		else {mat = Config.avatarIcon;}
 		
-		if (BendingGUI.getSubElement(move) == SubElement.Bloodbending) mat = Config.subElementIcons.get(SubElement.Bloodbending);
-		else if (BendingGUI.getSubElement(move) == SubElement.Icebending) mat = Config.subElementIcons.get(SubElement.Icebending);
-		else if (BendingGUI.getSubElement(move) == SubElement.Lavabending) mat = Config.subElementIcons.get(SubElement.Lavabending);
-		else if (BendingGUI.getSubElement(move) == SubElement.Sandbending) mat = Config.subElementIcons.get(SubElement.Sandbending);
-		else if (BendingGUI.getSubElement(move) == SubElement.Plantbending) mat = Config.subElementIcons.get(SubElement.Plantbending);
-		else if (BendingGUI.getSubElement(move) == SubElement.Metalbending) mat = Config.subElementIcons.get(SubElement.Metalbending);
-		else if (BendingGUI.getSubElement(move) == SubElement.Combustion) mat = Config.subElementIcons.get(SubElement.Combustion);
-		else if (BendingGUI.getSubElement(move) == SubElement.Flight) mat = Config.subElementIcons.get(SubElement.Flight);
-		else if (BendingGUI.getSubElement(move) == SubElement.Healing) mat = Config.subElementIcons.get(SubElement.Healing);
-		else if (BendingGUI.getSubElement(move) == SubElement.Lightning) mat = Config.subElementIcons.get(SubElement.Lightning);
-		else if (BendingGUI.getSubElement(move) == SubElement.SpiritualProjection) mat = Config.subElementIcons.get(SubElement.SpiritualProjection);
+		if (mainElement == Element.BLOOD) mat = Config.elementIcons.get(Element.BLOOD);
+		else if (mainElement == Element.ICE) mat = Config.elementIcons.get(Element.ICE);
+		else if (mainElement == Element.LAVA) mat = Config.elementIcons.get(Element.LAVA);
+		else if (mainElement == Element.SAND) mat = Config.elementIcons.get(Element.SAND);
+		else if (mainElement == Element.PLANT) mat = Config.elementIcons.get(Element.PLANT);
+		else if (mainElement == Element.METAL) mat = Config.elementIcons.get(Element.METAL);
+		else if (mainElement == Element.COMBUSTION) mat = Config.elementIcons.get(Element.COMBUSTION);
+		else if (mainElement == Element.FLIGHT) mat = Config.elementIcons.get(Element.FLIGHT);
+		else if (mainElement == Element.HEALING) mat = Config.elementIcons.get(Element.HEALING);
+		else if (mainElement == Element.LIGHTNING) mat = Config.elementIcons.get(Element.LIGHTNING);
+		else if (mainElement == Element.SPIRITUAL) mat = Config.elementIcons.get(Element.SPIRITUAL);
 		
-		final ChatColor c = BendingGUI.getAbilityElement(move) == Element.Air ? ChatColor.GRAY : (BendingGUI.getAbilityElement(move) == Element.Chi ? ChatColor.GOLD : (BendingGUI.getAbilityElement(move) == Element.Earth ? ChatColor.GREEN : (BendingGUI.getAbilityElement(move) == Element.Fire ? ChatColor.RED : (BendingGUI.getAbilityElement(move) == Element.Water ?  ChatColor.BLUE: ChatColor.LIGHT_PURPLE))));
+		if (mainElement instanceof SubElement) 
+		{
+			mainElement = ((SubElement)mainElement).getParentElement();
+		}
+		
+		final ChatColor c = mainElement == Element.AIR ? ChatColor.GRAY : (mainElement == Element.CHI ? ChatColor.GOLD : (mainElement == Element.EARTH ? ChatColor.GREEN : (mainElement == Element.FIRE ? ChatColor.RED : (mainElement == Element.WATER ?  ChatColor.BLUE : (mainElement == Element.AVATAR ? ChatColor.LIGHT_PURPLE : mainElement.getColor())))));
 		
 		MenuItem item = new MenuItem(c + move.toString(), mat) {
 
@@ -101,9 +112,9 @@ public class MenuBendingOptions extends MenuBase
 				if (mode == Mode.INFO && move != null)
 				{
 					//player.sendMessage(ChatColor.YELLOW + "Info for " + c);
-					//String s = BendingGUI.getAbilityElement(move) == Element.Air ? "Air" : (BendingGUI.getAbilityElement(move) == Element.Earth ? "Earth" : (BendingGUI.getAbilityElement(move) == Element.Water ? "Water" : (BendingGUI.getAbilityElement(move) == Element.Fire ? "Fire" : (BendingGUI.getAbilityElement(move) == Element.Chi ? "Chiblocker" : "Other"))));
+					//String s = CoreAbility.getAbility(move).getElement() == Element.Air ? "Air" : (CoreAbility.getAbility(move).getElement() == Element.Earth ? "Earth" : (CoreAbility.getAbility(move).getElement() == Element.Water ? "Water" : (CoreAbility.getAbility(move).getElement() == Element.Fire ? "Fire" : (CoreAbility.getAbility(move).getElement() == Element.Chi ? "Chiblocker" : "Other"))));
 					//Tools.sendMessage(player, c + s + "." + move.toString());
-					player.sendMessage(c + AbilityModuleManager.descriptions.get(move));
+					player.sendMessage(c + CoreAbility.getAbility(move).getDescription());
 					closeMenu(player);
 					return;
 				}
@@ -129,23 +140,23 @@ public class MenuBendingOptions extends MenuBase
 			}
 		};
 		String desc = "";
-		String moveDesc = ChatColor.DARK_GRAY + Descriptions.getDescription(move);
-		List<String> l = BendingGUI.getDescriptions(moveDesc, ChatColor.DARK_GRAY, 45);
+		String moveDesc = GRAY + Descriptions.getDescription(move);
+		List<String> l = BendingGUI.getDescriptions(moveDesc, GRAY, 45);
 		for (String s : l)
 		{
 			desc = desc + s + "\n";
 		}
 		if (move != null && this.mode == Mode.DELETE)
 		{
-			desc = desc + "\n\n" + ChatColor.RED + ChatColor.BOLD + "TOGGLE THE REMOVAL TOOL BEFORE\n" + ChatColor.RED + ChatColor.BOLD + "REBINDING!" + "\n" + ChatColor.RESET + ChatColor.DARK_GRAY + "You must turn off the unbind tool before you\n" + ChatColor.DARK_GRAY + "can rebind moves again!";
+			desc = desc + "\n\n" + ChatColor.RED + ChatColor.BOLD + "TOGGLE THE REMOVAL TOOL BEFORE\n" + ChatColor.RED + ChatColor.BOLD + "REBINDING!" + "\n" + ChatColor.RESET + GRAY + "You must turn off the unbind tool before you\n" + GRAY + "can rebind moves again!";
 		}
 		else if (move != null && this.mode == Mode.INFO)
 		{
-			desc = desc + "\n\n" + ChatColor.YELLOW + ChatColor.BOLD + "CLICK FOR MORE INFO!" + "\n" + ChatColor.RESET + ChatColor.DARK_GRAY + "Click to display more infomation about this move!";
+			desc = desc + "\n\n" + ChatColor.YELLOW + ChatColor.BOLD + "CLICK FOR MORE INFO!" + "\n" + ChatColor.RESET + GRAY + "Click to display more infomation about this move!";
 		}
 		else if (this.abilityIndex == move)
 		{
-			desc = desc + "\n\n" + ChatColor.GREEN + ChatColor.BOLD + "CURRENTLY SELECTED!" + "\n" + ChatColor.RESET + ChatColor.DARK_GRAY + "Click a slot to bind to this move to!";
+			desc = desc + "\n\n" + ChatColor.GREEN + ChatColor.BOLD + "CURRENTLY SELECTED!" + "\n" + ChatColor.RESET + GRAY + "Click a slot to bind to this move to!";
 		}
 		item.setDescriptions(Arrays.asList(desc.split("\n")));
 		if (abilityIndex == move)
@@ -164,12 +175,14 @@ public class MenuBendingOptions extends MenuBase
 		ChatColor c = ChatColor.RED;
 		if (move != null && !move.equals("null"))
 		{
-			c = BendingGUI.getAbilityElement(move) == Element.Air ? ChatColor.GRAY : (BendingGUI.getAbilityElement(move) == Element.Chi ? ChatColor.GOLD : (BendingGUI.getAbilityElement(move) == Element.Earth ? ChatColor.GREEN : (BendingGUI.getAbilityElement(move) == Element.Fire ? ChatColor.RED : (BendingGUI.getAbilityElement(move) == Element.Water ? ChatColor.BLUE : ChatColor.LIGHT_PURPLE))));
-			if (BendingGUI.getAbilityElement(move) == Element.Air) {mat.setData((byte)0);}
-			else if (BendingGUI.getAbilityElement(move) == Element.Earth) {mat.setData((byte)13);}
-			else if (BendingGUI.getAbilityElement(move) == Element.Fire) {mat.setData((byte)14);}
-			else if (BendingGUI.getAbilityElement(move) == Element.Water) {mat.setData((byte)11);}
-			else if (BendingGUI.getAbilityElement(move) == Element.Chi) {mat.setData((byte)4);}
+			Element element = CoreAbility.getAbility(move).getElement();
+			if (element instanceof SubElement) element = ((SubElement)element).getParentElement();
+			c = element == Element.AIR ? ChatColor.GRAY : (element == Element.CHI ? ChatColor.GOLD : (element == Element.EARTH ? ChatColor.GREEN : (element == Element.FIRE ? ChatColor.RED : (element == Element.WATER ? ChatColor.BLUE : (element == Element.AVATAR ? ChatColor.LIGHT_PURPLE : element.getColor())))));
+			if (element == Element.AIR) {mat.setData((byte)0);}
+			else if (element == Element.EARTH) {mat.setData((byte)13);}
+			else if (element == Element.FIRE) {mat.setData((byte)14);}
+			else if (element == Element.WATER) {mat.setData((byte)11);}
+			else if (element == Element.CHI) {mat.setData((byte)4);}
 			else {mat.setData((byte)10);}
 		}
 		final ChatColor c1 = c;
@@ -179,38 +192,38 @@ public class MenuBendingOptions extends MenuBase
 		
 		if (move == null || move.equals("null"))
 		{
-			itemname = ChatColor.RED + "Slot " + (index + 1) + ChatColor.DARK_GRAY + " (Empty)" ;
-			desc = ChatColor.DARK_GRAY + "Nothing is currently bound to this slot!\n\n"
-				 + ChatColor.DARK_GRAY + "Click a move and click a slot to bind!";
+			itemname = ChatColor.RED + "Slot " + (index + 1) + GRAY + " (Empty)" ;
+			desc = GRAY + "Nothing is currently bound to this slot!\n\n"
+				 + GRAY + "Click a move and click a slot to bind!";
 		}
 		else
 		{
-			itemname = c + "Slot " + (index + 1) + ChatColor.DARK_GRAY + " (" + move.toString() + ")" ;
-			desc = ChatColor.DARK_GRAY + "Currently Bound: " + c + ChatColor.BOLD + move.toString() + "\n\n" + ChatColor.RESET + ChatColor.DARK_GRAY + "To bind a new move, click a move then click\n" + ChatColor.DARK_GRAY + "the slot you want to bind it to.";
+			itemname = c + "Slot " + (index + 1) + GRAY + " (" + move.toString() + ")" ;
+			desc = GRAY + "Currently Bound: " + c + ChatColor.BOLD + move.toString() + "\n\n" + ChatColor.RESET + GRAY + "To bind a new move, click a move then click\n" + GRAY + "the slot you want to bind it to.";
 		}
 		
-		if (MultiAbilityManager.playerAbilities.containsKey(player.getName()))
+		if (MultiAbilityManager.playerAbilities.containsKey((Player)player))
 		{
-			desc = desc + "\n\n" + ChatColor.RED + ChatColor.BOLD + "YOU CANNOT EDIT YOUR BINDS RIGHT NOW!\n" + ChatColor.RESET + ChatColor.DARK_GRAY + "You are using a multi-ability move and must stop\nusing it before you can bind again!";
+			desc = desc + "\n\n" + ChatColor.RED + ChatColor.BOLD + "YOU CANNOT EDIT YOUR BINDS RIGHT NOW!\n" + ChatColor.RESET + GRAY + "You are using a multi-ability move and must stop\nusing it before you can bind again!";
 		}
 		else if (thePlayer instanceof Player)
 		{
 			if (move != null && mode == Mode.DELETE)
 			{
-				desc = desc + "\n\n" + ChatColor.RED + ChatColor.BOLD + "CLICK TO REMOVE!" + "\n" + ChatColor.RESET + ChatColor.DARK_GRAY + "Click to remove " + move.toString() + " from this slot!";
+				desc = desc + "\n\n" + ChatColor.RED + ChatColor.BOLD + "CLICK TO REMOVE!" + "\n" + ChatColor.RESET + GRAY + "Click to remove " + move.toString() + " from this slot!";
 			}
 			else if (move != null && mode == Mode.INFO)
 			{
-				desc = desc + "\n\n" + ChatColor.YELLOW + ChatColor.BOLD + "CLICK FOR MOVE INFO!" + "\n" + ChatColor.RESET + ChatColor.DARK_GRAY + "Click to display more infomation about " + move.toString() + "!";
+				desc = desc + "\n\n" + ChatColor.YELLOW + ChatColor.BOLD + "CLICK FOR MOVE INFO!" + "\n" + ChatColor.RESET + GRAY + "Click to display more infomation about " + move.toString() + "!";
 			}
 			else if (this.slotIndex == index)
 			{
-				desc = desc + "\n\n" + ChatColor.GREEN + ChatColor.BOLD + "CURRENTLY SELECTED!" + "\n" + ChatColor.RESET + ChatColor.DARK_GRAY + "Click a move to bind to this slot!";
+				desc = desc + "\n\n" + ChatColor.GREEN + ChatColor.BOLD + "CURRENTLY SELECTED!" + "\n" + ChatColor.RESET + GRAY + "Click a move to bind to this slot!";
 			}
 		}
 		else
 		{
-			desc = desc + "\n\n" + ChatColor.RED + ChatColor.BOLD + "CANNOT MODIFY BENDING OF OFFLINE PLAYERS!" + "\n" + ChatColor.RESET + ChatColor.DARK_GRAY + "You can't modify the bending of players that are offline!";
+			desc = desc + "\n\n" + ChatColor.RED + ChatColor.BOLD + "CANNOT MODIFY BENDING OF OFFLINE PLAYERS!" + "\n" + ChatColor.RESET + GRAY + "You can't modify the bending of players that are offline!";
 		}
 		
 		MenuItem item = new MenuItem(itemname, mat) {
@@ -227,8 +240,8 @@ public class MenuBendingOptions extends MenuBase
 				{
 					if (mode == Mode.DELETE && move != null)
 					{
-						//GeneralMethods.getBendingPlayer(thePlayer.getName()).setAbility(index, null);
-						BendingPlayer bPlayer = GeneralMethods.getBendingPlayer(thePlayer.getName());
+						//BendingPlayer.getBendingPlayer(thePlayer.getName()).setAbility(index, null);
+						BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer.getName());
 						HashMap<Integer, String> abilities = bPlayer.getAbilities();
 						abilities.remove(index + 1);
 						bPlayer.setAbilities(abilities);
@@ -240,9 +253,9 @@ public class MenuBendingOptions extends MenuBase
 					else if (mode == Mode.INFO && move != null)
 					{
 						//player.sendMessage(ChatColor.YELLOW + "Info for " + c1 + move.toString());
-						//String s = BendingGUI.getAbilityElement(move) == Element.Air ? "Air" : (BendingGUI.getAbilityElement(move) == Element.Earth ? "Earth" : (BendingGUI.getAbilityElement(move) == Element.Water ? "Water" : (BendingGUI.getAbilityElement(move) == Element.Fire ? "Fire" : (BendingGUI.getAbilityElement(move) == Element.Chi ? "Chiblocker" : "Other"))));
+						//String s = CoreAbility.getAbility(move).getElement() == Element.Air ? "Air" : (CoreAbility.getAbility(move).getElement() == Element.Earth ? "Earth" : (CoreAbility.getAbility(move).getElement() == Element.Water ? "Water" : (CoreAbility.getAbility(move).getElement() == Element.Fire ? "Fire" : (CoreAbility.getAbility(move).getElement() == Element.Chi ? "Chiblocker" : "Other"))));
 						//Tools.sendMessage(player, c1 + s + "." + move.toString());
-						player.sendMessage(c1 + AbilityModuleManager.descriptions.get(move));
+						player.sendMessage(c1 + CoreAbility.getAbility(move).getDescription());
 						closeMenu(player);
 						return;
 					}
@@ -275,7 +288,7 @@ public class MenuBendingOptions extends MenuBase
 	public MenuItem getRemoveToolItem(OfflinePlayer player)
 	{
 		MaterialData material = new MaterialData(Material.BARRIER);
-		String s = ChatColor.RED + "Removal Tool " + ChatColor.DARK_GRAY + (this.mode == Mode.DELETE ? "(On)" : "(Off)");
+		String s = ChatColor.RED + "Removal Tool " + GRAY + (this.mode == Mode.DELETE ? "(On)" : "(Off)");
 		MenuItem item = new MenuItem(s, material) {
 
 			@Override
@@ -283,7 +296,7 @@ public class MenuBendingOptions extends MenuBase
 			{
 				if (this.isShiftClicked())
 				{
-					BendingPlayer bPlayer = GeneralMethods.getBendingPlayer(thePlayer.getName());
+					BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer.getName());
 					HashMap<Integer, String> abilities = new HashMap<Integer, String>();
 					bPlayer.setAbilities(abilities);
 					player.sendMessage(ChatColor.RED + "Removed all bound moves from slots.");
@@ -307,11 +320,38 @@ public class MenuBendingOptions extends MenuBase
 		return item;
 	}
 	
+	/**Toggles the bending board*/
+	@SuppressWarnings("deprecation")
+	public MenuItem getBBToggle(OfflinePlayer player)
+	{
+		final boolean b = !BendingBoard.disabled.contains(player.getUniqueId());
+		MaterialData material = new MaterialData(Material.INK_SACK, (byte) (b ? 10 : 8));
+		String s = (b ? ChatColor.GREEN : ChatColor.RED) + "Toggle BendingBoard " + GRAY + (b ? "(ACTIVE)" : "");
+		MenuItem item = new MenuItem(s, material) {
+
+			@Override
+			public void onClick(Player player) 
+			{
+				if (thePlayer instanceof Player) {
+					BendingBoard.toggle((Player) thePlayer);
+					update();
+					DynamicUpdater.updateMenu(thePlayer, getInstance());
+				}
+				else {
+					player.sendMessage(ChatColor.RED + "Can't toggle an offline player's bending board.");
+				}
+				
+			}
+		};
+		item.addDescription(ChatColor.GRAY + "Toggles the bending board");
+		return item;
+	}
+	
 	/**Shows lots of info for moves when you click them*/
 	public MenuItem getInfoToolItem(OfflinePlayer player)
 	{
-		MaterialData material = new MaterialData(Material.EMPTY_MAP);
-		String s = "Move Help Tool " + ChatColor.DARK_GRAY + (this.mode == Mode.INFO ? "(On)" : "(Off)");
+		MaterialData material = new MaterialData(Material.SIGN);
+		String s = "Move Help Tool " + GRAY + (this.mode == Mode.INFO ? "(On)" : "(Off)");
 		s = ChatColor.YELLOW + s;
 		MenuItem item = new MenuItem(s, material) {
 
@@ -337,7 +377,7 @@ public class MenuBendingOptions extends MenuBase
 	{
 		MaterialData material = new MaterialData(Material.ARROW);
 		String s = ChatColor.YELLOW + (isRightDirection ? "Next Page " : "Previous Page ");
-		s = s + ChatColor.DARK_GRAY + "(" + ChatColor.YELLOW + (this.movePage + 1) + ChatColor.DARK_GRAY + "/" + ChatColor.YELLOW + this.getMaxPages() + ChatColor.DARK_GRAY + ")";
+		s = s + GRAY + "(" + ChatColor.YELLOW + (this.movePage + 1) + GRAY + "/" + ChatColor.YELLOW + this.getMaxPages() + GRAY + ")";
 		MenuItem item = new MenuItem(s, material) {
 
 			
@@ -348,7 +388,11 @@ public class MenuBendingOptions extends MenuBase
 				//to that players which stops functionality for admins looking at other player's bindings
 				if (movePage == getMaxPages() - 1 && isRightDirection) return;
 				movePage = isRightDirection ? movePage + 1 : movePage - 1;
-				DynamicUpdater.setPage(thePlayer, movePage);
+				if (combos) DynamicUpdater.setComboPage(thePlayer, movePage);
+				else DynamicUpdater.setPage(thePlayer, movePage);
+				
+				//player.sendMessage("Combos: " + DynamicUpdater.getComboPage(thePlayer));
+				//player.sendMessage("Moves: " + DynamicUpdater.getPage(thePlayer));
 				//DynamicUpdater.getData(thePlayer).setPage(movePage);
 				if (BendingGUI.pageArrowMoveMouse)
 				{
@@ -389,7 +433,7 @@ public class MenuBendingOptions extends MenuBase
 				}
 				else if (!b && player.hasPermission("bending.command.rechoose"))
 				{
-					switchMenu(player, new MenuSelectElement(openPlayer, instance));
+					switchMenu(player, new MenuSelectElement(thePlayer, instance));
 				}
 				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
@@ -407,13 +451,29 @@ public class MenuBendingOptions extends MenuBase
 		return item;
 	}
 	
+	public MenuItem getComboItem()
+	{
+		MenuItem item = new MenuItem(ChatColor.YELLOW + ("View Combos"), new MaterialData(Material.MAGMA_CREAM)) {
+			@Override
+			public void onClick(Player player) 
+			{
+				combos = !combos;
+				movePage = combos ? DynamicUpdater.getComboPage(thePlayer) : DynamicUpdater.getPage(thePlayer);
+				update();
+			}
+		};
+		item.addDescription(ChatColor.GRAY + "View the available combos");
+		if (combos) item.setEnchanted(true);
+		return item;
+	}
+	
 	@SuppressWarnings("deprecation")
 	public MenuItem getBendingToggle()
 	{
-		boolean isToggled = !GeneralMethods.getBendingPlayer(this.thePlayer.getName()).isToggled();
-		byte damage = (byte) (isToggled ? 13 : 14);
+		boolean isToggled = !BendingPlayer.getBendingPlayer(this.thePlayer.getName()).isToggled();
+		byte damage = (byte) (isToggled ? 5 : 14);
 		final OfflinePlayer p = this.thePlayer;
-		MenuItem item = new MenuItem((isToggled ? ChatColor.GREEN + "En" : ChatColor.RED + "Dis") + "able Bending", new MaterialData(Material.STAINED_CLAY, damage)) {
+		MenuItem item = new MenuItem((isToggled ? ChatColor.GREEN + "En" : ChatColor.RED + "Dis") + "able Bending", new MaterialData(Material.WOOL, damage)) {
 			@Override
 			public void onClick(Player player) 
 			{
@@ -423,7 +483,7 @@ public class MenuBendingOptions extends MenuBase
 					return;
 				}
 				
-				hasBeenToggled = GeneralMethods.getBendingPlayer(p.getName()).isToggled();
+				hasBeenToggled = BendingPlayer.getBendingPlayer(p.getName()).isToggled();
 				
 				if (thePlayer.getName().equals(player.getName()))
 				{
@@ -432,7 +492,7 @@ public class MenuBendingOptions extends MenuBase
 					return;
 				}
 				
-				BendingPlayer bPlayer = GeneralMethods.getBendingPlayer(p.getName());
+				BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(p.getName());
 				if (!bPlayer.isToggled()) 
 				{	
 					if (p instanceof Player)
@@ -457,22 +517,7 @@ public class MenuBendingOptions extends MenuBase
 					}
 				}
 				
-				//If the player is looking at their own one, use this method instead of reflection.
-				//Just simpler AND the preferred method since you should always try avoid reflection
-				
-				//Force set toggle
-				Class<?> c = bPlayer.getClass();
-				try 
-				{
-					Field f = c.getDeclaredField("isToggled");
-					f.setAccessible(true);
-					f.setBoolean(bPlayer, bPlayer.isToggled() ? false : true);
-					f.setAccessible(false);
-				} 
-				catch (NoSuchFieldException e) {e.printStackTrace();} 
-				catch (SecurityException e) {e.printStackTrace();} 
-				catch (IllegalArgumentException e) {e.printStackTrace();} 
-				catch (IllegalAccessException e) {e.printStackTrace();}
+				bPlayer.toggleBending();
 				
 				update();
 				DynamicUpdater.updateMenu(thePlayer, getInstance());
@@ -500,128 +545,133 @@ public class MenuBendingOptions extends MenuBase
 			}
 		};
 		
-		if ((thePlayer instanceof Player && ((Player)thePlayer).hasPermission("bending.avatar")) || GeneralMethods.getBendingPlayer(this.thePlayer.getName()).getElements().size() > 1)
+		BendingPlayer p = BendingPlayer.getBendingPlayer(thePlayer.getName());
+		if ((thePlayer instanceof Player && ((Player)thePlayer).hasPermission("bending.avatar")) || p.hasElement(Element.AVATAR))
 		{
-			boolean b = GeneralMethods.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.Earth) || GeneralMethods.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.Air);
-			item.addDescription((thePlayer.getName() != openPlayer.getName() ? ChatColor.GRAY + "Currently the " : ChatColor.GRAY + "You are the " ) + GeneralMethods.getAbilityColor("AvatarState") + "Avatar" );
-			item.addDescription(ChatColor.DARK_GRAY + (thePlayer.getName() != openPlayer.getName() ? "They" : "You") + " are currently a" + (b ? "n" : "") + ":");
+			boolean b = BendingPlayer.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.EARTH) || BendingPlayer.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.AIR);
+			item.addDescription(Element.AVATAR.getColor() + (thePlayer.getName() != openPlayer.getName() ?  "Current " : "You are the " ) + "Avatar" );
+			item.addDescription(GRAY + (thePlayer.getName() != openPlayer.getName() ? "They" : "You") + " are currently a" + (b ? "n" : "") + ":");
 		}
-		else
+		/*else
 		{
-			boolean b = GeneralMethods.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.Earth) || GeneralMethods.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.Air);
-			item.addDescription((thePlayer.getName() != openPlayer.getName() ? ChatColor.DARK_GRAY + "They" : ChatColor.GRAY + "You" ) + " are currently a" + (b ? "n" : "") + ":");
-		}
-		BendingPlayer p = GeneralMethods.getBendingPlayer(thePlayer.getName());
+			boolean b = BendingPlayer.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.EARTH) || BendingPlayer.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.AIR);
+			item.addDescription((thePlayer.getName() != openPlayer.getName() ? GRAY + "They" : ChatColor.GRAY + "You" ) + " are currently a" + (b ? "n" : "") + ":");
+		}*/
+		
 	
-		if (p.getElements().contains(Element.Air)) 
+		if (p.getElements().contains(Element.AIR)) 
 		{
-			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + "Airbender";
-			if (thePlayer instanceof Player) 
+			String s = GRAY + "- " + ChatColor.GRAY + "Airbender";
+			if (Config.showSubElementsOnUser) 
 			{
-				if (((Player) thePlayer).hasPermission("bending.air.flight") && Config.showSubElementsOnUser) {s = s + ChatColor.DARK_GRAY + " (Can" + ChatColor.GRAY + " Fly" + ChatColor.DARK_GRAY + ")";}
+				List<String> list = new ArrayList<String>();
+				if (p.hasSubElement(SubElement.FLIGHT)) {
+					list.add(Element.FLIGHT.getColor() + "Fly");
+				}
+				if (p.hasSubElement(SubElement.SPIRITUAL)) {
+					list.add(Element.SPIRITUAL.getColor() + "Spiritually Project"); //Spiritually
+				}
+				s = s + GRAY + " (Can " + (BendingGUI.INSTANCE.makeListFancy(list).replaceAll("\\,", GRAY + ",")
+						.replaceAll(" and ", GRAY + " and ") + GRAY + ")");
+				List<String> l = BendingGUI.getDescriptions(s, GRAY, 65);
+				for (String s1 : l) {
+					item.addDescription(s1);
+				}
+			} else {
 				item.addDescription(s);
 			}
 		}
-		if (p.getElements().contains(Element.Earth)) 
+		if (p.getElements().contains(Element.EARTH)) 
 		{
-			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GREEN + "Earthbender";
-			if (thePlayer instanceof Player) 
+			String s = GRAY + "- " + ChatColor.GREEN + "Earthbender";
+			if (Config.showSubElementsOnUser) 
 			{
-				boolean b = false;
 				List<String> list = new ArrayList<String>();
-				if (((Player)thePlayer).hasPermission("bending.earth.metalbending") && Config.showSubElementsOnUser) 
+				if (p.hasSubElement(Element.METAL)) 
 				{
-					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.MetalClips.toString()) + "Metalbend");
+					list.add(Element.METAL.getColor() + "Metalbend");
 				}
-				if (((Player)thePlayer).hasPermission("bending.earth.lavabending") && Config.showSubElementsOnUser) 
+				if (p.hasSubElement(Element.LAVA)) 
 				{
-					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.LavaFlow.toString()) + "Lavabend");
+					list.add(Element.LAVA.getColor() + "Lavabend");
 				}
-				if (((Player)thePlayer).hasPermission("bending.earth.sandbending") && Config.showSubElementsOnUser) 
+				if (p.hasSubElement(Element.SAND)) 
 				{
-					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.SandSpout.toString()) + "Sandbend");
+					list.add(Element.SAND.getColor() + "Sandbend");
 				}
-				if (b && Config.showSubElementsOnUser) 
-				{
-					s = s + ChatColor.DARK_GRAY + " (Can " + (BendingGUI.INSTANCE.makeListFancy(list).replaceAll("\\,", ChatColor.DARK_GRAY + ",")
-							.replaceAll(" and ", ChatColor.DARK_GRAY + " and ") + ChatColor.DARK_GRAY + ")");
-				}
-				List<String> l = BendingGUI.getDescriptions(s, ChatColor.DARK_GRAY, 65);
+				s = s + GRAY + " (Can " + (BendingGUI.INSTANCE.makeListFancy(list).replaceAll("\\,", GRAY + ",")
+					.replaceAll(" and ", GRAY + " and ") + GRAY + ")");
+				
+				List<String> l = BendingGUI.getDescriptions(s, GRAY, 65);
 				for (String s1 : l) {
 					item.addDescription(s1);
 				}
+			} else {
+				item.addDescription(s);
 			}
 		}
-		if (p.getElements().contains(Element.Fire)) 
+		if (p.getElements().contains(Element.FIRE)) 
 		{
-			String s = ChatColor.DARK_GRAY + "- " + ChatColor.RED + "Firebender";
-			if (thePlayer instanceof Player) 
+			String s = GRAY + "- " + ChatColor.RED + "Firebender";
+			if (Config.showSubElementsOnUser) 
 			{
-				boolean b = false;
 				List<String> list = new ArrayList<String>();
-				if (((Player)thePlayer).hasPermission("bending.fire.lightningbending")) 
+				if (p.hasSubElement(Element.LIGHTNING)) 
 				{
-					b = true;
-					list.add("Can use " + GeneralMethods.getAbilityColor(StockAbility.Lightning.toString()) + "Lightning");
+					list.add("use " + Element.LIGHTNING.getColor() + "Lightning");
 				}
-				if (((Player)thePlayer).hasPermission("bending.fire.combustionbending")) 
+				if (p.hasSubElement(Element.COMBUSTION)) 
 				{
-					b = true;
-					list.add("Can " + GeneralMethods.getAbilityColor(StockAbility.Combustion.toString()) + "Combust");
+					list.add(Element.COMBUSTION.getColor() + "Combust");
 				}
-				if (b && Config.showSubElementsOnUser) 
-				{
-					s = s + ChatColor.DARK_GRAY + " (" + (BendingGUI.INSTANCE.makeListFancy(list).replaceAll("\\,", ChatColor.DARK_GRAY + ",")
-							.replaceAll(" and ", ChatColor.DARK_GRAY + " and ") + ChatColor.DARK_GRAY + ")");
-				}
-				List<String> l = BendingGUI.getDescriptions(s, ChatColor.DARK_GRAY, 65);
+				s = s + GRAY + " (" + (BendingGUI.INSTANCE.makeListFancy(list).replaceAll("\\,", GRAY + ",")
+							.replaceAll(" and ", GRAY + " and ") + GRAY + ")");
+				List<String> l = BendingGUI.getDescriptions(s, GRAY, 65);
 				for (String s1 : l) {
 					item.addDescription(s1);
 				}
+			} else {
+				item.addDescription(s);
 			}
 			
 		}
-		if (p.getElements().contains(Element.Water)) 
+		if (p.getElements().contains(Element.WATER)) 
 		{
-			String s = ChatColor.DARK_GRAY + "- " + ChatColor.BLUE + "Waterbender";
-			if (thePlayer instanceof Player) 
+			String s = GRAY + "- " + ChatColor.BLUE + "Waterbender";
+			if (Config.showSubElementsOnUser) 
 			{
-				boolean b = false;
 				List<String> list = new ArrayList<String>();
-				if (((Player)thePlayer).hasPermission("bending.water.bloodbending")) 
+				if (p.hasSubElement(Element.BLOOD)) 
 				{
-					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.Bloodbending.toString()) + "Bloodbend");
+					list.add(Element.BLOOD.getColor() + "Bloodbend");
 				}
-				if (((Player)thePlayer).hasPermission("bending.water.plantbending")) 
+				if (p.hasSubElement(Element.PLANT)) 
 				{
-					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.Surge.toString()) + "Plantbend");
+					list.add(Element.PLANT.getColor() + "Plantbend");
 				}
-				if (((Player)thePlayer).hasPermission("bending.water.healing")) 
+				if (p.hasSubElement(Element.HEALING)) 
 				{
-					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.HealingWaters.toString()) + "Heal");
+					list.add(Element.HEALING.getColor() + "Heal");
 				}
-				if (b && Config.showSubElementsOnUser) 
-				{
-					s = s + ChatColor.DARK_GRAY + " (Can " + (BendingGUI.INSTANCE.makeListFancy(list).replaceAll("\\,", ChatColor.DARK_GRAY + ",")
-							.replaceAll(" and ", ChatColor.DARK_GRAY + " and ") + ChatColor.DARK_GRAY + ")");
-				}
-				List<String> l = BendingGUI.getDescriptions(s, ChatColor.DARK_GRAY, 65);
+				s = s + GRAY + " (Can " + (BendingGUI.INSTANCE.makeListFancy(list).replaceAll("\\,", GRAY + ",")
+					.replaceAll(" and ", GRAY + " and ") + GRAY + ")");
+				
+				List<String> l = BendingGUI.getDescriptions(s, GRAY, 65);
 				for (String s1 : l) {
 					item.addDescription(s1);
 				}
+			} else {
+				item.addDescription(s);
 			}
 			
 		}
-		if (p.getElements().contains(Element.Chi)) 
+		if (p.getElements().contains(Element.CHI)) 
 		{
-			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GOLD + "Chiblocker";
+			String s = GRAY + "- " + ChatColor.GOLD + "Chiblocker";
 			item.addDescription(s);
+		}
+		if (!Util.getStaff(thePlayer.getUniqueId()).equals("")) {
+			item.addDescription(Util.getStaff(thePlayer.getUniqueId()));
 		}
 		
 		if (this.openPlayer.hasPermission("bendinggui.admin"))
@@ -640,11 +690,87 @@ public class MenuBendingOptions extends MenuBase
 		return item;
 	}
 	
+	@SuppressWarnings("deprecation")
+	public MenuItem getItemForCombo(OfflinePlayer player, final String move, final int index)
+	{
+		MaterialData mat = new MaterialData(Material.STAINED_GLASS, (byte)4);
+		Element mainElement = getComboElement(move);
+		if (mainElement == Element.AIR) {mat = Config.elementIcons.get(Element.AIR);}
+		else if (mainElement == Element.EARTH) {mat = Config.elementIcons.get(Element.EARTH);}
+		else if (mainElement == Element.FIRE) {mat = Config.elementIcons.get(Element.FIRE);}
+		else if (mainElement == Element.WATER) {mat = Config.elementIcons.get(Element.WATER);}
+		else if (mainElement == Element.CHI) {mat = Config.elementIcons.get(Element.CHI);}
+		
+		else if (mainElement == Element.BLOOD) mat = Config.elementIcons.get(Element.BLOOD);
+		else if (mainElement == Element.ICE) mat = Config.elementIcons.get(Element.ICE);
+		else if (mainElement == Element.LAVA) mat = Config.elementIcons.get(Element.LAVA);
+		else if (mainElement == Element.SAND) mat = Config.elementIcons.get(Element.SAND);
+		else if (mainElement == Element.PLANT) mat = Config.elementIcons.get(Element.PLANT);
+		else if (mainElement == Element.METAL) mat = Config.elementIcons.get(Element.METAL);
+		else if (mainElement == Element.COMBUSTION) mat = Config.elementIcons.get(Element.COMBUSTION);
+		else if (mainElement == Element.FLIGHT) mat = Config.elementIcons.get(Element.FLIGHT);
+		else if (mainElement == Element.HEALING) mat = Config.elementIcons.get(Element.HEALING);
+		else if (mainElement == Element.LIGHTNING) mat = Config.elementIcons.get(Element.LIGHTNING);
+		else if (mainElement == Element.SPIRITUAL) mat = Config.elementIcons.get(Element.SPIRITUAL);
+		else {mat = Config.avatarIcon;}
+		if (mainElement instanceof SubElement) 
+		{
+			mainElement = ((SubElement)mainElement).getParentElement();
+		}
+		
+		final ChatColor c = mainElement == Element.AIR ? ChatColor.GRAY : (mainElement == Element.CHI ? ChatColor.GOLD : (mainElement == Element.EARTH ? ChatColor.GREEN : (mainElement == Element.FIRE ? ChatColor.RED : (mainElement == Element.WATER ?  ChatColor.BLUE : (mainElement == Element.AVATAR ? ChatColor.LIGHT_PURPLE : mainElement.getColor())))));
+		
+		MenuItem item = new MenuItem(c + move + " (Combo)", mat) {
+
+			@Override
+			public void onClick(Player player) 
+			{
+				if (!GeneralMethods.abilityExists(move))
+				{
+					player.sendMessage(ChatColor.DARK_RED + "Error: " + ChatColor.RED + "Move doesn't exist! Please contact StrangeOne101 about this!");
+					BendingGUI.log.warning("[BendingGUI] Error: Move selected with invalid ID/Name. Move name: \"" + move + "\". Please contact StrangeOne101 about this!");
+					closeMenu(player);
+					return;
+				}
+				
+				CoreAbility coreAbility = CoreAbility.getAbility(move);
+				ChatColor color = coreAbility != null ? coreAbility.getElement().getColor() : null;
+				String usage = ConfigManager.languageConfig.get().getString("Commands.Help.Usage");
+				player.sendMessage(color + move + " (Combo) - ");
+				player.sendMessage(color + ComboManager.getDescriptions().get(move));
+				player.sendMessage(ChatColor.GOLD + usage + ComboManager.getInstructions().get(move));
+				closeMenu(player);
+				return;
+			}
+		};
+		String desc = "";
+		String moveDesc = GRAY + Descriptions.getDescription("Combo-" + move);
+		List<String> l = BendingGUI.getDescriptions(moveDesc, GRAY, 45);
+		
+		String desc2 = ComboManager.getInstructions().get(move);
+		if (desc2 != null) {
+			for (String s : ChatColor.stripColor(desc2).split(" > ")) {
+				l.add(ChatColor.GRAY + "> " + s);
+			}
+		}
+		
+		for (String s : l)
+		{
+			desc = desc + s + "\n";
+		}
+		desc = desc + "\n" + ChatColor.YELLOW + ChatColor.BOLD + "CLICK FOR MORE INFO!" + "\n" + ChatColor.RESET + ChatColor.DARK_GRAY + "Click to display more infomation about this move!";
+		
+		item.setDescriptions(Arrays.asList(desc.split("\n")));
+		
+		
+		return item;
+	}
+	
 	/**Returns the move based on the slot*/
 	public String getMoveForSlot(OfflinePlayer player, int index)
 	{
 		try {
-		return GeneralMethods.getBendingPlayer(player.getName()).getAbilities().get(index);
+		return BendingPlayer.getBendingPlayer(player).getAbilities().get(index);
 		} catch (NullPointerException e) {return null;}
 	}
 	
@@ -658,10 +784,10 @@ public class MenuBendingOptions extends MenuBase
 			this.closeMenu(openPlayer);
 			return;
 		}
-		GeneralMethods.getBendingPlayer(player.getName()).getAbilities().put(slot + 1, move);
-		GeneralMethods.saveAbility(GeneralMethods.getBendingPlayer(player.getName()), slot + 1, move);
+		BendingPlayer.getBendingPlayer(player.getName()).getAbilities().put(slot + 1, move);
+		GeneralMethods.saveAbility(BendingPlayer.getBendingPlayer(player.getName()), slot + 1, move);
 		//GeneralMethods.bindAbility(player, move, slot + 1);
-		ChatColor c = BendingGUI.getAbilityElement(move) == Element.Air ? ChatColor.GRAY : (BendingGUI.getAbilityElement(move) == Element.Chi ? ChatColor.GOLD : (BendingGUI.getAbilityElement(move) == Element.Earth ? ChatColor.GREEN : (BendingGUI.getAbilityElement(move) == Element.Fire ? ChatColor.RED : (BendingGUI.getAbilityElement(move) == Element.Water ? ChatColor.BLUE : ChatColor.LIGHT_PURPLE))));
+		ChatColor c = CoreAbility.getAbility(move).getElement() == Element.AIR ? ChatColor.GRAY : (CoreAbility.getAbility(move).getElement() == Element.CHI ? ChatColor.GOLD : (CoreAbility.getAbility(move).getElement() == Element.EARTH ? ChatColor.GREEN : (CoreAbility.getAbility(move).getElement() == Element.FIRE ? ChatColor.RED : (CoreAbility.getAbility(move).getElement() == Element.WATER ? ChatColor.BLUE : ChatColor.LIGHT_PURPLE))));
 		player.sendMessage(c + move.toString() + ChatColor.YELLOW + " bound to slot " + (slot + 1) + "!");
 	}
 	
@@ -670,6 +796,9 @@ public class MenuBendingOptions extends MenuBase
 	public void update()
 	{
 		OfflinePlayer player = this.thePlayer;
+		if (combos && mode == Mode.INFO) mode = Mode.NONE;
+		
+		
 		//BendingGUI.log.log(Level.INFO, "Player: " + player.getDisplayName() + ",Page: " + movePage + ", MaxPage: " + this.getMaxPages() + ", MoveSize: " + playerMoves.size());
 		//this.getInventory().clear();
 		
@@ -685,13 +814,14 @@ public class MenuBendingOptions extends MenuBase
 			}
 		}
 		this.playerMoves.clear();
+		this.playerCombos.clear();
 		
-		if (GeneralMethods.getBendingPlayer(player.getName()).getElements() == null || GeneralMethods.getBendingPlayer(player.getName()).getElements().isEmpty()) //Somehow this needs to be here
+		if (BendingPlayer.getBendingPlayer(player).getElements() == null || BendingPlayer.getBendingPlayer(player).getElements().isEmpty()) //Somehow this needs to be here
 		{
 			this.switchMenu(openPlayer, new MenuSelectElement(thePlayer));
 			return;
 		}
-		else if (!GeneralMethods.getBendingPlayer(player.getName()).isToggled() || this.hasBeenToggled)
+		else if (!BendingPlayer.getBendingPlayer(player).isToggled() || this.hasBeenToggled)
 		{
 			for (int i = 0; i < 18; i++)
 			{
@@ -711,72 +841,95 @@ public class MenuBendingOptions extends MenuBase
 			//this.addMenuItem(MenuItems.bendingRebind_ToggleBendingRed, 8, 3);
 			this.addMenuItem(this.getBendingToggle(), 8, 3);
 			
-			HashSet<String> checked = new HashSet<String>();
 			
-			@SuppressWarnings("unchecked")
-			Collection<String>[] order = new Collection[] {AbilityModuleManager.airbendingabilities, AbilityModuleManager.flightabilities, AbilityModuleManager.spiritualprojectionabilities, 
-					AbilityModuleManager.earthbendingabilities, AbilityModuleManager.sandabilities, AbilityModuleManager.metalabilities, AbilityModuleManager.lavaabilities,
-					AbilityModuleManager.firebendingabilities, AbilityModuleManager.combustionabilities, AbilityModuleManager.lightningabilities,
-					AbilityModuleManager.waterbendingabilities, AbilityModuleManager.healingabilities, AbilityModuleManager.plantabilities, AbilityModuleManager.iceabilities, AbilityModuleManager.bloodabilities, 
-					AbilityModuleManager.chiabilities, AbilityModuleManager.abilities};
-			
-			for (Collection<String> s : order)
-			{
-				if (s == AbilityModuleManager.abilities) //Save time and energy by picking out what we have already used
+			if (combos) {
+				HashMap<Element, List<String>> abilities = new HashMap<Element, List<String>>();
+				
+				for (String name : ComboManager.getComboAbilities().keySet())
 				{
-					s = new HashSet<String>();
-					s.addAll(AbilityModuleManager.abilities);
-					s.removeAll(checked);
-				}
-				for (int i = 0; i < s.size(); i++)
-				{
-					String move = (String) s.toArray()[i];
-					if (!((s == AbilityModuleManager.airbendingabilities || s == AbilityModuleManager.earthbendingabilities ||
-							s == AbilityModuleManager.firebendingabilities || s == AbilityModuleManager.waterbendingabilities) &&
-							AbilityModuleManager.subabilities.contains(move)))
+					if ((thePlayer instanceof Player) || ((!(thePlayer instanceof Player)) && !this.playerCombos.contains(name)))
 					{
-						if (((player instanceof Player && BendingGUI.canBind((Player)player, move)) || !(player instanceof Player)) && !this.playerMoves.contains(move))
+						//this.playerMoves.add(move);
+						Element element = getComboElement(name);
+						if (element == null) continue;
+						if (!abilities.containsKey(element))
 						{
-							this.playerMoves.add(move);
+							abilities.put(element, new ArrayList<String>());
 						}
+						if (canBendCombo(name, (Player) thePlayer)) {
+							abilities.get(element).add(name);
+						}
+						
 					}
 				}
-			}
-			
-			//Hopefully fix bug
-			if (this.playerMoves.isEmpty())
-			{
-				/*if (!DynamicUpdater.getData(player).abilityData.isEmpty())
+				
+				for (Element element : BendingGUI.elementOrder)
 				{
-					//this.playerMoves = DynamicUpdator.getData(player).abilityData;
-					//DynamicUpdator.updateAbilityData(player);
+					List<String> abilities_ = abilities.get(element);
+					if (abilities_ == null || abilities_.isEmpty()) continue;
+					for (String ab : abilities_)
+					{
+						this.playerCombos.add(ab);
+					}
 				}
-				else
+			} else {
+				HashMap<Element, List<CoreAbility>> abilities = new HashMap<Element, List<CoreAbility>>();
+				
+				for (CoreAbility ability : CoreAbility.getAbilities())
 				{
-					*/BukkitRunnable run = new BukkitRunnable() {
-
-						public void run() 
+					if ((player instanceof Player && BendingPlayer.getBendingPlayer(player).canBind(ability)) || ((!(player instanceof Player)) && !this.playerMoves.contains(ability.getName())))
+					{
+						//this.playerMoves.add(move);
+						if (ability.isHiddenAbility()) continue;
+						if (!abilities.containsKey(ability.getElement()))
 						{
-							update();
-						}	
-					};
-					run.runTaskLater(BendingGUI.INSTANCE, 200L);
-					 //Try again
-				//}
+							abilities.put(ability.getElement(), new ArrayList<CoreAbility>());
+						}
+						abilities.get(ability.getElement()).add(ability);
+					}
+				}
+				
+				for (Element element : BendingGUI.elementOrder)
+				{
+					List<CoreAbility> abilities_ = abilities.get(element);
+					if (abilities_ == null || abilities_.isEmpty()) continue;
+					for (CoreAbility ab : abilities_)
+					{
+						this.playerMoves.add(ab.getName());
+					}
+				}
+				
+				//Hopefully fix bug
+				if (this.playerMoves.isEmpty())
+				{
+					/*if (!DynamicUpdater.getData(player).abilityData.isEmpty())
+					{
+						//this.playerMoves = DynamicUpdator.getData(player).abilityData;
+						//DynamicUpdator.updateAbilityData(player);
+					}
+					else
+					{
+						*/BukkitRunnable run = new BukkitRunnable() {
+
+							public void run() 
+							{
+								update();
+							}	
+						};
+						run.runTaskLater(BendingGUI.INSTANCE, 200L);
+						 //Try again
+					//}
+				}
+				/*else
+				{
+					DynamicUpdater.getData(player).abilityData = this.playerMoves;
+				}*/
+				
+				
+				
+				
 			}
-			/*else
-			{
-				DynamicUpdater.getData(player).abilityData = this.playerMoves;
-			}*/
 			
-			int maxPage = this.getMaxPages();
-			
-			int p = DynamicUpdater.getPage(thePlayer);
-			if (p > this.getMaxPages())
-			{
-				p = this.getMaxPages() - 1;
-			}
-			movePage = p;
 			
 			/*int i1 = 0; //Where to start
 			int j = 0; //Max moves on the page
@@ -799,23 +952,42 @@ public class MenuBendingOptions extends MenuBase
 				}
 			}*/
 			
+			int maxPage = this.getMaxPages();
+			
+			int p = combos ? DynamicUpdater.getComboPage(thePlayer) : DynamicUpdater.getPage(thePlayer);
+			if (p > this.getMaxPages())
+			{
+				p = this.getMaxPages() - 1;
+			}
+			movePage = p;
+			
 			//The first index for the move to get from the list
 			int firstMoveIndex = (movePage == 0 ? 0 : movePage * 7 + 1);
 			int firstIndex_ = movePage == 0 ? 0 : 1;
 			
 			int end; //Last index to use
+			
+			int size = combos ? this.playerCombos.size() : this.playerMoves.size();
 		    
 		    // Find the end of the relevant part of the list.
-		    if (movePage >= maxPage - 1) end = this.playerMoves.size();
+		    if (movePage >= maxPage - 1) end = size;
 		    else if (movePage == 0) end = 8;
 		    else end = firstMoveIndex + 7;
 		    
-		    if (end >= this.playerMoves.size()) end = this.playerMoves.size();
+		    if (end >= size) end = size;
 		 
 		    for (int i = firstMoveIndex; i < end; ++i) {
 		    	int slotIndex = movePage == 0 ? i : (i - firstMoveIndex + firstIndex_);
-		        String move = this.playerMoves.get(i);
-		        MenuItem item = this.getItemForMove(player, move, slotIndex);
+		    	
+		    	MenuItem item;
+		    	if (combos) {
+		    		String move = this.playerCombos.get(i);
+			        item = this.getItemForCombo(player, move, slotIndex);
+		    	} else {
+		    		String move = this.playerMoves.get(i);
+			        item = this.getItemForMove(player, move, slotIndex);
+		    	}
+		        
 				/*if (abilityIndexInt == slotIndex)
 				{
 					//Adds the enchanted glow
@@ -868,11 +1040,13 @@ public class MenuBendingOptions extends MenuBase
 		if (this.openPlayer != null)
 		{
 			//If they can modify bending, give them the edit elements page
-			if (this.openPlayer.hasPermission("bending.admin.add") || this.openPlayer.hasPermission("bending.admin.remove") || this.openPlayer.hasPermission("bending.command.rechoose"))
+			if (this.openPlayer.hasPermission("bending.command.add") || this.openPlayer.hasPermission("bending.command.remove") || this.openPlayer.hasPermission("bending.command.rechoose"))
 			{
 				this.addMenuItem(this.getEditElements(), 3 * 9 + 4);
 			}
 		}
+		
+		this.addMenuItem(this.getComboItem(), 1, 3);
 		
 		if (this.getInventory().getContents()[3 * 9 + 7] == null)
 		{
@@ -883,6 +1057,10 @@ public class MenuBendingOptions extends MenuBase
 			SkullMeta meta = (SkullMeta) this.getInventory().getItem(27).getItemMeta();
 			meta.setOwner(this.thePlayer.getName());
 			this.getInventory().getItem(27).setItemMeta(meta);
+		}
+		
+		if (BendingGUI.jedcore) {
+			this.addMenuItem(getBBToggle(thePlayer), 3, 3);
 		}
 		
 	}
@@ -940,6 +1118,7 @@ public class MenuBendingOptions extends MenuBase
 	{
 		this.openPlayer = player;
 		this.playerMoves = new ArrayList<String>();
+		this.playerCombos = new ArrayList<String>();
 		if (this.redirect)
 		{
 			player.sendMessage(ChatColor.GREEN + "You aren't a bender yet! Please choose an element!");
@@ -947,7 +1126,7 @@ public class MenuBendingOptions extends MenuBase
 			return;
 		}
 		
-		int p = DynamicUpdater.getPage(thePlayer);
+		int p = combos ? DynamicUpdater.getComboPage(thePlayer) : DynamicUpdater.getPage(thePlayer);
 		if (p > this.getMaxPages())
 		{
 			p = this.getMaxPages();
@@ -962,7 +1141,7 @@ public class MenuBendingOptions extends MenuBase
 	@Override
 	public void closeMenu(Player player) 
 	{
-		this.playerMoves = null;
+		//this.playerMoves = null;
 		super.closeMenu(player);
 	}
 	
@@ -981,9 +1160,10 @@ public class MenuBendingOptions extends MenuBase
 	}*/
 	
 	public int getMaxPages() {
-	    if (this.playerMoves.size() <=  9) return 1;
-	    if (this.playerMoves.size() <= 16) return 2;
-	    return ((this.playerMoves.size() - 3) / 7) + 1;
+		int i = combos ? this.playerCombos.size() : this.playerMoves.size();
+	    if (i <=  9) return 1;
+	    if (i <= 16) return 2;
+	    return ((i - 3) / 7) + 1;
 	}
 	
 	public MenuBendingOptions getInstance()
@@ -1014,6 +1194,49 @@ public class MenuBendingOptions extends MenuBase
 		this.hasBeenToggled = menu.hasBeenToggled;
 		this.mode = menu.mode;
 		this.movePage = menu.movePage;
+		this.combos = menu.combos;
 		this.slotIndex = menu.slotIndex;
+	}
+	
+	public static Element getComboElement(String combo) {
+		if (!ComboManager.getDescriptions().containsKey(combo)) return null; //Hidden Combo
+		ComboAbilityInfo info = ComboManager.getComboAbilities().get(combo);
+		
+		CoreAbility abil = CoreAbility.getAbility(info.getAbilities().get(0).getAbilityName());
+		if (abil == null) return null;
+		Element element = abil.getElement();
+		
+		for (int i = 1; i < info.getAbilities().size(); i++) {
+			CoreAbility curAbil = CoreAbility.getAbility(info.getAbilities().get(1).getAbilityName());
+			if (curAbil == null) break;
+			if (curAbil.getElement() instanceof SubElement && !(element instanceof SubElement)) {
+				element = curAbil.getElement();
+			} else if (curAbil.getElement() instanceof SubElement && element instanceof SubElement) {
+				SubElement sub1 = (SubElement) curAbil.getElement();
+				SubElement sub2 = (SubElement) element;
+				if (sub1.getParentElement() != sub1.getParentElement()) {
+					element = Element.AVATAR;
+					break;
+				} else if (sub1 != sub2) {
+					element = sub1.getParentElement();
+				}
+			} else if (!(curAbil.getElement() instanceof SubElement) && !(element instanceof SubElement) && element != curAbil.getElement()) {
+				element = Element.AVATAR;
+				break;
+			}
+		}
+		return element;
+	}
+	
+	public static boolean canBendCombo(String combo, Player player) {
+		if (!ComboManager.getDescriptions().containsKey(combo)) return false; //Hidden Combo
+		ComboAbilityInfo info = ComboManager.getComboAbilities().get(combo);
+		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
+		for (AbilityInformation abi : info.getAbilities()) {
+			if (CoreAbility.getAbility(abi.getAbilityName()) == null || !bPlayer.canBind(CoreAbility.getAbility(abi.getAbilityName()))) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

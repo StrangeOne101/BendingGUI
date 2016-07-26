@@ -12,30 +12,11 @@ import com.strangeone101.bendinggui.menus.MenuBendingOptions;
 
 public class DynamicUpdater 
 {
-	@Deprecated
-	protected OfflinePlayer player;
-	@Deprecated
-	protected int page = 0;
-	@Deprecated
-	public List<String> abilityData = new ArrayList<String>();
-	
-	@Deprecated
-	protected MenuBendingOptions menu;
-	
+	/**Standard GUI*/
 	protected static HashMap<UUID, MenuBendingOptions> guiData = new HashMap<UUID, MenuBendingOptions>();
 	protected static HashMap<UUID, List<UUID>> players = new HashMap<UUID, List<UUID>>();
 	protected static HashMap<UUID, Integer> pages = new HashMap<UUID, Integer>();
-	
-	
-	//@Deprecated
-	/*protected DynamicUpdater(OfflinePlayer player)
-	{
-		this.player = player;
-		if (!guiData.containsKey(player.getUniqueId()))
-		{
-			guiData.put(player.getUniqueId(), this);
-		}
-	}*/
+	protected static HashMap<UUID, Integer> combopages = new HashMap<UUID, Integer>();
 	
 	/**Gets the menu for the player given.*/
 	public static MenuBendingOptions getMenu(OfflinePlayer player)
@@ -73,27 +54,11 @@ public class DynamicUpdater
 				continue;
 			}
 			
+			if (Bukkit.getPlayer(player.getUniqueId()) == menu.getOpenPlayer()) continue;
+			
 			MenuBendingOptions menu1 = (MenuBendingOptions)Bukkit.getPlayer(id).getOpenInventory().getTopInventory();
 			menu1.updateFromMenu(menu);
 		}
-	}
-	
-	@Deprecated
-	public void setPage(int page)
-	{
-		this.page = page;
-	}
-	
-	@Deprecated
-	public int getPage()
-	{
-		return page;
-	}
-	
-	@Deprecated
-	public UUID getPlayerUUID()
-	{
-		return player.getUniqueId();
 	}
 	
 	/*public static DynamicUpdater getData(OfflinePlayer player)
@@ -179,6 +144,18 @@ public class DynamicUpdater
 	{
 		if (pages.containsKey(player.getUniqueId()))
 			return pages.get(player.getUniqueId());
-		return 1;
+		return 0;
+	}
+	
+	public static void setComboPage(OfflinePlayer player, int page)
+	{
+		combopages.put(player.getUniqueId(), page);
+	}
+	
+	public static int getComboPage(OfflinePlayer player)
+	{
+		if (combopages.containsKey(player.getUniqueId()))
+			return combopages.get(player.getUniqueId());
+		return 0;
 	}
 }

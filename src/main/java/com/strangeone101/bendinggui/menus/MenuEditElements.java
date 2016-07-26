@@ -12,6 +12,7 @@ import org.bukkit.material.MaterialData;
 
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
+import com.projectkorra.projectkorra.Element.SubElement;
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent.Result;
@@ -41,8 +42,8 @@ public class MenuEditElements extends MenuBase
 	{
 		this.getInventory().clear();
 		
-		BendingPlayer p = GeneralMethods.getBendingPlayer(player.getName());
-		List<Element> list = Arrays.asList(new Element[] {Element.Fire, Element.Water, Element.Chi, Element.Earth, Element.Air});
+		BendingPlayer p = BendingPlayer.getBendingPlayer(player);
+		List<Element> list = Arrays.asList(new Element[] {Element.FIRE, Element.WATER, Element.CHI, Element.EARTH, Element.AIR});
 		
 		for (int i = 0; i < list.size(); i++)
 		{
@@ -102,25 +103,32 @@ public class MenuEditElements extends MenuBase
 	{
 		MenuItem item;
 		final OfflinePlayer player = this.player;
-		final ChatColor c = element == Element.Air ? ChatColor.GRAY : (element == Element.Chi ? ChatColor.GOLD : (element == Element.Earth ? ChatColor.GREEN : (element == Element.Fire ? ChatColor.RED : (element == Element.Water ? ChatColor.BLUE : ChatColor.LIGHT_PURPLE))));
-		item = new MenuItem(ChatColor.BOLD + "" + c + "" + element.toString().toUpperCase(), this.getElementData(element)) {
+		final ChatColor c = BendingGUI.getColor(element);
+		item = new MenuItem(ChatColor.BOLD + "" + c + "" + element.getName().toUpperCase(), this.getElementData(element)) {
 			@Override
 			public void onClick(Player playerwhoclicked) 
 			{
-				BendingPlayer p = GeneralMethods.getBendingPlayer(player.getName());
+				BendingPlayer p = BendingPlayer.getBendingPlayer(player);
 				if (!p.hasElement(element))
 				{
 					if (playerwhoclicked.hasPermission("bending.admin.add"))
 					{
 						if (player instanceof Player)
-							((Player)player).sendMessage(ChatColor.GREEN + "You are now " + (element == Element.Air || element == Element.Earth ? "an " : "a ") + c + element.toString().toLowerCase() + ChatColor.GREEN + (element == Element.Chi ? "!" : " bender!"));
+							((Player)player).sendMessage(ChatColor.YELLOW + "You are now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + ChatColor.YELLOW + " " + element.getType().getBender() + "!");
 						p.addElement(element);
+						for (SubElement sub : Element.getAllSubElements()) {
+							if (sub.getParentElement() == element && p.hasSubElementPermission(sub)) {
+								p.addSubElement(sub);
+							}
+						}
 						GeneralMethods.saveElements(p);
+						GeneralMethods.saveSubElements(p);
 						if (player instanceof Player)
 						{
 							Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent((Player)player, (Player)player, element, Result.ADD));
 						}
-						playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + ChatColor.GREEN + " is now " + (element == Element.Air || element == Element.Earth ? "an " : "a ") + c + element.toString().toLowerCase() + ChatColor.GREEN + (element == Element.Chi ? "!" : " bender!"));
+						if (!playerwhoclicked.getName().equals(player.getName()))
+						playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + ChatColor.YELLOW + " " + element.getType().getBender() + "!");
 						update();
 					}
 					else
@@ -128,17 +136,34 @@ public class MenuEditElements extends MenuBase
 						playerwhoclicked.sendMessage(ChatColor.RED + "You don't have permission to change people's bending!");
 						closeMenu(playerwhoclicked);
 					}
+				} else {
+					/*if (this.isShiftClicked) {
+						
+					}*/
+					
+					if (player instanceof Player)
+						((Player)player).sendMessage(ChatColor.YELLOW + "Your " + c + element.getName().toLowerCase() + element.getType().getBending() + ChatColor.YELLOW + " was removed!");
+					p.getElements().remove(element);
+					GeneralMethods.saveElements(p);
+					GeneralMethods.removeUnusableAbilities(p.getName());
+					if (player instanceof Player)
+					{
+						Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent((Player)player, (Player)player, element, Result.REMOVE));
+					}
+					if (!playerwhoclicked.getName().equals(player.getName()))
+					playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is no longer " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + ChatColor.YELLOW + element.getName().toLowerCase() + element.getType().getBender() + "!");
+					update();
 				}
 	
 				update();
 			}
 		};
-		boolean b = GeneralMethods.getBendingPlayer(player.getName()).hasElement(element);
-		String notBender = ChatColor.GRAY + "Click to make " + ChatColor.YELLOW + player.getName() + ChatColor.RESET + ChatColor.GRAY + " " + (element == Element.Air || element == Element.Earth ? "an " : "a ") + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender!";
-		String isBender = ChatColor.GRAY + "This player is already a " + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender! You must remove all bending before you can add this again!";
+		boolean b = BendingPlayer.getBendingPlayer(player).hasElement(element);
+		String notBender = ChatColor.GRAY + "Click to make " + ChatColor.YELLOW + player.getName() + ChatColor.RESET + ChatColor.GRAY + " " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender!";
+		String isBender = ChatColor.GRAY + "This player is already a " + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender! Click to remove this element!";
 		//item.setDescriptions(Arrays.asList((b ? isBender.split("\n") : notBender.split("\n"))));
 		item.setDescriptions(BendingGUI.getDescriptions(b ? isBender : notBender, ChatColor.GRAY, 58));
-		if (GeneralMethods.getBendingPlayer(player.getName()).hasElement(element))
+		if (BendingPlayer.getBendingPlayer(player).hasElement(element))
 		{
 			item.setEnchanted(true);
 		}
@@ -167,21 +192,16 @@ public class MenuEditElements extends MenuBase
 	
 	public MaterialData getElementData(Element type)
 	{
-		switch (type)
+		if (type instanceof SubElement)
 		{
-			case Fire:
-				return new MaterialData(Material.BLAZE_POWDER);
-			case Water:
-				return new MaterialData(Material.WATER_BUCKET);
-			case Chi:
-				return new MaterialData(Material.STICK);
-			case Earth:
-				return new MaterialData(Material.GRASS);
-			case Air:
-				return new MaterialData(Material.STRING);
-			default:
-				return new MaterialData(Material.REDSTONE);
+			type = ((SubElement)type).getParentElement();
 		}
+		if (type == Element.FIRE) return new MaterialData(Material.BLAZE_POWDER);
+		if (type == Element.WATER) return new MaterialData(Material.WATER_BUCKET);
+		if (type == Element.CHI) return new MaterialData(Material.STICK);
+		if (type == Element.EARTH) return new MaterialData(Material.GRASS);
+		if (type == Element.AIR) return new MaterialData(Material.STRING);
+		else return new MaterialData(Material.REDSTONE);
 	}
 	
 	@Override

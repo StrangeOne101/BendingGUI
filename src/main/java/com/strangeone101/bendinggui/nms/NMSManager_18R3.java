@@ -1,15 +1,15 @@
 package com.strangeone101.bendinggui.nms;
 
-import net.minecraft.server.v1_8_R4.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 
-import org.bukkit.craftbukkit.v1_8_R4.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
-public class NMSManager_RC4 implements INMSManager 
+public class NMSManager_18R3 implements INMSManager 
 {
 	public ItemStack addGlow(ItemStack itemstack) 
 	{
-		net.minecraft.server.v1_8_R4.ItemStack stack = this.toNMSStack(itemstack);
+		net.minecraft.server.v1_8_R3.ItemStack stack = this.toNMSStack(itemstack);
 		NBTTagCompound tag = new NBTTagCompound();
 		if (stack.getTag() != null)
 		{
@@ -28,12 +28,12 @@ public class NMSManager_RC4 implements INMSManager
 		return this.toBukkitStack(stack);
 	}
 	
-	private net.minecraft.server.v1_8_R4.ItemStack toNMSStack(ItemStack stack)
+	private net.minecraft.server.v1_8_R3.ItemStack toNMSStack(ItemStack stack)
 	{
 		return CraftItemStack.asNMSCopy(stack);
 	}
 	
-	private ItemStack toBukkitStack(net.minecraft.server.v1_8_R4.ItemStack stack)
+	private ItemStack toBukkitStack(net.minecraft.server.v1_8_R3.ItemStack stack)
 	{
 		return CraftItemStack.asCraftMirror(stack);
 	}

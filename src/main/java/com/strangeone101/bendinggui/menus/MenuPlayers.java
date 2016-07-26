@@ -15,13 +15,12 @@ import org.bukkit.material.MaterialData;
 
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
-import com.projectkorra.projectkorra.GeneralMethods;
-import com.projectkorra.projectkorra.ability.StockAbility;
 import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.Config;
 import com.strangeone101.bendinggui.MenuBase;
 import com.strangeone101.bendinggui.MenuItem;
 import com.strangeone101.bendinggui.RunnablePlayer;
+import com.strangeone101.bendinggui.Util;
 
 public class MenuPlayers extends MenuBase 
 {
@@ -117,7 +116,7 @@ public class MenuPlayers extends MenuBase
 			}
 		};
 		
-		if (GeneralMethods.getBendingPlayer(player.getName()) == null || GeneralMethods.getBendingPlayer(player.getName()).getElements() == null || GeneralMethods.getBendingPlayer(player.getName()).getElements().size() == 0)
+		if (BendingPlayer.getBendingPlayer(player) == null || BendingPlayer.getBendingPlayer(player).getElements() == null || BendingPlayer.getBendingPlayer(player).getElements().size() == 0)
 		{
 			item.addDescription(ChatColor.GRAY + "(Non-bender)");
 			if (openPlayer.hasPermission("bendinggui.admin.view"))
@@ -128,20 +127,20 @@ public class MenuPlayers extends MenuBase
 			return item;
 		}
 		if ((player instanceof Player && ((Player)player).hasPermission("bending.avatar")) || 
-				GeneralMethods.getBendingPlayer(player.getName()).getElements().size() > 1)
+				BendingPlayer.getBendingPlayer(player).getElements().size() > 1)
 		{
-			boolean b = GeneralMethods.getBendingPlayer(player.getName()).hasElement(Element.Earth) || GeneralMethods.getBendingPlayer(player.getName()).hasElement(Element.Air);
-			item.addDescription((player.getName() != openPlayer.getName() ? ChatColor.GRAY + "Currently the " : ChatColor.GRAY + "You are the " ) + GeneralMethods.getAbilityColor("AvatarState") + "Avatar" );
+			boolean b = BendingPlayer.getBendingPlayer(player).hasElement(Element.EARTH) || BendingPlayer.getBendingPlayer(player).hasElement(Element.AIR);
+			item.addDescription((player.getName() != openPlayer.getName() ? ChatColor.GRAY + "Currently the " : ChatColor.GRAY + "You are the " ) + Element.AVATAR.getColor() + "Avatar" );
 			item.addDescription(ChatColor.DARK_GRAY + (player.getName() != openPlayer.getName() ? "They" : "You") + " are currently a" + (b ? "n" : "") + ":");
 		}
 		else
 		{
-			boolean b = GeneralMethods.getBendingPlayer(player.getName()).hasElement(Element.Earth) || GeneralMethods.getBendingPlayer(player.getName()).hasElement(Element.Air);
+			boolean b = BendingPlayer.getBendingPlayer(player).hasElement(Element.EARTH) || BendingPlayer.getBendingPlayer(player).hasElement(Element.AIR);
 			item.addDescription((player.getName() != openPlayer.getName() ? ChatColor.DARK_GRAY + "They" : ChatColor.GRAY + "You" ) + " are currently a" + (b ? "n" : "") + ":");
 		}
-		BendingPlayer p = GeneralMethods.getBendingPlayer(player.getName());
+		BendingPlayer p = BendingPlayer.getBendingPlayer(player);
 	
-		if (p.getElements().contains(Element.Air)) 
+		if (p.getElements().contains(Element.AIR)) 
 		{
 			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + "Airbender";
 			if (player instanceof Player) 
@@ -150,7 +149,7 @@ public class MenuPlayers extends MenuBase
 				item.addDescription(s);
 			}
 		}
-		if (p.getElements().contains(Element.Earth)) 
+		if (p.getElements().contains(Element.EARTH)) 
 		{
 			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GREEN + "Earthbender";
 			if (player instanceof Player) 
@@ -160,17 +159,17 @@ public class MenuPlayers extends MenuBase
 				if (((Player)player).hasPermission("bending.earth.metalbending") && Config.showSubElementsOnUser) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.MetalClips.toString()) + "Metalbend");
+					list.add(Element.METAL.getColor() + "Metalbend");
 				}
 				if (((Player)player).hasPermission("bending.earth.lavabending") && Config.showSubElementsOnUser) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.LavaFlow.toString()) + "Lavabend");
+					list.add(Element.LAVA.getColor() + "Lavabend");
 				}
 				if (((Player)player).hasPermission("bending.earth.sandbending") && Config.showSubElementsOnUser) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.SandSpout.toString()) + "Sandbend");
+					list.add(Element.SAND.getColor() + "Sandbend");
 				}
 				if (b && Config.showSubElementsOnUser) 
 				{
@@ -183,7 +182,7 @@ public class MenuPlayers extends MenuBase
 				}
 			}
 		}
-		if (p.getElements().contains(Element.Fire)) 
+		if (p.getElements().contains(Element.FIRE)) 
 		{
 			String s = ChatColor.DARK_GRAY + "- " + ChatColor.RED + "Firebender";
 			if (player instanceof Player) 
@@ -193,12 +192,12 @@ public class MenuPlayers extends MenuBase
 				if (((Player)player).hasPermission("bending.fire.lightningbending")) 
 				{
 					b = true;
-					list.add("Can use " + GeneralMethods.getAbilityColor(StockAbility.Lightning.toString()) + "Lightning");
+					list.add("Can use " + Element.LIGHTNING.getColor() + "Lightning");
 				}
 				if (((Player)player).hasPermission("bending.fire.combustionbending")) 
 				{
 					b = true;
-					list.add("Can " + GeneralMethods.getAbilityColor(StockAbility.Combustion.toString()) + "Combust");
+					list.add("Can " + Element.COMBUSTION.getColor() + "Combust");
 				}
 				if (b && Config.showSubElementsOnUser) 
 				{
@@ -212,7 +211,7 @@ public class MenuPlayers extends MenuBase
 			}
 			
 		}
-		if (p.getElements().contains(Element.Water)) 
+		if (p.getElements().contains(Element.WATER)) 
 		{
 			String s = ChatColor.DARK_GRAY + "- " + ChatColor.BLUE + "Waterbender";
 			if (player instanceof Player) 
@@ -222,17 +221,17 @@ public class MenuPlayers extends MenuBase
 				if (((Player)player).hasPermission("bending.water.bloodbending")) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.Bloodbending.toString()) + "Bloodbend");
+					list.add(Element.BLOOD.getColor() + "Bloodbend");
 				}
 				if (((Player)player).hasPermission("bending.water.plantbending")) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.Surge.toString()) + "Plantbend");
+					list.add(Element.PLANT.getColor() + "Plantbend");
 				}
 				if (((Player)player).hasPermission("bending.water.healing")) 
 				{
 					b = true;
-					list.add(GeneralMethods.getAbilityColor(StockAbility.HealingWaters.toString()) + "Heal");
+					list.add(Element.HEALING.getColor() + "Heal");
 				}
 				if (b && Config.showSubElementsOnUser) 
 				{
@@ -246,10 +245,13 @@ public class MenuPlayers extends MenuBase
 			}
 			
 		}
-		if (p.getElements().contains(Element.Chi)) 
+		if (p.getElements().contains(Element.CHI)) 
 		{
 			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GOLD + "Chiblocker";
 			item.addDescription(s);
+		}
+		if (!Util.getStaff(player.getUniqueId()).equals("")) {
+			item.addDescription(Util.getStaff(player.getUniqueId()));
 		}
 		
 		if (openPlayer.hasPermission("bendinggui.admin.view"))
