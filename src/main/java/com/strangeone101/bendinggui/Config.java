@@ -66,14 +66,14 @@ public class Config
 			
 			for (Element e : Element.getSubElements())
 			{
-				String stringicon = config.getString("Icons.SubElements." + e.toString(), saveMaterialData(elementIcons.get(e)));
+				String stringicon = config.getString("Icons.SubElements." + e.getName(), saveMaterialData(elementIcons.get(e)));
 				MaterialData icon = loadMaterialData(stringicon);
 				elementIcons.put(e, icon);
 			}
 			
 			for (Element e1 : Element.getMainElements())
 			{
-				String stringicon = config.getString("Icons.Elements." + e1.toString(), saveMaterialData(elementIcons.get(e1)));
+				String stringicon = config.getString("Icons.Elements." + e1.getName(), saveMaterialData(elementIcons.get(e1)));
 				MaterialData icon = loadMaterialData(stringicon);
 				elementIcons.put(e1, icon);
 			}
@@ -119,8 +119,8 @@ public class Config
 		
 		for (Element e1 : elementIcons.keySet())
 		{
-			if (e1 instanceof SubElement) config.set("Icons.SubElements." + e1.toString(), saveMaterialData(elementIcons.get(e1)));
-			else config.set("Icons.Elements." + e1.toString(), saveMaterialData(elementIcons.get(e1)));
+			if (e1 instanceof SubElement) config.set("Icons.SubElements." + e1.getName(), saveMaterialData(elementIcons.get(e1)));
+			else config.set("Icons.Elements." + e1.getName(), saveMaterialData(elementIcons.get(e1)));
 		}
 		config.set("Icons.Elements.Avatar", saveMaterialData(avatarIcon));
 		
