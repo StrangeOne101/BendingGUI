@@ -30,14 +30,16 @@ public class BendingBoard
 		}
 		
 		if (boardPlugin == null && BBPlugin.BE.getPlugin() != null) {
-			//TODO Check if enabled and assign boardPlugin
+			if (me.loony.Config.ConfigWriter.defaultConfig.get().getBoolean("BendingBoard.Enabled")) {
+				boardPlugin = BBPlugin.BE;
+			}
 		}
 	}
 	
 	/**Returns whether the current board is toggled or not*/
 	public static boolean isToggled(Player player) {
 		if (boardPlugin == BBPlugin.BE) {
-			//TODO 
+			return me.loony.Config.ConfigWriter.toggledPlayersFile.get().getBoolean(player.getName());
 		} else if (boardPlugin == BBPlugin.JEDCORE) {
 			return com.jedk1.jedcore.scoreboard.BendingBoard.disabled.contains(player.getUniqueId());
 		}
@@ -48,7 +50,7 @@ public class BendingBoard
 	/**Toggle the current bending board, if it's in use.*/
 	public static void toggle(Player player) {
 		if (boardPlugin == BBPlugin.BE) {
-			//TODO Toggle BE board
+			me.loony.Config.ConfigWriter.toggledPlayersFile.get().set(player.getName(), !me.loony.Config.ConfigWriter.toggledPlayersFile.get().getBoolean(player.getName()));
 		} else if (boardPlugin == BBPlugin.JEDCORE) {
 			com.jedk1.jedcore.scoreboard.BendingBoard.toggle(player);
 		}

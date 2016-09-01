@@ -24,7 +24,6 @@ import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import com.projectkorra.projectkorra.ability.util.ComboManager.AbilityInformation;
 import com.projectkorra.projectkorra.ability.util.ComboManager.ComboAbilityInfo;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
-import com.projectkorra.projectkorra.event.BindChangeEvent;
 import com.strangeone101.bendinggui.BendingBoard;
 import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.Config;
@@ -246,6 +245,7 @@ public class MenuBendingOptions extends MenuBase
 						HashMap<Integer, String> abilities = bPlayer.getAbilities();
 						abilities.remove(index + 1);
 						bPlayer.setAbilities(abilities);
+						GeneralMethods.saveAbility(bPlayer, index + 1, null);
 						//GeneralMethods.bindAbility(thePlayer, null, index);
 						player.sendMessage(ChatColor.RED + "Removed " + move.toString() + " from Slot " + (index + 1));
 						update();
@@ -302,6 +302,9 @@ public class MenuBendingOptions extends MenuBase
 					bPlayer.setAbilities(abilities);
 					player.sendMessage(ChatColor.RED + "Removed all bound moves from slots.");
 					mode = mode == Mode.DELETE ? Mode.NONE : mode;
+					for (int i = 1; i <= 9; i++) {
+						GeneralMethods.saveAbility(bPlayer, i, null);
+					}
 				}
 				else
 				{
@@ -787,11 +790,6 @@ public class MenuBendingOptions extends MenuBase
 			return;
 		}
 		
-		BindChangeEvent event = new BindChangeEvent(player, move, slot + 1, true);
-		Bukkit.getPluginManager().callEvent(event);
-		if (event.isCancelled()) {
-			return;
-		}
 		BendingPlayer.getBendingPlayer(player.getName()).getAbilities().put(slot + 1, move);
 		GeneralMethods.saveAbility(BendingPlayer.getBendingPlayer(player.getName()), slot + 1, move);
 		//GeneralMethods.bindAbility(player, move, slot + 1);

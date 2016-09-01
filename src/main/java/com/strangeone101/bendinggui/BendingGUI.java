@@ -232,33 +232,36 @@ public class BendingGUI extends JavaPlugin
 		{
 			return "The version of ProjectKorra installed is not fully supported yet! Do not be surprised if something breaks!";
 		}
-		else if (version.toLowerCase().contains("beta"))
+		else if (varg1.startsWith("1.8."))
 		{
-			try
+			if (version.toLowerCase().contains("beta")) 
 			{
-				int betav = Integer.parseInt(version.split(" ", 3)[2]);
-				if (betav <= 9)
+				try
 				{
-					return "!This version of BendingGUI is made for ProjectKorra 1.8.0 or ProjectKorra 1.9.0 Beta 1! The version you have will not work!";
+					int betav = Integer.parseInt(version.split(" ", 3)[2]);
+					if (betav <= 9)
+					{
+						return "!This version of BendingGUI is made for ProjectKorra 1.8.0 or ProjectKorra 1.9.0 Beta 1! The version you have will not work!";
+					}
 				}
-			}
-			catch (IndexOutOfBoundsException e)
-			{
-				return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
-			}
-			catch (NumberFormatException e)
-			{
-				return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
-			}
+				catch (IndexOutOfBoundsException e)
+				{
+					return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
+				}
+				catch (NumberFormatException e)
+				{
+					return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
+				}
+			} 
 		}
-		else if (version.toLowerCase().contains("alpha"))
+		else if (varg1.startsWith("1.9."))
 		{
 			try
 			{
 				int betav = Integer.parseInt(version.split(" ", 3)[2]);
-				if (betav > 1)
+				if (betav > 6)
 				{
-					log.warning("This version of BendingGUI is made for ProjectKorra 1.8.0 Beta 11 OR ProjectKorra 1.9.0 Beta 1. You are running a higher version which may not be fully supported yet!");
+					log.warning("This version of BendingGUI is made for ProjectKorra 1.8.0 Stable. You are running a higher version which may not be fully supported yet!");
 				}
 			}
 			catch (IndexOutOfBoundsException e)
