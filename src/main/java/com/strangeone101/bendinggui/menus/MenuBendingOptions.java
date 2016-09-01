@@ -14,7 +14,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.jedk1.jedcore.scoreboard.BendingBoard;
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.Element.SubElement;
@@ -25,6 +24,8 @@ import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import com.projectkorra.projectkorra.ability.util.ComboManager.AbilityInformation;
 import com.projectkorra.projectkorra.ability.util.ComboManager.ComboAbilityInfo;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
+import com.projectkorra.projectkorra.event.BindChangeEvent;
+import com.strangeone101.bendinggui.BendingBoard;
 import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.Config;
 import com.strangeone101.bendinggui.Descriptions;
@@ -322,9 +323,9 @@ public class MenuBendingOptions extends MenuBase
 	
 	/**Toggles the bending board*/
 	@SuppressWarnings("deprecation")
-	public MenuItem getBBToggle(OfflinePlayer player)
+	public MenuItem getBBToggle(Player player)
 	{
-		final boolean b = !BendingBoard.disabled.contains(player.getUniqueId());
+		final boolean b = !BendingBoard.isToggled(player);
 		MaterialData material = new MaterialData(Material.INK_SACK, (byte) (b ? 10 : 8));
 		String s = (b ? ChatColor.GREEN : ChatColor.RED) + "Toggle BendingBoard " + GRAY + (b ? "(ACTIVE)" : "");
 		MenuItem item = new MenuItem(s, material) {
@@ -333,6 +334,7 @@ public class MenuBendingOptions extends MenuBase
 			public void onClick(Player player) 
 			{
 				if (thePlayer instanceof Player) {
+					//BendingBoard.toggle((Player) thePlayer);
 					BendingBoard.toggle((Player) thePlayer);
 					update();
 					DynamicUpdater.updateMenu(thePlayer, getInstance());
@@ -784,6 +786,12 @@ public class MenuBendingOptions extends MenuBase
 			this.closeMenu(openPlayer);
 			return;
 		}
+		
+		BindChangeEvent event = new BindChangeEvent(player, move, slot + 1, true);
+		Bukkit.getPluginManager().callEvent(event);
+		if (event.isCancelled()) {
+			return;
+		}
 		BendingPlayer.getBendingPlayer(player.getName()).getAbilities().put(slot + 1, move);
 		GeneralMethods.saveAbility(BendingPlayer.getBendingPlayer(player.getName()), slot + 1, move);
 		//GeneralMethods.bindAbility(player, move, slot + 1);
@@ -1059,8 +1067,8 @@ public class MenuBendingOptions extends MenuBase
 			this.getInventory().getItem(27).setItemMeta(meta);
 		}
 		
-		if (BendingGUI.jedcore) {
-			this.addMenuItem(getBBToggle(thePlayer), 3, 3);
+		if (BendingBoard.isBoardEnabled() && thePlayer instanceof Player) {
+			this.addMenuItem(getBBToggle((Player) thePlayer), 3, 3);
 		}
 		
 	}

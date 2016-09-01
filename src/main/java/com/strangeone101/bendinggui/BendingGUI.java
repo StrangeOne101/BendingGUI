@@ -43,7 +43,7 @@ public class BendingGUI extends JavaPlugin
 	
 	public static boolean loaded = false;
 	public static boolean enabled = true;
-	public static boolean jedcore = false;
+	//public static boolean jedcore = false;
 	public static String versionInfo;
 	
 	public static List<Element> elementOrder;
@@ -101,7 +101,7 @@ public class BendingGUI extends JavaPlugin
 			return;
 		}
 		
-		if (Bukkit.getPluginManager().getPlugin("JedCore") != null) jedcore = true;
+		BendingBoard.checkPlugins();
 		
 		versionInfo = checkVersion();
 
