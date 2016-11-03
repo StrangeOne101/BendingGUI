@@ -24,8 +24,6 @@ import com.strangeone101.bendinggui.command.GuiCommand;
 import com.strangeone101.bendinggui.nms.INMSManager;
 import com.strangeone101.bendinggui.nms.NMSManager_110R1;
 import com.strangeone101.bendinggui.nms.NMSManager_110R2;
-import com.strangeone101.bendinggui.nms.NMSManager_18R1;
-import com.strangeone101.bendinggui.nms.NMSManager_18R2;
 import com.strangeone101.bendinggui.nms.NMSManager_18R3;
 import com.strangeone101.bendinggui.nms.NMSManager_19R1;
 import com.strangeone101.bendinggui.nms.NMSManager_19R2;
@@ -254,28 +252,9 @@ public class BendingGUI extends JavaPlugin
 				}
 			} 
 		}
-		else if (varg1.startsWith("1.9."))
-		{
-			try
-			{
-				int betav = Integer.parseInt(version.split(" ", 3)[2]);
-				if (betav > 6)
-				{
-					log.warning("This version of BendingGUI is made for ProjectKorra 1.8.0 Stable. You are running a higher version which may not be fully supported yet!");
-				}
-			}
-			catch (IndexOutOfBoundsException e)
-			{
-				return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
-			}
-			catch (NumberFormatException e)
-			{
-				return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
-			}
-		}
 		else
 		{
-			return "This version of BendingGUI is made for ProjectKorra 1.8.0 Beta 11 OR ProjectKorra 1.9.0 Aplha 1. You are running a higher version which may not be fully supported yet.";
+			return "This version of BendingGUI is made for ProjectKorra Core 1.8.0! You are running a higher or modded version which may not be fully supported yet.";
 		}
 		return "";
 	}
@@ -326,15 +305,7 @@ public class BendingGUI extends JavaPlugin
 	    try 
 	    {
 	        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
-	        if (version.equals("v1_8_R1")) 
-		    {
-		        return new NMSManager_18R1();
-		    } 
-		    else if (version.equals("v1_8_R2")) 
-		    {
-		        return new NMSManager_18R2();
-		    }
-		    else if (version.equals("v1_8_R3")) 
+	        if (version.equals("v1_8_R3")) 
 		    {
 		    	return new NMSManager_18R3();
 		    }

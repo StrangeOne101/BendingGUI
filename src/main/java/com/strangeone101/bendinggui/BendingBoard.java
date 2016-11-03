@@ -29,7 +29,7 @@ public class BendingBoard
 			}
 		}
 		
-		if (boardPlugin == null && BBPlugin.BE.getPlugin() != null) {
+		if (boardPlugin == BBPlugin.NONE && BBPlugin.BE.getPlugin() != null) {
 			if (me.loony.Config.ConfigWriter.defaultConfig.get().getBoolean("BendingBoard.Enabled")) {
 				boardPlugin = BBPlugin.BE;
 			}

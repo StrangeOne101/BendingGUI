@@ -88,6 +88,9 @@ public class Listener implements org.bukkit.event.Listener
 	                    }
 	                    else
 	                    {
+	                    	if (event.isShiftClick()) {
+	                    		event.setCancelled(true);
+	                    	}
 	                    	menu.setLastClickedSlot(index);
 	                    }
 	                }
