@@ -5,15 +5,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.jedk1.jedcore.configuration.JedCoreConfig;
+import com.runefist.bendingboard.config.ConfigManager;
 
 public class BendingBoard 
 {
 	public enum BBPlugin {
 		
-		JEDCORE, BE, NONE;
+		JEDCORE, BB, NONE;
 		
 		public Plugin getPlugin() {
-			if (this == BE) return Bukkit.getPluginManager().getPlugin("BendingEssentials");
+			if (this == BB) return Bukkit.getPluginManager().getPlugin("BendingBoard");
 			if (this == JEDCORE) return Bukkit.getPluginManager().getPlugin("JedCore");
 			return null;
 		}
@@ -29,17 +30,15 @@ public class BendingBoard
 			}
 		}
 		
-		if (boardPlugin == BBPlugin.NONE && BBPlugin.BE.getPlugin() != null) {
-			if (me.loony.Config.ConfigWriter.defaultConfig.get().getBoolean("BendingBoard.Enabled")) {
-				boardPlugin = BBPlugin.BE;
-			}
+		if (boardPlugin == BBPlugin.NONE && BBPlugin.BB.getPlugin() != null) {
+			boardPlugin = BBPlugin.BB;
 		}
 	}
 	
 	/**Returns whether the current board is toggled or not*/
 	public static boolean isToggled(Player player) {
-		if (boardPlugin == BBPlugin.BE) {
-			return me.loony.Config.ConfigWriter.toggledPlayersFile.get().getBoolean(player.getName());
+		if (boardPlugin == BBPlugin.BB) {
+			return ConfigManager.toggledPlayersConfig.get().getStringList("ToggledPlayers").contains(player.getUniqueId().toString());
 		} else if (boardPlugin == BBPlugin.JEDCORE) {
 			return com.jedk1.jedcore.scoreboard.BendingBoard.disabled.contains(player.getUniqueId());
 		}
@@ -49,8 +48,8 @@ public class BendingBoard
 	
 	/**Toggle the current bending board, if it's in use.*/
 	public static void toggle(Player player) {
-		if (boardPlugin == BBPlugin.BE) {
-			me.loony.Config.ConfigWriter.toggledPlayersFile.get().set(player.getName(), !me.loony.Config.ConfigWriter.toggledPlayersFile.get().getBoolean(player.getName()));
+		if (boardPlugin == BBPlugin.BB) {
+			player.performCommand("bending board");
 		} else if (boardPlugin == BBPlugin.JEDCORE) {
 			com.jedk1.jedcore.scoreboard.BendingBoard.toggle(player);
 		}

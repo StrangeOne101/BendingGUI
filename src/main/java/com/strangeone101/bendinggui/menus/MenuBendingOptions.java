@@ -2,6 +2,7 @@ package com.strangeone101.bendinggui.menus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -881,7 +882,7 @@ public class MenuBendingOptions extends MenuBase
 			} else {
 				HashMap<Element, List<CoreAbility>> abilities = new HashMap<Element, List<CoreAbility>>();
 				
-				for (CoreAbility ability : CoreAbility.getAbilities())
+				mainloop: for (CoreAbility ability : CoreAbility.getAbilities())
 				{
 					if ((player instanceof Player && BendingPlayer.getBendingPlayer(player).canBind(ability)) || ((!(player instanceof Player)) && !this.playerMoves.contains(ability.getName())))
 					{
@@ -891,6 +892,12 @@ public class MenuBendingOptions extends MenuBase
 						{
 							abilities.put(ability.getElement(), new ArrayList<CoreAbility>());
 						}
+						
+						for (CoreAbility ability2 : abilities.get(ability.getElement())) {
+							if (ability2.getName().equals(ability.getName())) {
+								continue mainloop;
+							}
+						}
 						abilities.get(ability.getElement()).add(ability);
 					}
 				}
@@ -899,10 +906,16 @@ public class MenuBendingOptions extends MenuBase
 				{
 					List<CoreAbility> abilities_ = abilities.get(element);
 					if (abilities_ == null || abilities_.isEmpty()) continue;
+					List<String> abilitylist = new ArrayList<String>();
 					for (CoreAbility ab : abilities_)
 					{
-						this.playerMoves.add(ab.getName());
+						abilitylist.add(ab.getName());
 					}
+					
+					Collections.sort(abilitylist);
+					this.playerMoves.addAll(abilitylist);
+					
+					
 				}
 				
 				//Hopefully fix bug
@@ -925,7 +938,7 @@ public class MenuBendingOptions extends MenuBase
 						run.runTaskLater(BendingGUI.INSTANCE, 200L);
 						 //Try again
 					//}
-				}
+				} 
 				/*else
 				{
 					DynamicUpdater.getData(player).abilityData = this.playerMoves;

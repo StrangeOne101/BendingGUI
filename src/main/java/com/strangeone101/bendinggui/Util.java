@@ -56,7 +56,7 @@ public class Util
 		//else if (id.toString().equals("4eb6315e-9dd1-49f7-b582-c1170e497ab0")) return ChatColor.DARK_PURPLE + "ProjectKorra Developer"; // jedk1
 		else if (id.toString().equals("d7757be8-86de-4898-ab4f-2b1b2fbc3dfa")) return ChatColor.DARK_PURPLE + "ProjectKorra Developer"; // StrangeOne101
 		else if (id.toString().equals("3b5bdfab-8ae1-4794-b160-4f33f31fde99")) return ChatColor.DARK_PURPLE + "ProjectKorra Developer"; // kingbirdy
-		else if (id.toString().equals("dedf335b-d282-47ab-8ffc-a80121661cd1")) return ChatColor.DARK_PURPLE + "ProjectKorra Developer"; // grasshopperMatt
+		//else if (id.toString().equals("dedf335b-d282-47ab-8ffc-a80121661cd1")) return ChatColor.DARK_PURPLE + "ProjectKorra Developer"; // grasshopperMatt
 		//else if (id.toString().equals("679a6396-6a31-4898-8130-044f34bef743")) return ChatColor.DARK_PURPLE + "ProjectKorra Developer"; // savior67
 		//else if (id.toString().equals("7bb267eb-cf0b-4fb9-a697-27c2a913ed92")) return ChatColor.DARK_PURPLE + "ProjectKorra Developer"; // Finn
 		else if (id.toString().equals("1c30007f-f8ef-4b4e-aff0-787aa1bc09a3")) return ChatColor.DARK_PURPLE + "ProjectKorra Developer"; // Sorin

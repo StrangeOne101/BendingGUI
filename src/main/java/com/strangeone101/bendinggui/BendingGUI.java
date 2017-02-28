@@ -24,6 +24,7 @@ import com.strangeone101.bendinggui.command.GuiCommand;
 import com.strangeone101.bendinggui.nms.INMSManager;
 import com.strangeone101.bendinggui.nms.NMSManager_110R1;
 import com.strangeone101.bendinggui.nms.NMSManager_110R2;
+import com.strangeone101.bendinggui.nms.NMSManager_111R1;
 import com.strangeone101.bendinggui.nms.NMSManager_18R3;
 import com.strangeone101.bendinggui.nms.NMSManager_19R1;
 import com.strangeone101.bendinggui.nms.NMSManager_19R2;
@@ -224,9 +225,9 @@ public class BendingGUI extends JavaPlugin
 		String varg1 = version.split(" ")[0];
 		if (varg1.startsWith("1.4.0") || varg1.startsWith("1.5.0") || varg1.startsWith("1.6.0") || varg1.startsWith("1.7.0"))
 		{
-			return "!BendingGUI does not support version ProjectKorra " + varg1 + "! Please upgrade to version 1.8.0 Beta 10 or higher!";
+			return "!BendingGUI does not support version ProjectKorra " + varg1 + "! Please upgrade to version 1.8.0 or higher!";
 		}
-		else if (!varg1.startsWith("1.8.") && !varg1.startsWith("1.9."))
+		else if (!varg1.startsWith("1.8."))
 		{
 			return "The version of ProjectKorra installed is not fully supported yet! Do not be surprised if something breaks!";
 		}
@@ -324,6 +325,10 @@ public class BendingGUI extends JavaPlugin
 		    else if (version.equals("v1_10_R2")) 
 		    {
 		    	return new NMSManager_110R2();
+		    }
+		    else if (version.equals("v1_11_R1")) 
+		    {
+		    	return new NMSManager_111R1();
 		    }
 	    } 
 	    catch (ArrayIndexOutOfBoundsException e) 

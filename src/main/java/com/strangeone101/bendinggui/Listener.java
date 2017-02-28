@@ -21,6 +21,7 @@ public class Listener implements org.bukkit.event.Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void onItemRightClick(PlayerInteractEvent e)
 	{
+		if (e.isCancelled()) return;
 		if (!BendingGUI.enabled) {
 			if (!BendingGUI.versionInfo.equals("")) {
 				if (e.getPlayer().hasPermission("bendinggui.admin")) {
@@ -57,7 +58,7 @@ public class Listener implements org.bukkit.event.Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void onMenuItemClicked(InventoryClickEvent event) 
 	{
-		if (!BendingGUI.enabled) return;
+		if (!BendingGUI.enabled || event.isCancelled()) return;
 		try
 		{
 			Inventory inventory = event.getInventory();
