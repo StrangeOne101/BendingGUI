@@ -180,7 +180,7 @@ public class MenuBendingOptions extends MenuBase
 			if (element instanceof SubElement) element = ((SubElement)element).getParentElement();
 			c = element == Element.AIR ? ChatColor.GRAY : (element == Element.CHI ? ChatColor.GOLD : (element == Element.EARTH ? ChatColor.GREEN : (element == Element.FIRE ? ChatColor.RED : (element == Element.WATER ? ChatColor.BLUE : (element == Element.AVATAR ? ChatColor.LIGHT_PURPLE : element.getColor())))));
 			if (element == Element.AIR) {mat.setData((byte)0);}
-			else if (element == Element.EARTH) {mat.setData((byte)13);}
+			else if (element == Element.EARTH) {mat.setData((byte)5);}
 			else if (element == Element.FIRE) {mat.setData((byte)14);}
 			else if (element == Element.WATER) {mat.setData((byte)11);}
 			else if (element == Element.CHI) {mat.setData((byte)4);}
@@ -394,6 +394,9 @@ public class MenuBendingOptions extends MenuBase
 				//to that players which stops functionality for admins looking at other player's bindings
 				if (movePage == getMaxPages() - 1 && isRightDirection) return;
 				movePage = isRightDirection ? movePage + 1 : movePage - 1;
+				if (isShiftClicked) {
+					movePage = isRightDirection ? getMaxPages() - 1 : 0;
+				}
 				if (combos) DynamicUpdater.setComboPage(thePlayer, movePage);
 				else DynamicUpdater.setPage(thePlayer, movePage);
 				
@@ -794,7 +797,9 @@ public class MenuBendingOptions extends MenuBase
 		BendingPlayer.getBendingPlayer(player.getName()).getAbilities().put(slot + 1, move);
 		GeneralMethods.saveAbility(BendingPlayer.getBendingPlayer(player.getName()), slot + 1, move);
 		//GeneralMethods.bindAbility(player, move, slot + 1);
-		ChatColor c = CoreAbility.getAbility(move).getElement() == Element.AIR ? ChatColor.GRAY : (CoreAbility.getAbility(move).getElement() == Element.CHI ? ChatColor.GOLD : (CoreAbility.getAbility(move).getElement() == Element.EARTH ? ChatColor.GREEN : (CoreAbility.getAbility(move).getElement() == Element.FIRE ? ChatColor.RED : (CoreAbility.getAbility(move).getElement() == Element.WATER ? ChatColor.BLUE : ChatColor.LIGHT_PURPLE))));
+		Element e = CoreAbility.getAbility(move).getElement();
+		if (e instanceof SubElement) e = ((SubElement)e).getParentElement();
+		ChatColor c = e == Element.AIR ? ChatColor.GRAY : (e == Element.CHI ? ChatColor.GOLD : (e == Element.EARTH ? ChatColor.GREEN : (e == Element.FIRE ? ChatColor.RED : (e == Element.WATER ? ChatColor.BLUE : ChatColor.LIGHT_PURPLE))));
 		player.sendMessage(c + move.toString() + ChatColor.YELLOW + " bound to slot " + (slot + 1) + "!");
 	}
 	

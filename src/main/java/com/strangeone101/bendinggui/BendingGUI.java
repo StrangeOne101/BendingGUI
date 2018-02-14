@@ -329,13 +329,14 @@ public class BendingGUI extends JavaPlugin
 		    else if (version.equals("v1_11_R1")) 
 		    {
 		    	return new NMSManager_111R1();
+		    } else {
+		    	return new NMSManager_111R1();
 		    }
 	    } 
 	    catch (ArrayIndexOutOfBoundsException e) 
 	    {
 	        return null;
 	    }
-	    return null;
 	}	
 	
 	public static ChatColor getColor(Element element)

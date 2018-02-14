@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 
 import com.strangeone101.bendinggui.menus.MenuBendingOptions;
@@ -21,28 +22,29 @@ public class Listener implements org.bukkit.event.Listener
 	@EventHandler(priority = EventPriority.LOW)
 	public void onItemRightClick(PlayerInteractEvent e)
 	{
-		if (e.isCancelled()) return;
-		if (!BendingGUI.enabled) {
-			if (!BendingGUI.versionInfo.equals("")) {
-				if (e.getPlayer().hasPermission("bendinggui.admin")) {
-					String s = BendingGUI.versionInfo.startsWith("!") ? "WARNING: " + BendingGUI.versionInfo.substring(1) : BendingGUI.versionInfo;
-					e.getPlayer().sendMessage(ChatColor.RED + "[BendingGUI] " + s);
-					e.getPlayer().sendMessage(ChatColor.RED + "[BendingGUI] If you wish to disable this message, you can do so in the config.");
-				} else {
-					e.getPlayer().sendMessage(ChatColor.RED + "There is a problem with BendingGUI at the moment. Please contact your admin!");
-				}
-				
-			}
-			return;
-		}
+		if (e.getHand() == EquipmentSlot.OFF_HAND) return;
 		try
 		{
 			if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
 			{
 				if (e.getItem() != null && e.getItem().isSimilar(BendingGUI.getGuiItem()))
 				{
+					if (!BendingGUI.enabled) {
+						if (!BendingGUI.versionInfo.equals("")) {
+							if (e.getPlayer().hasPermission("bendinggui.admin")) {
+								String s = BendingGUI.versionInfo.startsWith("!") ? "WARNING: " + BendingGUI.versionInfo.substring(1) : BendingGUI.versionInfo;
+								e.getPlayer().sendMessage(ChatColor.RED + "[BendingGUI] " + s);
+								e.getPlayer().sendMessage(ChatColor.RED + "[BendingGUI] If you wish to disable this message, you can do so in the config.");
+							} else {
+								e.getPlayer().sendMessage(ChatColor.RED + "There is a problem with BendingGUI at the moment. Please contact your admin!");
+							}
+							
+						}
+						return;
+					}
 					MenuBendingOptions menu = new MenuBendingOptions(e.getPlayer());
 					menu.openMenu(e.getPlayer());
+					
 					e.setCancelled(true);
 				}
 			}		

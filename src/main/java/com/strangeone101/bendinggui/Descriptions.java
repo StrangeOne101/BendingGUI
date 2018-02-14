@@ -5,13 +5,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Descriptions 
 {
-	private final static String DEFAULT = "***Description Coming Soon!***";
+	private final static String DEFAULT = ChatColor.ITALIC + "No description set";
 	
 	private static HashMap<String, String> descmap;
 	

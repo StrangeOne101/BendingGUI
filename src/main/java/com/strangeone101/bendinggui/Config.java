@@ -89,7 +89,7 @@ public class Config
 			quickSnoop = config.getBoolean("Admin.QuickSnoop", quickSnoop);
 			
 			guiRequireItem = config.getBoolean("Gui.RequireItem", guiRequireItem);
-			//guiItemEnchanted = config.getBoolean("Gui.Item.EnchantedGlow", guiItemEnchanted);
+			guiItemEnchanted = config.getBoolean("Gui.Item.EnchantedGlow", guiItemEnchanted);
 			Material mat = Material.getMaterial(config.getString("Gui.Item.Material", guiItem.getType().toString()));
 			getGiveMessage = config.getString("Gui.GiveMessage", getGiveMessage);
 			int damage = config.getInt("Gui.Item.Damage");
@@ -98,8 +98,7 @@ public class Config
 				guiItem = new ItemStack(mat, 1, (short) damage);
 				if (guiItemEnchanted)
 				{
-					guiItem.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 0);
-					guiItem.removeEnchantment(Enchantment.ARROW_INFINITE);
+					guiItem = BendingGUI.getNMSManager().addGlow(guiItem);
 				}
 			}
 			
@@ -132,7 +131,7 @@ public class Config
 		
 		config.set("Gui.Item.Material", guiItem.getType().toString());
 		config.set("Gui.Item.Damage", guiItem.getDurability());
-		//config.set("Gui.Item.EnchantedGlow", guiItemEnchanted);
+		config.set("Gui.Item.EnchantedGlow", guiItemEnchanted);
 		config.set("Gui.RequireItem", guiRequireItem);
 		config.set("Gui.GiveMessage", getGiveMessage);
 		
