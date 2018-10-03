@@ -19,20 +19,21 @@ import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.Element.SubElement;
 import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.ability.ComboAbility;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.util.ComboManager;
-import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import com.projectkorra.projectkorra.ability.util.ComboManager.AbilityInformation;
 import com.projectkorra.projectkorra.ability.util.ComboManager.ComboAbilityInfo;
+import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.strangeone101.bendinggui.BendingBoard;
 import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.Config;
 import com.strangeone101.bendinggui.Descriptions;
+import com.strangeone101.bendinggui.DynamicUpdater;
 import com.strangeone101.bendinggui.MenuBase;
 import com.strangeone101.bendinggui.MenuItem;
 import com.strangeone101.bendinggui.Util;
-import com.strangeone101.bendinggui.DynamicUpdater;
 
 public class MenuBendingOptions extends MenuBase
 {
@@ -233,7 +234,7 @@ public class MenuBendingOptions extends MenuBase
 			@Override
 			public void onClick(Player player) 
 			{
-				if (MultiAbilityManager.playerAbilities.containsKey(player.getName()))
+				if (MultiAbilityManager.playerAbilities.containsKey(player))
 				{
 					closeMenu(player);
 					player.sendMessage(ChatColor.RED + "You cannot modify your binds right now!");
@@ -894,6 +895,7 @@ public class MenuBendingOptions extends MenuBase
 					{
 						//this.playerMoves.add(move);
 						if (ability.isHiddenAbility()) continue;
+						if (ComboManager.getComboAbilities().containsKey(ability.getName()) || ability instanceof ComboAbility) continue;
 						if (!abilities.containsKey(ability.getElement()))
 						{
 							abilities.put(ability.getElement(), new ArrayList<CoreAbility>());
@@ -1080,7 +1082,7 @@ public class MenuBendingOptions extends MenuBase
 			
 			this.addMenuItem(this.getPlayerStats(), 0, 3);
 			SkullMeta meta = (SkullMeta) this.getInventory().getItem(27).getItemMeta();
-			meta.setOwner(this.thePlayer.getName());
+			meta.setOwningPlayer(this.thePlayer);
 			this.getInventory().getItem(27).setItemMeta(meta);
 		}
 		
