@@ -113,22 +113,28 @@ public class MenuEditElements extends MenuBase
 				{
 					if (playerwhoclicked.hasPermission("bending.admin.add"))
 					{
-						if (player instanceof Player)
-							((Player)player).sendMessage(ChatColor.YELLOW + "You are now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + ChatColor.YELLOW + " " + element.getType().getBender() + "!");
+						if (player.isOnline())
+							((Player)player).sendMessage(ChatColor.YELLOW + "You are now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + " " + element.getType().getBender() + ChatColor.YELLOW + "!");
+						
 						p.addElement(element);
+						
 						for (SubElement sub : Element.getAllSubElements()) {
 							if (sub.getParentElement() == element && p.hasSubElementPermission(sub)) {
 								p.addSubElement(sub);
 							}
 						}
+						
 						GeneralMethods.saveElements(p);
 						GeneralMethods.saveSubElements(p);
+						
 						if (player instanceof Player)
 						{
 							Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent((Player)player, (Player)player, element, Result.ADD));
 						}
+						
 						if (!playerwhoclicked.getName().equals(player.getName()))
-						playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + ChatColor.YELLOW + " " + element.getType().getBender() + "!");
+							playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + ChatColor.YELLOW + " " + element.getType().getBender() + "!");
+						
 						update();
 					}
 					else

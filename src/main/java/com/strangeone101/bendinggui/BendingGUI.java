@@ -25,7 +25,6 @@ import com.strangeone101.bendinggui.nms.INMSManager;
 import com.strangeone101.bendinggui.nms.NMSManager_110R1;
 import com.strangeone101.bendinggui.nms.NMSManager_110R2;
 import com.strangeone101.bendinggui.nms.NMSManager_111R1;
-import com.strangeone101.bendinggui.nms.NMSManager_18R3;
 import com.strangeone101.bendinggui.nms.NMSManager_19R1;
 import com.strangeone101.bendinggui.nms.NMSManager_19R2;
 
@@ -306,11 +305,7 @@ public class BendingGUI extends JavaPlugin
 	    try 
 	    {
 	        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
-	        if (version.equals("v1_8_R3")) 
-		    {
-		    	return new NMSManager_18R3();
-		    }
-		    else if (version.equals("v1_9_R1")) 
+	        if (version.equals("v1_9_R1")) 
 		    {
 		    	return new NMSManager_19R1();
 		    }
