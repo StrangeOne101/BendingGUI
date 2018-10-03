@@ -35,12 +35,13 @@ public class Util
 		
 	}*/
 	
-	public static Object getNMSItemStack(ItemStack item) {
+	public static Object getNMSItemStack(ItemStack item) throws Exception {
 		try {
 			Method asNMSCopy = ReflectionHandler.getMethod(PackageType.CRAFTBUKKIT_INVENTORY.getClass("CraftItemStack"), "asNMSCopy", ItemStack.class);
 			return asNMSCopy.invoke(PackageType.CRAFTBUKKIT_INVENTORY.getClass("CraftItemStack"), item);
 		} catch (Exception e) {
-			e.printStackTrace();
+			String msg = "There was a problem retrieving the item: " + e.getLocalizedMessage();
+			throw new Exception(msg, e);
 		}
 		return null;
 	}
