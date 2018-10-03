@@ -108,21 +108,29 @@ public class MenuSelectElement extends MenuBase
 					player.closeInventory();
 					return;
 				}
+				
 				BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer);
 				bPlayer.setElement(element);
+				
 				for (SubElement sub : Element.getAllSubElements()) {
 					if (sub.getParentElement() == element && bPlayer.hasSubElementPermission(sub)) {
 						bPlayer.addSubElement(sub);
 					}
 				}
+				
 				GeneralMethods.removeUnusableAbilities(bPlayer.getName());
 				String aORan = "aeiouAEIOU".indexOf(element.getName().charAt(0)) >= 0 ? "an " : "a ";
-				if (thePlayer instanceof Player) ((Player)thePlayer).sendMessage(ChatColor.YELLOW + "You are now " + aORan + BendingGUI.getColor(element) + (element == Element.CHI ? "chiblocker" + ChatColor.YELLOW + "!": element.getName().toLowerCase()) + ChatColor.YELLOW + " bender!");
-				GeneralMethods.saveElements(BendingPlayer.getBendingPlayer(thePlayer));
+				
+				if (thePlayer instanceof Player) ((Player)thePlayer).sendMessage(ChatColor.YELLOW + "You are now " + aORan + BendingGUI.getColor(element) + (element == Element.CHI ? "chiblocker" + ChatColor.YELLOW + "!": element.getName().toLowerCase() + ChatColor.YELLOW + " bender!"));
+				
+				GeneralMethods.saveElements(bPlayer);
+				GeneralMethods.saveSubElements(bPlayer);
+				
 				if (thePlayer instanceof Player)
 				{
 					Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent((Player)thePlayer, (Player)thePlayer, element, Result.CHOOSE));
 				}
+				
 				player.closeInventory();
 			}
 		}, new RunnablePlayer() {

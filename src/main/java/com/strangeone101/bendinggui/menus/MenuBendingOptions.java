@@ -60,7 +60,8 @@ public class MenuBendingOptions extends MenuBase
 	{
 		super("Bending Options", 4);
 		this.thePlayer = player;
-		if (BendingPlayer.getBendingPlayer(player.getName()).getElements().isEmpty())
+		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
+		if (bPlayer != null && bPlayer.getElements().isEmpty())
 		{
 			redirect = true;
 		}	
