@@ -113,7 +113,7 @@ public class MenuEditElements extends MenuBase
 				{
 					if (playerwhoclicked.hasPermission("bending.admin.add"))
 					{
-						if (player.isOnline())
+						if (player instanceof Player)
 							((Player)player).sendMessage(ChatColor.YELLOW + "You are now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + " " + element.getType().getBender() + ChatColor.YELLOW + "!");
 						
 						p.addElement(element);
