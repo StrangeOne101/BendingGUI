@@ -88,7 +88,7 @@ public class GuiCommand extends PKCommand
 				sender.sendMessage("Only players can run this command!");
 				return false;
 			}
-			if (BendingPlayer.getBendingPlayer(player).getElements().isEmpty() || player.hasPermission("bending.command.rechoose"))
+			if (BendingPlayer.getBendingPlayer(player).getElements().isEmpty() && player.hasPermission("bending.command.rechoose"))
 			{
 				MenuSelectElement menu = new MenuSelectElement(player);
 				menu.openMenu(player);
@@ -96,6 +96,10 @@ public class GuiCommand extends PKCommand
 			else if (!player.hasPermission("bending.command.rechoose"))
 			{
 				player.sendMessage(ChatColor.RED + "You have already chosen an element!");
+			}
+			else if (!player.hasPermission("bending.command.choose"))
+			{
+				player.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
 			}
 		}
 		else if (args.get(0).equalsIgnoreCase("version") || args.get(0).equalsIgnoreCase("v") || args.get(0).equalsIgnoreCase("ver"))
