@@ -42,8 +42,13 @@ public class Listener implements org.bukkit.event.Listener
 						}
 						return;
 					}
-					MenuBendingOptions menu = new MenuBendingOptions(e.getPlayer());
-					menu.openMenu(e.getPlayer());
+					
+					if (MultiAbilityManager.playerAbilities.containsKey(e.getPlayer())) {
+						e.getPlayer().sendMessage(ChatColor.RED + "You cannot modify your binds right now!");
+					} else {
+						MenuBendingOptions menu = new MenuBendingOptions(e.getPlayer());
+						menu.openMenu(e.getPlayer());
+					}
 					
 					e.setCancelled(true);
 				}

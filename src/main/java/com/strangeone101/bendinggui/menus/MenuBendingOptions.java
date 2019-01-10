@@ -1146,11 +1146,13 @@ public class MenuBendingOptions extends MenuBase
 		this.openPlayer = player;
 		this.playerMoves = new ArrayList<String>();
 		this.playerCombos = new ArrayList<String>();
+		
 		if (this.redirect)
 		{
 			if (!player.hasPermission("bending.command.choose")) 
 			{
 				player.sendMessage(ChatColor.RED + "You must have an element to modify your bending!");
+				return;
 			}
 			player.sendMessage(ChatColor.GREEN + "You aren't a bender yet! Please choose an element!");
 			this.switchMenu(player, new MenuSelectElement(thePlayer));
