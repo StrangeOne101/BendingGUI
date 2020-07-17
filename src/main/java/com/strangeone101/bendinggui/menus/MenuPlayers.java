@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.material.MaterialData;
 
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
@@ -100,11 +99,10 @@ public class MenuPlayers extends MenuBase
 		item.setNBTData(tag);
 		this.addMenuItem(item, index);
 	}*/
-	
-	@SuppressWarnings("deprecation")
+
 	public MenuItem getPlayerItem(final OfflinePlayer player)
 	{
-		MenuItem item = new MenuItem(ChatColor.YELLOW + player.getName() + (!player.isOnline() ? ChatColor.DARK_GRAY + " (Offline)" : (player.getName() == openPlayer.getName() ? ChatColor.DARK_GRAY + " (You)" : "")), new MaterialData(Material.SKULL_ITEM, (byte)3)) 
+		MenuItem item = new MenuItem(ChatColor.YELLOW + player.getName() + (!player.isOnline() ? ChatColor.DARK_GRAY + " (Offline)" : (player.getName() == openPlayer.getName() ? ChatColor.DARK_GRAY + " (You)" : "")), Material.PLAYER_HEAD)
 		{
 			@Override
 			public void onClick(Player player1) 
@@ -199,6 +197,11 @@ public class MenuPlayers extends MenuBase
 					b = true;
 					list.add("Can " + Element.COMBUSTION.getColor() + "Combust");
 				}
+				if (Config.hasBlueFire && ((Player) player).hasPermission("bending.fire.bluefire"))
+				{
+					b = true;
+					list.add("Can use " + Element.BLUE_FIRE.getColor() + "Blue Fire");
+				}
 				if (b && Config.showSubElementsOnUser) 
 				{
 					s = s + ChatColor.DARK_GRAY + " (" + (BendingGUI.INSTANCE.makeListFancy(list).replaceAll("\\,", ChatColor.DARK_GRAY + ",")
@@ -268,7 +271,7 @@ public class MenuPlayers extends MenuBase
 		String s = ChatColor.YELLOW + (isRight ? "Next" : "Previous") + " Page" + ChatColor.DARK_GRAY + 
 				"(" + ChatColor.YELLOW + this.page + ChatColor.DARK_GRAY + "/" + ChatColor.YELLOW + maxPage + ChatColor.DARK_GRAY + ")";
 		s = this.page == 0 ? ChatColor.YELLOW + "Return to Menu" : s;
-		MenuItem item = new MenuItem(ChatColor.YELLOW +  s, new MaterialData(Material.ARROW))
+		MenuItem item = new MenuItem(ChatColor.YELLOW +  s, Material.ARROW)
 		{
 			@Override
 			public void onClick(Player player) 
@@ -304,7 +307,7 @@ public class MenuPlayers extends MenuBase
 	public MenuItem getOfflinePlayerToggle()
 	{
 		String s = (this.showOffinePlayers ? "Hide" : "Show" ) + " offline players";
-		MenuItem item = new MenuItem(ChatColor.RED + s, new MaterialData(Material.EYE_OF_ENDER)) 
+		MenuItem item = new MenuItem(ChatColor.RED + s, Material.ENDER_EYE)
 		{
 
 			@Override

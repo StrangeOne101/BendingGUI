@@ -50,9 +50,9 @@ public class MenuBase implements InventoryHolder {
         if (item.isEnchanted)
         {
         	//stack = BendingGUI.getNMSManager().addGlow(item.getItemStack());
-        	stack = BendingGUI.getNMSManager().addGlow(stack);
+        	BendingGUI.addGlow(stack);
         }
-		this.getInventory().setItem(index, stack);
+		    this.getInventory().setItem(index, stack);
         items.put(index, item);
         item.setMenu(this);
         return true;
@@ -109,7 +109,7 @@ public class MenuBase implements InventoryHolder {
     {
         if (getInventory().getViewers().contains(player)) 
         {
-            throw new IllegalArgumentException(player.getName() + " is already viewing " + getInventory().getTitle());
+            throw new IllegalArgumentException(player.getName() + " is already viewing " + player.getOpenInventory().getTitle());
         }
         player.openInventory(getInventory());
     }

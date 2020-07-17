@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.material.MaterialData;
 
 import com.projectkorra.projectkorra.object.Preset;
 import com.strangeone101.bendinggui.MenuBase;
@@ -41,7 +40,7 @@ public class MenuPresets extends MenuBase
 	public MenuItem getArrowItem()
 	{
 		String s = ChatColor.YELLOW + "Return to menu"; 
-		MenuItem item = new MenuItem(ChatColor.YELLOW +  s, new MaterialData(Material.ARROW))
+		MenuItem item = new MenuItem(ChatColor.YELLOW +  s, Material.ARROW)
 		{
 			@Override
 			public void onClick(Player player) 
@@ -60,7 +59,7 @@ public class MenuPresets extends MenuBase
 		
 		if (Preset.getPreset(p, preset) != null) {
 			String s = ChatColor.YELLOW + "Return to menu"; 
-			MenuItem item = new MenuItem(ChatColor.YELLOW +  s, new MaterialData(Material.ARROW))
+			MenuItem item = new MenuItem(ChatColor.YELLOW +  s, Material.ARROW)
 			{
 				@Override
 				public void onClick(Player player) 

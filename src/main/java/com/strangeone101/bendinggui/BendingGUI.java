@@ -12,7 +12,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,29 +23,23 @@ import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.Element.SubElement;
 import com.projectkorra.projectkorra.ProjectKorra;
 import com.strangeone101.bendinggui.command.GuiCommand;
-import com.strangeone101.bendinggui.nms.INMSManager;
-import com.strangeone101.bendinggui.nms.NMSManager_110R1;
-import com.strangeone101.bendinggui.nms.NMSManager_110R2;
-import com.strangeone101.bendinggui.nms.NMSManager_111R1;
-import com.strangeone101.bendinggui.nms.NMSManager_19R1;
-import com.strangeone101.bendinggui.nms.NMSManager_19R2;
 
 public class BendingGUI extends JavaPlugin
 {
 	public static boolean pageArrowMoveMouse = false;
 	/**This is an option so little work has to be done if GeneralMethods.getBendingPlayer(...) supports OfflinePlayers
 	 * in the future.*/
-	public static boolean enableOfflinePlayers = false; 
-	
+	public static boolean enableOfflinePlayers = false;
+
 	public static Logger log;
-	
+
 	public static BendingGUI INSTANCE;
-	
+
 	public static boolean loaded = false;
 	public static boolean enabled = true;
 	//public static boolean jedcore = false;
 	public static String versionInfo;
-	
+
 	public static List<Element> elementOrder;
 
 	public static ItemStack getGuiItem()
@@ -55,7 +51,7 @@ public class BendingGUI extends JavaPlugin
 		stack.setItemMeta(meta);
 		return stack;
 	}
-	
+
 	public static ItemStack getAdminGuiItem(Player player)
 	{
 		ItemStack stack = Config.guiItem;
@@ -65,9 +61,9 @@ public class BendingGUI extends JavaPlugin
 		stack.setItemMeta(meta);
 		return stack;
 	}
-	
+
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) 
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
 	{
 		if (!loaded || !this.isEnabled()) return false;
 		try
@@ -82,12 +78,12 @@ public class BendingGUI extends JavaPlugin
 			e.printStackTrace();
 			sender.sendMessage(ChatColor.RED + "There is a problem with BendingGUI right now. Please report this to your admin or the plugin developer!");
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
-	public void onEnable() 
+	public void onEnable()
 	{
 		INSTANCE = this;
 		log = getLogger();
@@ -98,23 +94,11 @@ public class BendingGUI extends JavaPlugin
 			this.setEnabled(false);
 			return;
 		}
-		
+
 		BendingBoard.checkPlugins();
-		
+
 		versionInfo = checkVersion();
 
-		if (getNMSManager() == null)
-		{
-			log.severe("This plugin is not compatible with your version of Spigot/Bukkit! Please update it or inform the plugin developer about this!");
-			enabled = false;
-			try {
-				throw new ExceptionInInitializerError("Plugin incompatible with version :" + Bukkit.getBukkitVersion() + ". Must update!");
-			} catch (ExceptionInInitializerError e) {
-				e.printStackTrace();
-			}
-			return;
-		}
-		
 		if (!versionInfo.equals(""))
 		{
 			String error = versionInfo;
@@ -126,13 +110,13 @@ public class BendingGUI extends JavaPlugin
 				} catch (VersionIncompatibilityException e) {
 					e.printStackTrace();
 				}
-				
+
 			} else {
 				log.warning(error);
 			}
 			return;
 		}
-		
+
 		/**Loop through all combos and record elements for later use.*/
 		/*Collection<ComboAbilityInfo> combos = ComboManager.getComboAbilities().values();
 		for (ComboAbilityInfo combo : combos) 
@@ -171,41 +155,41 @@ public class BendingGUI extends JavaPlugin
 			if (elementFinal == null) elementFinal = elementmain;
 			MenuCombos.comboElements.put(combo.getName(), elementFinal);
 		}*/
-		
-		
+
+
 		Config.load();
 		Descriptions.load();
 		Descriptions.save();
 		loadElementOrder();
 		new GuiCommand();
-		
+
 		log.log(Level.INFO, enabled ? "BendingGUI Fully Loaded!" : "BendingGUI loaded but functional.");
-		
+
 		loaded = true;
 	}
-	
-	public void loadElementOrder() 
+
+	public void loadElementOrder()
 	{
 		elementOrder = new ArrayList<Element>();
-		
+
 		elementOrder.add(Element.AIR);    elementOrder.add(Element.FLIGHT);    elementOrder.add(Element.SPIRITUAL);
 		if (Element.getAddonSubElements(Element.AIR).length > 0) elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.AIR)));
 		elementOrder.add(Element.EARTH);  elementOrder.add(Element.SAND);       elementOrder.add(Element.METAL);    elementOrder.add(Element.LAVA);
 		if (Element.getAddonSubElements(Element.EARTH).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.EARTH)));
-		elementOrder.add(Element.FIRE);  elementOrder.add(Element.LIGHTNING);       elementOrder.add(Element.COMBUSTION);
-		if (Element.getAddonSubElements(Element.FIRE).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.FIRE))); 
+		elementOrder.add(Element.FIRE);  elementOrder.add(Element.LIGHTNING);       elementOrder.add(Element.COMBUSTION);				if (Config.hasBlueFire) elementOrder.add(Element.BLUE_FIRE);
+		if (Element.getAddonSubElements(Element.FIRE).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.FIRE)));
 		elementOrder.add(Element.WATER);  elementOrder.add(Element.ICE);     elementOrder.add(Element.HEALING);  elementOrder.add(Element.PLANT);     elementOrder.add(Element.BLOOD);
-		if (Element.getAddonSubElements(Element.WATER).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.WATER))); 
-		elementOrder.add(Element.CHI); 
-		if (Element.getAddonSubElements(Element.CHI).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.CHI))); 
-		
+		if (Element.getAddonSubElements(Element.WATER).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.WATER)));
+		elementOrder.add(Element.CHI);
+		if (Element.getAddonSubElements(Element.CHI).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.CHI)));
+
 		for (Element e : Element.getAddonElements())
 		{
 			if (e == null) continue;
 			elementOrder.add(e);
 			if (Element.getAddonSubElements(e).length > 0) elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(e)));
-		}	
-		
+		}
+
 		elementOrder.add(Element.AVATAR);
 		//log.info("Debug: " + makeListFancy(elementOrder));
 	}
@@ -217,7 +201,7 @@ public class BendingGUI extends JavaPlugin
 		Descriptions.save();
 		log.log(Level.INFO, "BendingGUI Reloaded!");
 	}
-	
+
 	public String checkVersion()
 	{
 		String version = ProjectKorra.plugin.getDescription().getVersion();
@@ -232,7 +216,7 @@ public class BendingGUI extends JavaPlugin
 		}
 		else if (varg1.startsWith("1.8."))
 		{
-			if (version.toLowerCase().contains("beta")) 
+			if (version.toLowerCase().contains("beta"))
 			{
 				try
 				{
@@ -250,7 +234,7 @@ public class BendingGUI extends JavaPlugin
 				{
 					return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
 				}
-			} 
+			}
 		}
 		else
 		{
@@ -258,7 +242,7 @@ public class BendingGUI extends JavaPlugin
 		}
 		return "";
 	}
-	
+
 	/**Makes a description list for items. Use BendingGUI.getDescriptions now instead!*/
 	/*@Deprecated
 	public List<String> formatDescription(String string, ChatColor color)
@@ -271,7 +255,7 @@ public class BendingGUI extends JavaPlugin
 		}
 		return s;
 	}*/
-	
+
 	/**Makes a description list for items.*/
 	public static List<String> getDescriptions(String description, ChatColor color, int length)
 	{
@@ -284,7 +268,7 @@ public class BendingGUI extends JavaPlugin
 		}
 		return l;
 	}
-	
+
 	public String makeListFancy(List<? extends Object> list)
 	{
 		String s = "";
@@ -296,44 +280,15 @@ public class BendingGUI extends JavaPlugin
 		}
 		return s;
 	}
-	
-	/**Credit to the Spigot Wiki for this solution. Returns the correct NMSManager 
-	 * for the version you are using. This means all versions of spigot (1.8) are 
-	 * compatible.*/
-	public static INMSManager getNMSManager()
+
+	public static void addGlow(ItemStack itemStack)
 	{
-	    try 
-	    {
-	        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
-	        if (version.equals("v1_9_R1")) 
-		    {
-		    	return new NMSManager_19R1();
-		    }
-		    else if (version.equals("v1_9_R2")) 
-		    {
-		    	return new NMSManager_19R2();
-		    }
-		    else if (version.equals("v1_10_R1")) 
-		    {
-		    	return new NMSManager_110R1();
-		    }
-		    else if (version.equals("v1_10_R2")) 
-		    {
-		    	return new NMSManager_110R2();
-		    }
-		    else if (version.equals("v1_11_R1")) 
-		    {
-		    	return new NMSManager_111R1();
-		    } else {
-		    	return new NMSManager_111R1();
-		    }
-	    } 
-	    catch (ArrayIndexOutOfBoundsException e) 
-	    {
-	        return null;
-	    }
-	}	
-	
+	    ItemMeta itemMeta = itemStack.getItemMeta();
+	    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+			itemMeta.addEnchant(Enchantment.LUCK, 1, true);
+			itemStack.setItemMeta(itemMeta);
+	}
+
 	public static ChatColor getColor(Element element)
 	{
 		if (element instanceof SubElement) element = ((SubElement)element).getParentElement();
@@ -345,7 +300,7 @@ public class BendingGUI extends JavaPlugin
 		if (element == Element.AVATAR) return ChatColor.LIGHT_PURPLE;
 		return element.getColor();
 	}
-	
+
 	public static ChatColor getColorLight(Element element)
 	{
 		if (element instanceof SubElement) element = ((SubElement)element).getParentElement();

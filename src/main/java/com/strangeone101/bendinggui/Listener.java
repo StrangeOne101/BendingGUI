@@ -1,5 +1,6 @@
 package com.strangeone101.bendinggui;
 
+import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -80,7 +81,7 @@ public class Listener implements org.bukkit.event.Listener
 	                	int index = event.getRawSlot();
 	                    if (index < inventory.getSize()) 
 	                    {
-	                    	if (event.getCursor().getType() != Material.AIR)
+	                    	if (event.getCursor() != null && event.getCursor().getType() != Material.AIR)
 	                    	{
 	                    		event.setCancelled(true);
 	                    		menu.closeMenu(player);
@@ -120,9 +121,9 @@ public class Listener implements org.bukkit.event.Listener
 		if (e.getInventory() instanceof MenuBendingOptions)
 		{
 			MenuBendingOptions menu = (MenuBendingOptions) e.getInventory();
-			if (DynamicUpdater.players.containsKey(menu.getMenuPlayer().getUniqueId()) && DynamicUpdater.players.get(menu.getOpenPlayer().getUniqueId()).contains(menu.getOpenPlayer()))
+			if (DynamicUpdater.players.containsKey(menu.getMenuPlayer().getUniqueId()) && DynamicUpdater.players.get(menu.getOpenPlayer().getUniqueId()).contains(menu.getOpenPlayer().getUniqueId()))
 			{
-				DynamicUpdater.players.get(menu.getOpenPlayer().getUniqueId()).remove(menu.getOpenPlayer());
+				DynamicUpdater.players.get(menu.getOpenPlayer().getUniqueId()).remove(menu.getOpenPlayer().getUniqueId());
 			}
 		}
 	}

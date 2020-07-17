@@ -76,4 +76,8 @@ target
 work
 Worlds
 
+*.iml
+.idea
+pom.xml
+
 /bin/
