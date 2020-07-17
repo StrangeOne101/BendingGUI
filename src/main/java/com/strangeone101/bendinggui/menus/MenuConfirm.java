@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.material.MaterialData;
 
 import com.strangeone101.bendinggui.MenuBase;
 import com.strangeone101.bendinggui.MenuItem;
@@ -31,11 +30,10 @@ public class MenuConfirm extends MenuBase
 		this.addMenuItem(getCancel(),(this.getInventory().getSize() - 1) / 2 + 1);
 		
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	protected MenuItem getConfirm()
 	{
-		MenuItem confirm = new MenuItem(ChatColor.GREEN + "" + ChatColor.BOLD + "YES", new MaterialData(Material.WOOL, (byte)5)) {
+		MenuItem confirm = new MenuItem(ChatColor.GREEN + "" + ChatColor.BOLD + "YES", Material.LIME_WOOL) {
 			@Override
 			public void onClick(Player player) 
 			{
@@ -46,11 +44,10 @@ public class MenuConfirm extends MenuBase
 		return confirm;
 	}
 	
-	
-	@SuppressWarnings("deprecation")
+
 	private MenuItem getCancel()
 	{
-		MenuItem cancel = new MenuItem(ChatColor.RED + "" + ChatColor.BOLD + "NO", new MaterialData(Material.WOOL, (byte)14)) {
+		MenuItem cancel = new MenuItem(ChatColor.RED + "" + ChatColor.BOLD + "NO", Material.RED_WOOL) {
 			@Override
 			public void onClick(Player player) 
 			{

@@ -11,7 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.material.MaterialData;
 
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
@@ -53,7 +52,7 @@ public class MenuSelectElement extends MenuBase
 		
 		if (menu_ != null)
 		{
-			MenuItem item = new MenuItem(ChatColor.YELLOW + "Return to Menu", new MaterialData(Material.ARROW)) {
+			MenuItem item = new MenuItem(ChatColor.YELLOW + "Return to Menu", Material.ARROW) {
 				@Override
 				public void onClick(Player player) 
 				{
@@ -88,14 +87,14 @@ public class MenuSelectElement extends MenuBase
 	
 	public MenuItem getChooseElement(final Element element)
 	{
-		MaterialData mat = new MaterialData(Material.STICK);
+		Material mat = Material.STICK;
 		ChatColor c1 = ChatColor.YELLOW;
 		ChatColor c2 = ChatColor.GOLD;
 		final boolean b1 = thePlayer == openPlayer;
-		if (element == Element.AIR) {mat = new MaterialData(Material.STRING); c1 = ChatColor.WHITE; c2 = ChatColor.GRAY;}
-		else if (element == Element.EARTH) {mat = new MaterialData(Material.GRASS); c1 = ChatColor.GREEN; c2 = ChatColor.DARK_GREEN;}
-		else if (element == Element.FIRE) {mat = new MaterialData(Material.BLAZE_POWDER); c1 = ChatColor.RED; c2 = ChatColor.DARK_RED;}
-		else if (element == Element.WATER) {mat = new MaterialData(Material.WATER_BUCKET); c1 = ChatColor.BLUE; c2 = ChatColor.DARK_BLUE;}	
+		if (element == Element.AIR) {mat = Material.STRING; c1 = ChatColor.WHITE; c2 = ChatColor.GRAY;}
+		else if (element == Element.EARTH) {mat = Material.GRASS_BLOCK; c1 = ChatColor.GREEN; c2 = ChatColor.DARK_GREEN;}
+		else if (element == Element.FIRE) {mat = Material.BLAZE_POWDER; c1 = ChatColor.RED; c2 = ChatColor.DARK_RED;}
+		else if (element == Element.WATER) {mat = Material.WATER_BUCKET; c1 = ChatColor.BLUE; c2 = ChatColor.DARK_BLUE;}
 		final ChatColor c3 = c1;
 		final MenuSelectElement instance = this;
 		final MenuConfirm confirm = new MenuConfirm(this, new RunnablePlayer() {
@@ -211,5 +210,5 @@ public class MenuSelectElement extends MenuBase
 		
 		this.update();
 		super.openMenu(player);
-	};
+	}
 }

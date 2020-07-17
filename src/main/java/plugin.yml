@@ -1,8 +1,9 @@
 name: BendingGUI
 main: com.strangeone101.bendinggui.BendingGUI
-version: 1.1.12
+version: 1.2.0
 depend: [ProjectKorra]
 softdepend: [JedCore, BendingBoard]
+api-version: 1.13
 prefix: BendingGUI
 commands:
   bendinggui:
