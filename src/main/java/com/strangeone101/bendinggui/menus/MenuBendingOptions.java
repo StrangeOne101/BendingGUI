@@ -330,7 +330,7 @@ public class MenuBendingOptions extends MenuBase
 	{
 		final boolean b = !BendingBoard.isToggled(player);
 		Material material = b ? Material.LIME_DYE : Material.GRAY_DYE;
-		String s = (b ? ChatColor.GREEN : ChatColor.RED) + "Toggle BendingBoard " + GRAY + (b ? "(ACTIVE)" : "");
+		String s = (b ? ChatColor.GREEN : ChatColor.RED) + "Toggle BendingBoard " + GRAY + (b ? "(ACTIVE)" : "(INACTIVE)");
 		MenuItem item = new MenuItem(s, material) {
 
 			@Override

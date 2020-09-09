@@ -42,14 +42,11 @@ public class BendingGUI extends JavaPlugin
 
 	public static List<Element> elementOrder;
 
+	private static ItemStack GUI_ITEM;
+
 	public static ItemStack getGuiItem()
 	{
-		ItemStack stack = Config.guiItem;
-		ItemMeta meta = stack.getItemMeta();
-		meta.setDisplayName(ChatColor.GREEN + "Configure Bending");
-		meta.setLore(Arrays.asList(new String[] {ChatColor.GRAY + "Right click to configure your bending!"}));
-		stack.setItemMeta(meta);
-		return stack;
+		return GUI_ITEM;
 	}
 
 	public static ItemStack getAdminGuiItem(Player player)
@@ -94,6 +91,16 @@ public class BendingGUI extends JavaPlugin
 			this.setEnabled(false);
 			return;
 		}
+
+		ItemStack stack = Config.guiItem;
+		ItemMeta meta = stack.getItemMeta();
+		meta.setDisplayName(ChatColor.GREEN + "Configure Bending");
+		meta.setLore(Arrays.asList(new String[] {ChatColor.GRAY + "Right click to configure your bending!"}));
+		stack.setItemMeta(meta);
+
+		GUI_ITEM = stack;
+
+
 
 		BendingBoard.checkPlugins();
 
@@ -176,7 +183,10 @@ public class BendingGUI extends JavaPlugin
 		if (Element.getAddonSubElements(Element.AIR).length > 0) elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.AIR)));
 		elementOrder.add(Element.EARTH);  elementOrder.add(Element.SAND);       elementOrder.add(Element.METAL);    elementOrder.add(Element.LAVA);
 		if (Element.getAddonSubElements(Element.EARTH).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.EARTH)));
-		elementOrder.add(Element.FIRE);  elementOrder.add(Element.LIGHTNING);       elementOrder.add(Element.COMBUSTION);				if (Config.hasBlueFire) elementOrder.add(Element.BLUE_FIRE);
+		elementOrder.add(Element.FIRE);
+		elementOrder.add(Element.LIGHTNING);
+		elementOrder.add(Element.COMBUSTION);
+		if (Config.hasBlueFire) elementOrder.add(Element.BLUE_FIRE);
 		if (Element.getAddonSubElements(Element.FIRE).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.FIRE)));
 		elementOrder.add(Element.WATER);  elementOrder.add(Element.ICE);     elementOrder.add(Element.HEALING);  elementOrder.add(Element.PLANT);     elementOrder.add(Element.BLOOD);
 		if (Element.getAddonSubElements(Element.WATER).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.WATER)));
