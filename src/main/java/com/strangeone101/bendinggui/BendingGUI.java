@@ -121,7 +121,6 @@ public class BendingGUI extends JavaPlugin
 			} else {
 				log.warning(error);
 			}
-			return;
 		}
 
 		/**Loop through all combos and record elements for later use.*/
@@ -218,9 +217,9 @@ public class BendingGUI extends JavaPlugin
 		String varg1 = version.split(" ")[0];
 		if (varg1.startsWith("1.4.0") || varg1.startsWith("1.5.0") || varg1.startsWith("1.6.0") || varg1.startsWith("1.7.0"))
 		{
-			return "!BendingGUI does not support version ProjectKorra " + varg1 + "! Please upgrade to version 1.8.0 or higher!";
+			return "!BendingGUI does not support version ProjectKorra " + varg1 + "! Please upgrade to version 1.8.9 or higher!";
 		}
-		else if (!varg1.startsWith("1.8."))
+		else if (!varg1.startsWith("1.8.9") && !varg1.startsWith("1.9."))
 		{
 			return "The version of ProjectKorra installed is not fully supported yet! Do not be surprised if something breaks!";
 		}
@@ -233,7 +232,7 @@ public class BendingGUI extends JavaPlugin
 					int betav = Integer.parseInt(version.split(" ", 3)[2]);
 					if (betav <= 9)
 					{
-						return "!This version of BendingGUI is made for ProjectKorra 1.8.0 or ProjectKorra 1.9.0 Beta 1! The version you have will not work!";
+						return "!This version of BendingGUI is made for ProjectKorra 1.8.9 or ProjectKorra 1.9.0! The version you have will not work!";
 					}
 				}
 				catch (IndexOutOfBoundsException e)
@@ -244,11 +243,17 @@ public class BendingGUI extends JavaPlugin
 				{
 					return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
 				}
+			} else if (!varg1.startsWith("1.8.9")) {
+				return "The version of ProjectKorra installed is incompatible with BendingGUI. Please upgrade to 1.8.9 or 1.9.0";
+			}
+		} else if (varg1.startsWith("1.9.")) {
+			if (!varg1.startsWith("1.9.0")) {
+				return "This version of BendingGUI is made for ProjectKorra Core 1.8.9 or 1.9.0! You are running a higher or modded version which may not be fully supported yet.";
 			}
 		}
 		else
 		{
-			return "This version of BendingGUI is made for ProjectKorra Core 1.8.0! You are running a higher or modded version which may not be fully supported yet.";
+			return "This version of BendingGUI is made for ProjectKorra Core 1.8.9 or 1.9.0! You are running a higher or modded version which may not be fully supported yet.";
 		}
 		return "";
 	}
