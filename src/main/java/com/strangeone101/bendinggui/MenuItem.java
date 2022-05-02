@@ -75,7 +75,7 @@ public abstract class MenuItem{
 	
 	public void addDescription(String line)
 	{
-		this.lore.add(line);
+		this.lore.addAll(List.of(line.split("\\n")));
 	}
 	
 	public void setMenu(MenuBase menu)

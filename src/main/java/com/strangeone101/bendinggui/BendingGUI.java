@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.strangeone101.bendinggui.config.ConfigLanguage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -37,7 +38,6 @@ public class BendingGUI extends JavaPlugin
 
 	public static boolean loaded = false;
 	public static boolean enabled = true;
-	//public static boolean jedcore = false;
 	public static String versionInfo;
 
 	public static List<Element> elementOrder;
@@ -164,8 +164,9 @@ public class BendingGUI extends JavaPlugin
 
 
 		Config.load();
-		Descriptions.load();
-		Descriptions.save();
+		//Descriptions.load();
+		//Descriptions.save();
+		new ConfigLanguage();
 		loadElementOrder();
 		new GuiCommand();
 
@@ -215,45 +216,13 @@ public class BendingGUI extends JavaPlugin
 	{
 		String version = ProjectKorra.plugin.getDescription().getVersion();
 		String varg1 = version.split(" ")[0];
-		if (varg1.startsWith("1.4.0") || varg1.startsWith("1.5.0") || varg1.startsWith("1.6.0") || varg1.startsWith("1.7.0"))
+		if (varg1.startsWith("1.4.0") || varg1.startsWith("1.5.0") || varg1.startsWith("1.6.0") || varg1.startsWith("1.7.") || varg1.startsWith("1.8."))
 		{
-			return "!BendingGUI does not support version ProjectKorra " + varg1 + "! Please upgrade to version 1.8.9 or higher!";
+			return "!BendingGUI does not support version ProjectKorra " + varg1 + "! Please upgrade to version 1.9.3 or higher!";
 		}
-		else if (!varg1.startsWith("1.8.9") && !varg1.startsWith("1.9."))
+		else if (!varg1.startsWith("1.9.3") && !varg1.startsWith("1.9."))
 		{
-			return "The version of ProjectKorra installed is not fully supported yet! Do not be surprised if something breaks!";
-		}
-		else if (varg1.startsWith("1.8."))
-		{
-			if (version.toLowerCase().contains("beta"))
-			{
-				try
-				{
-					int betav = Integer.parseInt(version.split(" ", 3)[2]);
-					if (betav <= 9)
-					{
-						return "!This version of BendingGUI is made for ProjectKorra 1.8.9 or ProjectKorra 1.9.0! The version you have will not work!";
-					}
-				}
-				catch (IndexOutOfBoundsException e)
-				{
-					return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
-				}
-				catch (NumberFormatException e)
-				{
-					return "Unknown beta build of ProjectKorra detected. Support for this version is not guaranteed.";
-				}
-			} else if (!varg1.startsWith("1.8.9")) {
-				return "The version of ProjectKorra installed is incompatible with BendingGUI. Please upgrade to 1.8.9 or 1.9.0";
-			}
-		} else if (varg1.startsWith("1.9.")) {
-			if (!varg1.startsWith("1.9.0")) {
-				return "This version of BendingGUI is made for ProjectKorra Core 1.8.9 or 1.9.0! You are running a higher or modded version which may not be fully supported yet.";
-			}
-		}
-		else
-		{
-			return "This version of BendingGUI is made for ProjectKorra Core 1.8.9 or 1.9.0! You are running a higher or modded version which may not be fully supported yet.";
+			return "his version of BendingGUI is made for ProjectKorra Core 1.9.3! You are running a higher or modded version which may not be fully supported yet.";
 		}
 		return "";
 	}

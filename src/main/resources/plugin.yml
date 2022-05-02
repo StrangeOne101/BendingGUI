@@ -1,20 +1,20 @@
 name: BendingGUI
 main: com.strangeone101.bendinggui.BendingGUI
-version: 1.2.1
+version: '${project.version}'
 depend: [ProjectKorra]
-softdepend: [JedCore, ProjectAddons]
-api-version: 1.13
+softdepend: [JedCore]
+api-version: 1.17
 prefix: BendingGUI
 commands:
   bendinggui:
     description: Open the Bending GUI menu
     aliases: [gui, bg]
     usage: |
-             /<command> 
-             /<command> choose
-             /<command> version
-             /<command> reload 
-             /<command> <player>
+      /<command>
+      /<command> choose
+      /<command> version
+      /<command> reload
+      /<command> <player>
 permissions:
   bendinggui.*:
     description: Access to all BendingGUI commands and rights
@@ -30,7 +30,7 @@ permissions:
   bendinggui.view:
     description: Allows players to view the bending of other players
     default: true
-  bendinggui.admin: 
+  bendinggui.admin:
     description: Allows players to modify other player\'s bending through the gui
     default: op
     children:

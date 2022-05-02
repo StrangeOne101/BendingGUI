@@ -81,3 +81,5 @@ Worlds
 pom.xml
 
 /bin/
+
+out/

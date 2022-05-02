@@ -130,7 +130,7 @@ public class GuiCommand extends PKCommand
         }
 		else
 		{
-			Player playero = Bukkit.getPlayer(args.get(1));
+			Player playero = Bukkit.getPlayer(args.get(0));
 			if (playero == null && player.hasPermission("bendinggui.admin"))
 			{
 				sender.sendMessage(ChatColor.RED + "Error while finding player!");

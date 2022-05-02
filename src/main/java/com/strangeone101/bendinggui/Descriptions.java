@@ -10,6 +10,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+@Deprecated
 public class Descriptions 
 {
 	private final static String DEFAULT = ChatColor.ITALIC + "No description set";
@@ -121,7 +122,6 @@ public class Descriptions
 		descmap.put("WaterGimbal", "Creates wall of fire that blocks all incoming projectiles and mobs");
 		descmap.put("PlantDrain", "Drains all nearby plants of water to create water for waterbending");
 		descmap.put("PlantWhip", "Creates a vine of leaves that can quickly whip a target");
-		descmap.put("PlantArmor", "Allows the user to create basic armor for themselves with leaves");
 		descmap.put("PlantBlast", "Allows the user to blast quick, plant projectiles at their target");
 		descmap.put("IceClaws", "Creates ice on your hand that can damage and slow your target");
 		descmap.put("IceWall", "Creates a wall of ice in front of the user");
@@ -213,7 +213,8 @@ public class Descriptions
 		catch (InvalidConfigurationException e) {e.printStackTrace();}
 			
 	}
-	
+
+	@Deprecated
 	public static String getDescription(String move)
 	{
 		if (descmap.containsKey(move))
