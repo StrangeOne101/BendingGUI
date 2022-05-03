@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.strangeone101.bendinggui.LangBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,7 +33,7 @@ public class MenuSelectElement extends MenuBase
 	
 	public MenuSelectElement(OfflinePlayer player) 
 	{
-		super("Please select an element!", 3);
+		super(new LangBuilder("Display.Choose.Title").toString(), 3);
 		this.thePlayer = player;
 	}
 	
@@ -52,7 +53,7 @@ public class MenuSelectElement extends MenuBase
 		
 		if (menu_ != null)
 		{
-			MenuItem item = new MenuItem(ChatColor.YELLOW + "Return to Menu", Material.ARROW) {
+			MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder("Display.Choose.Back").toString(), Material.ARROW) {
 				@Override
 				public void onClick(Player player) 
 				{
@@ -101,9 +102,9 @@ public class MenuSelectElement extends MenuBase
 			@Override
 			public void run(Player player) 
 			{
-				if (thePlayer instanceof Player && !(((Player)thePlayer).hasPermission("bending." + element.getName().toLowerCase())) && thePlayer.getName().equals(openPlayer.getName()))
+				if (thePlayer instanceof Player && !(((Player)thePlayer).hasPermission("bending." + element.getName().toLowerCase())) && thePlayer == openPlayer)
 				{
-					player.sendMessage(ChatColor.RED + "You don't have permission to choose this element!");
+					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Choose.NoPermissionElement").element(element).toString());
 					player.closeInventory();
 					return;
 				}
@@ -118,9 +119,9 @@ public class MenuSelectElement extends MenuBase
 				}
 				
 				GeneralMethods.removeUnusableAbilities(bPlayer.getName());
-				String aORan = "aeiouAEIOU".indexOf(element.getName().charAt(0)) >= 0 ? "an " : "a ";
 				
-				if (thePlayer instanceof Player) ((Player)thePlayer).sendMessage(ChatColor.YELLOW + "You are now " + aORan + BendingGUI.getColor(element) + (element == Element.CHI ? "chiblocker" + ChatColor.YELLOW + "!": element.getName().toLowerCase() + ChatColor.YELLOW + " bender!"));
+				if (thePlayer instanceof Player)
+					((Player)thePlayer).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Choose.Success").element(element).anOrA(element.getName()).toString());
 				
 				GeneralMethods.saveElements(bPlayer);
 				GeneralMethods.saveSubElements(bPlayer);
@@ -139,28 +140,30 @@ public class MenuSelectElement extends MenuBase
 				switchMenu(player, instance);
 				
 			}
-		}, Arrays.asList(new String[] {ChatColor.GRAY + "Are you sure you want to choose " + c3 + element.toString().toUpperCase() + ChatColor.RESET + ChatColor.GRAY + "?", ChatColor.GRAY + "This cannot be changed!"})
-		, Arrays.asList(new String[] {ChatColor.GRAY + "Return to the previous menu"}));
-		MenuItem item = new MenuItem(c1 + "Choose " + c2 + ChatColor.BOLD + (element == Element.CHI ? "CHIBLOCKER" : ChatColor.stripColor(element.toString().toUpperCase())), mat) {
+		}, /*Arrays.asList(new String[] {ChatColor.GRAY + "Are you sure you want to choose " + c3 + element.toString().toUpperCase() + ChatColor.RESET + ChatColor.GRAY + "?", ChatColor.GRAY + "This cannot be changed!"})
+		, Arrays.asList(new String[] {ChatColor.GRAY + "Return to the previous menu"*/
+	"Choose");
+		MenuItem item = new MenuItem(c1 + new LangBuilder("Display.Choose." + element.getName() + ".Title").element(element).toString(), mat) {
 
 			@Override
 			public void onClick(Player player) 
 			{
-				if (!b1)
+				if (thePlayer != openPlayer)
 				{
 					if (!openPlayer.hasPermission("bending.admin.choose"))
 					{
-						openPlayer.sendMessage(ChatColor.RED + "You don't have permission to choose this player's bending!");
+						openPlayer.sendMessage(ChatColor.RED + new LangBuilder("Chat.Choose.Admin.NoPermission").player(thePlayer).toString());
 						closeMenu(openPlayer);
 						return;
 					}
-					openPlayer.sendMessage(ChatColor.YELLOW + "You have made " + thePlayer.getName() + " a " + c3 + (element == Element.CHI ? "Chiblocker" : element.toString()));
+					//openPlayer.sendMessage(ChatColor.YELLOW + "You have made " + thePlayer.getName() + " a " + c3 + (element == Element.CHI ? "Chiblocker" : element.toString()));
+					openPlayer.sendMessage(ChatColor.GREEN + new LangBuilder("Chat.Choose.Admin.Success").element(element).player(thePlayer).anOrA(element.getName()).toString());
 				}
 				else
 				{
 					if (BendingPlayer.getBendingPlayer(thePlayer) != null && !BendingPlayer.getBendingPlayer(thePlayer).getElements().isEmpty() && !openPlayer.hasPermission("bending.command.rechoose"))
 					{
-						openPlayer.sendMessage(ChatColor.RED + "You don't have permission to change your element!");
+						openPlayer.sendMessage(ChatColor.RED + new LangBuilder("Chat.Choose.Rechoose.NoPermission").toString());
 						closeMenu(openPlayer);
 					}
 				}
@@ -168,11 +171,11 @@ public class MenuSelectElement extends MenuBase
 				confirm.openMenu(openPlayer);
 			}
 		};
-		if (element == Element.FIRE) item.setDescriptions(this.getDesc(Config.fireDesc));
-		else if (element == Element.WATER) item.setDescriptions(this.getDesc(Config.waterDesc));
-		else if (element == Element.AIR) item.setDescriptions(this.getDesc(Config.airDesc));
-		else if (element == Element.EARTH) item.setDescriptions(this.getDesc(Config.earthDesc));
-		else if (element == Element.CHI) item.setDescriptions(this.getDesc(Config.chiDesc));
+		if (element == Element.FIRE) item.setDescriptions(this.getDesc(new LangBuilder("Display.Choose.Fire.Lore").toString()));
+		else if (element == Element.WATER) item.setDescriptions(this.getDesc(new LangBuilder("Display.Choose.Water.Lore").toString()));
+		else if (element == Element.AIR) item.setDescriptions(this.getDesc(new LangBuilder("Display.Choose.Air.Lore").toString()));
+		else if (element == Element.EARTH) item.setDescriptions(this.getDesc(new LangBuilder("Display.Choose.Earth.Lore").toString()));
+		else if (element == Element.CHI) item.setDescriptions(this.getDesc(new LangBuilder("Display.Choose.Chi.Lore").toString()));
 		
 		return item;
 	}
@@ -198,11 +201,11 @@ public class MenuSelectElement extends MenuBase
 		{
 			if (openPlayer.getName().equals(thePlayer.getName()))
 			{
-				player.sendMessage(ChatColor.RED + "You cannot choose an element because your bending has been permanently removed!");
+				player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Choose.PermaRemoved").toString());
 			}
 			else
 			{
-				player.sendMessage(ChatColor.RED + "This player has had their bending permanently removed!");
+				player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Choose.Admin.PermaRemoved").player(thePlayer).toString());
 			}
 			closeMenu(player);
 			return;

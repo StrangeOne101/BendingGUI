@@ -112,12 +112,6 @@ public class BendingGUI extends JavaPlugin
 			if (error.startsWith("!")) {
 				log.severe(error.substring(1));
 				enabled = false;
-				try {
-					throw new VersionIncompatibilityException();
-				} catch (VersionIncompatibilityException e) {
-					e.printStackTrace();
-				}
-
 			} else {
 				log.warning(error);
 			}
@@ -207,8 +201,7 @@ public class BendingGUI extends JavaPlugin
 	public void reload()
 	{
 		Config.load();
-		Descriptions.load();
-		Descriptions.save();
+		ConfigLanguage.getInstance().load();
 		log.log(Level.INFO, "BendingGUI Reloaded!");
 	}
 

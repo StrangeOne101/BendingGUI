@@ -3,6 +3,7 @@ package com.strangeone101.bendinggui.menus;
 import java.util.Arrays;
 import java.util.List;
 
+import com.strangeone101.bendinggui.LangBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -30,7 +31,7 @@ public class MenuEditElements extends MenuBase
 	
 	public MenuEditElements(OfflinePlayer player, MenuBase previousMenu) 
 	{
-		super("Edit " + player.getName() + "'" + (player.getName().endsWith("s") ? "" : "s") + " Elements", 3);
+		super(new LangBuilder("Display.Edit.Title").yourOrPlayer(player, player).toString(), 3);
 		this.prev = previousMenu;
 		this.player = player;
 		update();
@@ -64,7 +65,8 @@ public class MenuEditElements extends MenuBase
 			@Override
 			public void run(Player player1) 
 			{
-				Bukkit.dispatchCommand(openPlayer, "bending remove " + p.getName());
+
+				//Bukkit.dispatchCommand(openPlayer, "bending remove " + p.getName());
 				DynamicUpdater.setPage(p.getPlayer(), 0);
 				switchMenu(player1, prev);
 			}
@@ -77,8 +79,9 @@ public class MenuEditElements extends MenuBase
 				switchMenu(player, getInstance());
 			}
 			
-		}, Arrays.asList(new String[] {ChatColor.GRAY + "Are you sure you want to remove all",ChatColor.GRAY + player.getName() + "'s elements? This can't",ChatColor.GRAY + "be undone"}),
-		Arrays.asList(new String[] {ChatColor.GRAY + "Return back to the element menu"}));
+		}, /*Arrays.asList(new String[] {ChatColor.GRAY + "Are you sure you want to remove all",ChatColor.GRAY + player.getName() + "'s elements? This can't",ChatColor.GRAY + "be undone"}),
+		Arrays.asList(new String[] {ChatColor.GRAY + "Return back to the element menu"})*/
+		"RemoveAll");
 		
 		MenuItem item = new MenuItem(ChatColor.RED + "Remove All Elements", Material.BARRIER)
 		{
@@ -103,7 +106,8 @@ public class MenuEditElements extends MenuBase
 		MenuItem item;
 		final OfflinePlayer player = this.player;
 		final ChatColor c = BendingGUI.getColor(element);
-		item = new MenuItem(ChatColor.BOLD + "" + c + "" + element.getName().toUpperCase(), this.getElementData(element)) {
+		String key = "Display.Edit.Element";
+		item = new MenuItem(ChatColor.BOLD + "" + c + new LangBuilder(key + ".Tile"), this.getElementData(element)) {
 			@Override
 			public void onClick(Player playerwhoclicked) 
 			{
@@ -113,7 +117,8 @@ public class MenuEditElements extends MenuBase
 					if (playerwhoclicked.hasPermission("bending.admin.add"))
 					{
 						if (player instanceof Player)
-							((Player)player).sendMessage(ChatColor.YELLOW + "You are now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + " " + element.getType().getBender() + ChatColor.YELLOW + "!");
+							((Player)player).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Add.Self").element(element).anOrA(element.getName()).toString());
+							//((Player)player).sendMessage(ChatColor.YELLOW + "You are now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + " " + element.getType().getBender() + ChatColor.YELLOW + "!");
 						
 						p.addElement(element);
 						
@@ -132,13 +137,14 @@ public class MenuEditElements extends MenuBase
 						}
 						
 						if (!playerwhoclicked.getName().equals(player.getName()))
-							playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + ChatColor.YELLOW + " " + element.getType().getBender() + "!");
+							playerwhoclicked.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Add.Admin").player(player).element(element).anOrA(element.getName()).toString());
+							//playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + ChatColor.YELLOW + " " + element.getType().getBender() + "!");
 						
 						update();
 					}
 					else
 					{
-						playerwhoclicked.sendMessage(ChatColor.RED + "You don't have permission to change people's bending!");
+						playerwhoclicked.sendMessage(ChatColor.RED + new LangBuilder("Chat.Edit.NoPermission").player(player).toString());
 						closeMenu(playerwhoclicked);
 					}
 				} else {
@@ -147,7 +153,8 @@ public class MenuEditElements extends MenuBase
 					}*/
 					
 					if (player instanceof Player)
-						((Player)player).sendMessage(ChatColor.YELLOW + "Your " + c + element.getName().toLowerCase() + element.getType().getBending() + ChatColor.YELLOW + " was removed!");
+						((Player)player).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Remove.Self").element(element).toString());
+								//((Player)player).sendMessage(ChatColor.YELLOW + "Your " + c + element.getName().toLowerCase() + element.getType().getBending() + ChatColor.YELLOW + " was removed!");
 					p.getElements().remove(element);
 					GeneralMethods.saveElements(p);
 					GeneralMethods.removeUnusableAbilities(p.getName());
@@ -156,7 +163,8 @@ public class MenuEditElements extends MenuBase
 						Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent((Player)player, (Player)player, element, Result.REMOVE));
 					}
 					if (!playerwhoclicked.getName().equals(player.getName()))
-					playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is no longer " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + ChatColor.YELLOW + element.getName().toLowerCase() + element.getType().getBender() + "!");
+						//playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is no longer " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + ChatColor.YELLOW + element.getName().toLowerCase() + element.getType().getBender() + "!");
+						playerwhoclicked.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Remove.Admin").player(player).element(element).toString());
 					update();
 				}
 	
@@ -164,10 +172,11 @@ public class MenuEditElements extends MenuBase
 			}
 		};
 		boolean b = BendingPlayer.getBendingPlayer(player).hasElement(element);
-		String notBender = ChatColor.GRAY + "Click to make " + ChatColor.YELLOW + player.getName() + ChatColor.RESET + ChatColor.GRAY + " " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender!";
-		String isBender = ChatColor.GRAY + "This player is already a " + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender! Click to remove this element!";
+		String lore = new LangBuilder(key + ".Lore." + (b ? "Has" : "HasNot")).yourOrPlayer(player, openPlayer).element(element).player(player).toString();
+		//String notBender = ChatColor.GRAY + "Click to make " + ChatColor.YELLOW + player.getName() + ChatColor.RESET + ChatColor.GRAY + " " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender!";
+		//String isBender = ChatColor.GRAY + "This player is already a " + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender! Click to remove this element!";
 		//item.setDescriptions(Arrays.asList((b ? isBender.split("\n") : notBender.split("\n"))));
-		item.setDescriptions(BendingGUI.getDescriptions(b ? isBender : notBender, ChatColor.GRAY, 58));
+		item.setDescriptions(BendingGUI.getDescriptions(lore, ChatColor.GRAY, 58));
 		if (BendingPlayer.getBendingPlayer(player).hasElement(element))
 		{
 			item.setEnchanted(true);
@@ -177,8 +186,8 @@ public class MenuEditElements extends MenuBase
 	
 	public MenuItem getBackItem()
 	{
-		String s = this.prev == null ? "Exit Menu" : "Back";
-		MenuItem item = new MenuItem(ChatColor.YELLOW + s, Material.ARROW) {
+		String key = "Display.Edit.Back";
+		MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder(key + ".Title").toString(), Material.ARROW) {
 			@Override
 			public void onClick(Player player) 
 			{
@@ -190,8 +199,8 @@ public class MenuEditElements extends MenuBase
 				closeMenu(player);
 			}
 		};
-		String s1 = this.prev == null ? "Exit menu and return to your normal inventory" : "Return to the previous menu";
-		item.addDescription(ChatColor.DARK_GRAY + s1);
+		//String s1 = this.prev == null ? "Exit menu and return to your normal inventory" : "Return to the previous menu";
+		item.addDescription(ChatColor.DARK_GRAY + new LangBuilder(key + ".Lore").toString());
 		return item;
 	}
 	
@@ -213,6 +222,7 @@ public class MenuEditElements extends MenuBase
 	public void openMenu(Player player) 
 	{
 		this.openPlayer = player;
+		this.title = new LangBuilder("Display.Edit.Title").yourOrPlayer(this.player, openPlayer).toString();
 		super.openMenu(player);
 	}
 }

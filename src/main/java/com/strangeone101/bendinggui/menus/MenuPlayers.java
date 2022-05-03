@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import com.strangeone101.bendinggui.LangBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,7 +33,7 @@ public class MenuPlayers extends MenuBase
 	
 	public MenuPlayers(MenuBendingOptions prevmenu) 
 	{
-		super("Player Bending", getSize());
+		super(new LangBuilder("Display.Players.Title").toString(), getSize());
 		this.prev = prevmenu;
 	}
 	
@@ -116,11 +117,11 @@ public class MenuPlayers extends MenuBase
 		
 		if (BendingPlayer.getBendingPlayer(player) == null || BendingPlayer.getBendingPlayer(player).getElements() == null || BendingPlayer.getBendingPlayer(player).getElements().size() == 0)
 		{
-			item.addDescription(ChatColor.GRAY + "(Non-bender)");
+			item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Players.NonBender").toString());
 			if (openPlayer.hasPermission("bendinggui.admin.view"))
 			{
 				item.addDescription("");
-				item.addDescription(ChatColor.RED + "" + ChatColor.BOLD + "CLICK TO VIEW BENDING");
+				item.addDescription(ChatColor.RED + new LangBuilder("Display.Players.Click").toString());
 			}
 			return item;
 		}

@@ -63,4 +63,12 @@ public class BendingBoard
 	public static boolean isBoardEnabled() {
 		return boardPlugin != BBPlugin.NONE && boardPlugin != null;
 	}
+
+	public static void updateBoard(Player player) {
+		if (boardPlugin == BBPlugin.STOCK) {
+			BendingBoardManager.updateAllSlots(player);
+		} else if (boardPlugin == BBPlugin.JEDCORE) {
+			com.jedk1.jedcore.scoreboard.BendingBoard.update(player);
+		}
+	}
 }

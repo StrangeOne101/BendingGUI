@@ -14,7 +14,7 @@ public class LangBuilder {
     private String value = "";
 
     public LangBuilder(String key) {
-        this.key = key;
+        this.key = key.trim();
         this.value = ConfigLanguage.getInstance().getString(key);
         if (value == null) value = "&c" + key;
     }
@@ -58,17 +58,20 @@ public class LangBuilder {
         if (target == controller) {
             this.value = value.replace("{player|your}", new LangBuilder("Generic.Your").toString())
                     .replace("{player|yourself}", new LangBuilder("Generic.Yourself").toString())
-                    .replace("{player|you}", new LangBuilder("Generic.You").toString());
+                    .replace("{player|you}", new LangBuilder("Generic.You").toString())
+                    .replace("{they|you}", new LangBuilder("Generic.You").toString());
         } else {
-            this.value = value.replace("{player|your}", target.getName())
+            this.value = value.replace("{player|your}", target.getName() + "'" + (target.getName().endsWith("s") ? "" : "s"))
                     .replace("{player|yourself}", target.getName())
-                    .replace("{player|you}", target.getName());
+                    .replace("{player|you}", target.getName())
+                    .replace("{they|you}", new LangBuilder("Generic.They").toString());;
         }
 
         return this;
     }
 
     public LangBuilder anOrA(String proceedingWord) {
+        if (proceedingWord == null || proceedingWord.equals("")) proceedingWord = "null";
         proceedingWord = proceedingWord.toLowerCase();
         if (proceedingWord.charAt(0) == 'a' || proceedingWord.charAt(0) == 'e' || proceedingWord.charAt(0) == 'i' ||
                 proceedingWord.charAt(0) == 'o' || proceedingWord.charAt(0) == 'u') {
@@ -87,6 +90,13 @@ public class LangBuilder {
             innerList.value = innerList.value.replaceFirst("\\{item}", list[i]);
         }
         this.value = this.value.replace("{list}", innerList.toString());
+        return this;
+    }
+
+    public LangBuilder capitalizeFirst() {
+        String copy = ChatColor.stripColor(this.value);
+        int place = this.value.indexOf(copy.charAt(0));
+        this.value = this.value.substring(0, place) + this.value.substring(place, place + 1).toUpperCase() + this.value.substring(place);
         return this;
     }
 
