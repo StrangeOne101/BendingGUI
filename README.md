@@ -41,18 +41,18 @@ There is also a */bending gui* command if you like things nice and tidy!
 
 Moves/Abilities are displayed along the top of the interface, with arrows to go to the next page, etc. To bind a move, you simply click the move you want to bind and then click the slot you want to bind it to (the stained glass). Slots with moves will be colored and will display what move they are, and can also be removed with the removal tool (the barrier icon).
 
-If you want to know more information on a move OR how to use it, click the info tool (sign/map) then click the move you want help with.
+If you want to know more information on a move OR how to use it, click the info tool (sign) then click the move you want help with.
 
 Your bending can also be toggled with the stained clay/wool so your bending doesn't get in the way of small tasks. :)
 
 TL;DR: Just click and click. It's simple enough. ;)
 
 ### Configuration:
-The main configuration file is found at _/plugins/BendingGUI/config.yml_. In there, you can configure what the element and subelement icons are for the moves. You can also configure what item opens the GUI or if an item is required at all. Setting Gui.UserIcon.EnableSubElements to true will also mean that all player icons will show what sub-elements a user can bend. Disabled by default because it takes up a lot of room.
-
-lang.yml also contains all the short descriptions for all the moves. I've tried to include all moves from JedCore as well as PK, but if you find a move saying "***Description coming soon!***", just add it to the lang.yml
+The main configuration file is found at `/plugins/BendingGUI/config.yml`. In there, you can configure what the element and subelement icons are for the moves. You can also configure what item opens the GUI, if an item is required at all and whether to delete the item when players die, etc.
+  
+Every line in the plugin can be modified in the `/plugins/BendingGUI/language.yml`. This includes the name of the item given to players to change their bending, but also includes the descriptions for all abilities and descriptions of elements. You can add moves into this file to add support for addons that do not have a description.
 
 ### Requirements:
 
-- Spigot 1.12 
-- ProjectKorra 1.8.7
+- Spigot 1.16+
+- ProjectKorra 1.9.3+
