@@ -1,35 +1,41 @@
 package com.strangeone101.bendinggui;
 
 import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
+import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 
 import com.strangeone101.bendinggui.menus.MenuBendingOptions;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
-public class Listener implements org.bukkit.event.Listener 
-{
+public class Listener implements org.bukkit.event.Listener {
+
+	private final int NAME = "\u00A7aConfigure Bending".hashCode();
+
 	@EventHandler(priority = EventPriority.LOW)
-	public void onItemRightClick(PlayerInteractEvent e)
-	{
+	public void onItemRightClick(PlayerInteractEvent e) {
 		if (e.getHand() == EquipmentSlot.OFF_HAND) return;
-		try
-		{
-			if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-			{
-				if (e.getItem() != null && e.getItem().isSimilar(BendingGUI.getGuiItem()))
-				{
+		try {
+			if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+				//The first half of the if statement checks for old BendingGUI items that don't have the NBT marker on them
+				if (isCompass(e.getItem())) {
 					if (!BendingGUI.enabled) {
 						if (!BendingGUI.versionInfo.equals("")) {
 							if (e.getPlayer().hasPermission("bendinggui.admin")) {
@@ -37,7 +43,7 @@ public class Listener implements org.bukkit.event.Listener
 								e.getPlayer().sendMessage(ChatColor.RED + "[BendingGUI] " + s);
 								e.getPlayer().sendMessage(ChatColor.RED + "[BendingGUI] If you wish to disable this message, you can do so in the config.");
 							} else {
-								e.getPlayer().sendMessage(ChatColor.RED + "There is a problem with BendingGUI at the moment. Please contact your admin!");
+								e.getPlayer().sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.Disabled").toString());
 							}
 							
 						}
@@ -45,7 +51,7 @@ public class Listener implements org.bukkit.event.Listener
 					}
 					
 					if (MultiAbilityManager.playerAbilities.containsKey(e.getPlayer())) {
-						e.getPlayer().sendMessage(ChatColor.RED + "You cannot modify your binds right now!");
+						e.getPlayer().sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.CantEditNow").toString());
 					} else {
 						MenuBendingOptions menu = new MenuBendingOptions(e.getPlayer());
 						menu.openMenu(e.getPlayer());
@@ -55,37 +61,51 @@ public class Listener implements org.bukkit.event.Listener
 				}
 			}		
 		}
-		catch (Exception exception)
-		{
+		catch (Exception exception) {
 			e.setCancelled(true);
 			exception.printStackTrace();
-			e.getPlayer().sendMessage(ChatColor.RED + "An error occured while trying to open the bending interface. Please report this to your admin or the plugin developer!");
+			e.getPlayer().sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.FailedToOpen").toString());
+		}
+	}
+
+	@EventHandler
+	public void inventoryPickupEvent(InventoryPickupItemEvent event) {
+		if (isCompass(event.getItem().getItemStack()) && ConfigStandard.getInstance().doDestroyOnStore()) {
+			event.setCancelled(true);
+			event.getItem().remove();
+		}
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void throwItem(PlayerDropItemEvent event) {
+		if (isCompass(event.getItemDrop().getItemStack()) && ConfigStandard.getInstance().doDestroyOnThrow()) {
+			event.getItemDrop().remove();
+		}
+	}
+
+	@EventHandler
+	public void onDeath(PlayerDeathEvent event) {
+		if (!event.getKeepInventory() && ConfigStandard.getInstance().doDestroyOnDeath()) {
+			event.getDrops().removeIf(this::isCompass);
 		}
 	}
 	
 	@EventHandler(priority = EventPriority.LOW)
-	public void onMenuItemClicked(InventoryClickEvent event) 
-	{
+	public void onMenuItemClicked(InventoryClickEvent event) {
 		if (!BendingGUI.enabled || event.isCancelled()) return;
-		try
-		{
+		try {
 			Inventory inventory = event.getInventory();
-	        if (inventory.getHolder() instanceof MenuBase) 
-	        {
+	        if (inventory.getHolder() instanceof MenuBase) {
 	            MenuBase menu = (MenuBase) inventory.getHolder();
-	            if (event.getWhoClicked() instanceof Player) 
-	            {
+	            if (event.getWhoClicked() instanceof Player) {
 	                Player player = (Player) event.getWhoClicked();
-	                if (event.getSlotType() != InventoryType.SlotType.OUTSIDE) 
-	                {
+	                if (event.getSlotType() != InventoryType.SlotType.OUTSIDE) {
 	                	int index = event.getRawSlot();
-	                    if (index < inventory.getSize()) 
-	                    {
-	                    	if (event.getCursor() != null && event.getCursor().getType() != Material.AIR)
-	                    	{
+	                    if (index < inventory.getSize()) {
+	                    	if (event.getCursor() != null && event.getCursor().getType() != Material.AIR) {
 	                    		event.setCancelled(true);
 	                    		menu.closeMenu(player);
-	                    		player.sendMessage(ChatColor.RED + "The bending gui cannot be tampered with!");
+	                    		player.sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.NoTouchy").toString());
 	                    	}
 	                    	MenuItem item = menu.getMenuItem(index);
 	                    	if (item != null)
@@ -95,8 +115,7 @@ public class Listener implements org.bukkit.event.Listener
 	                    		event.setCancelled(true);
 	                    	}
 	                    }
-	                    else
-	                    {
+	                    else {
 	                    	if (event.isShiftClick()) {
 	                    		event.setCancelled(true);
 	                    	}
@@ -106,23 +125,29 @@ public class Listener implements org.bukkit.event.Listener
 	            }
 	        }
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			event.getWhoClicked().closeInventory();
-			event.getWhoClicked().sendMessage(ChatColor.RED + "An error occured while processing the clickevent. Please report this to your admin or the plugin developer!");
+			event.getWhoClicked().sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.ClickEvent").toString());
 			e.printStackTrace();
 		}
     }
+
+	@EventHandler(priority = EventPriority.HIGH)
+	public void onMenuItemClickedHigh(InventoryClickEvent event) {
+		if (event.getCursor() != null && isCompass(event.getCursor())) {
+			boolean prevent = isChest(event.getInventory()) ? ConfigStandard.getInstance().doDestroyOnStoreInChests() : ConfigStandard.getInstance().doDestroyOnStore();
+			if (prevent) {
+				event.setCancelled(true);
+			}
+		}
+	}
 	
 	@EventHandler
-	public void onClose(InventoryCloseEvent e)
-	{
+	public void onClose(InventoryCloseEvent e) {
 		if (!BendingGUI.enabled) return;
-		if (e.getInventory() instanceof MenuBendingOptions)
-		{
+		if (e.getInventory() instanceof MenuBendingOptions) {
 			MenuBendingOptions menu = (MenuBendingOptions) e.getInventory();
-			if (DynamicUpdater.players.containsKey(menu.getMenuPlayer().getUniqueId()) && DynamicUpdater.players.get(menu.getOpenPlayer().getUniqueId()).contains(menu.getOpenPlayer().getUniqueId()))
-			{
+			if (DynamicUpdater.players.containsKey(menu.getMenuPlayer().getUniqueId()) && DynamicUpdater.players.get(menu.getOpenPlayer().getUniqueId()).contains(menu.getOpenPlayer().getUniqueId())) {
 				DynamicUpdater.players.get(menu.getOpenPlayer().getUniqueId()).remove(menu.getOpenPlayer().getUniqueId());
 			}
 		}
@@ -130,17 +155,25 @@ public class Listener implements org.bukkit.event.Listener
 	
 	@EventHandler
 	public void onLogin(final PlayerLoginEvent e) {
-		Bukkit.getScheduler().runTaskLater(BendingGUI.INSTANCE, new Runnable() {
-			public void run() {
-				if (e.getPlayer().hasPermission("bendinggui.admin") && Config.alerts) {
-					if (!BendingGUI.versionInfo.equals("")) {
-						String s = BendingGUI.versionInfo.startsWith("!") ? "WARNING: " + BendingGUI.versionInfo.substring(1) : BendingGUI.versionInfo;
-						e.getPlayer().sendMessage(ChatColor.RED + "[BendingGUI] " + s);
-						e.getPlayer().sendMessage(ChatColor.RED + "[BendingGUI] If you wish to disable this message, you can do so in the config.");
-					}
+		Bukkit.getScheduler().runTaskLater(BendingGUI.INSTANCE, () -> {
+			if (e.getPlayer().hasPermission("bendinggui.admin") && ConfigStandard.getInstance().hasAdminAlerts()) {
+				if (!BendingGUI.versionInfo.equals("")) {
+					String s = BendingGUI.versionInfo.startsWith("!") ? "WARNING: " + BendingGUI.versionInfo.substring(1) : BendingGUI.versionInfo;
+					e.getPlayer().sendMessage(ChatColor.RED + "[BendingGUI] " + s);
+					e.getPlayer().sendMessage(ChatColor.RED + "[BendingGUI] If you wish to disable this message, you can do so in the config.");
 				}
-				
-			}}, 1L);
-		
+			}
+
+		}, 1L);
+	}
+
+
+	private boolean isCompass(ItemStack stack) {
+		return stack != null && (stack.getItemMeta().getDisplayName().hashCode() == NAME
+				|| stack.getItemMeta().getPersistentDataContainer().has(BendingGUI.COMPASS, PersistentDataType.BYTE));
+	}
+
+	private boolean isChest(Inventory inventory) {
+		return inventory.getType() == InventoryType.CHEST && (inventory.getSize() == 9 * 3 || inventory.getSize() == 9 * 6) && inventory.getHolder() instanceof Chest;
 	}
 }

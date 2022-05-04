@@ -34,7 +34,7 @@ public abstract class ConfigBase {
 		for (String key : defaults.keySet()) {
 			Object o = defaults.get(key);
 			if (o instanceof Material) {
-				o = o.toString(); //Convert to string
+				o = ((Material) o).name(); //Convert to string
 			} else if (o instanceof ItemStack) {
 				o = ((ItemStack)o).getType().toString(); //Convert to string from ItemStack
 			}

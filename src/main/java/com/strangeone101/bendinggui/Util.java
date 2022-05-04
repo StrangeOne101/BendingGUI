@@ -1,8 +1,17 @@
 package com.strangeone101.bendinggui;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class Util {
 	
@@ -35,8 +44,10 @@ public class Util {
 					"e98a2f7d-d571-4900-a625-483cbe6774fe", // Aztl
 					"7bb267eb-cf0b-4fb9-a697-27c2a913ed92", // Finn
 					"81adae76-d647-4b41-bfb0-8166516fa189", // AlexTheCoder
-					"5031c4e3-8103-49ea-b531-0d6ae71bad69"  // Simplicitee
-					-> "Staff.Developer ";
+					"5031c4e3-8103-49ea-b531-0d6ae71bad69", // Simplicitee
+					"5e7db6d3-add9-4aab-b1fc-3dda8f5713f4", // Prride
+					"f6c4aac7-9cc2-4da2-9038-e26bb808461d"  // Tyson / xLumos
+					-> "Staff.Developer";
 			default -> null;
 			//else if (id.toString().equals("3c484e61-7876-46c0-98c9-88c7834dc96c")) return ChatColor.DARK_PURPLE + "ProjectKorra Concept Designer"; // SamuraiSnowman (Zmeduna)
 			//else if (id.toString().equals("1d4a8a47-1f3b-40a6-b412-c15d874491b8")) return ChatColor.DARK_PURPLE + "ProjectKorra Concept Designer"; // Fyf
@@ -65,5 +76,35 @@ public class Util {
 	@SuppressWarnings("deprecation")
 	public static String getStaff(String playerName) {
 		return getStaff(Bukkit.getOfflinePlayer(playerName).getUniqueId());
+	}
+
+    public static void addGlow(ItemStack itemStack) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		itemMeta.addEnchant(Enchantment.LUCK, 1, true);
+		itemStack.setItemMeta(itemMeta);
+    }
+
+	/**
+	 * Splits the string every x characters. Allows the same
+	 * string to wrap to the next line after so many characters
+	 * @param line The full string
+	 * @param length The length to cut off to
+	 * */
+	public static List<String> lengthSplit(String line, int length)
+	{
+		Pattern p = Pattern.compile("\\G\\s*(.{1,"+length+"})(?=\\s|$)", Pattern.DOTALL);
+		Matcher m = p.matcher(line);
+		char lastColor = 'f';
+		List<String> l = new ArrayList<String>();
+		while (m.find())
+		{
+			String string = m.group(1);
+			if (string.contains("\u00A7")) {
+				lastColor = string.charAt(string.lastIndexOf('\u00A7') + 1);
+			}
+			l.add("\u00A7" + lastColor + string);
+		}
+		return l;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.projectkorra.projectkorra.ability.ComboAbility;
 import com.projectkorra.projectkorra.ability.CoreAbility;
+import com.projectkorra.projectkorra.ability.PassiveAbility;
 import com.strangeone101.bendinggui.BendingGUI;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -25,9 +26,9 @@ public class ConfigLanguage extends ConfigBase {
 	@Override
 	public Map<String, Object> addDefaults() {
 		Map<String, Object> defaults = new HashMap<String, Object>();
-		defaults.put("Command.PlayerOnly", "&cSorry bud! Only players can run this command!");
-		defaults.put("Command.NoPermission", "&cYou don't have permission to run this command!");
-		defaults.put("Command.GiveItem", "&aRight click the compass to configure your bending!");
+
+		defaults.put("Item.Title", "&aConfigure Bending");
+		defaults.put("Item.Lore", "&7Right click to configure your bending!");
 
 		defaults.put("Generic.Yourself", "yourself");
 		defaults.put("Generic.You", "you");
@@ -47,7 +48,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Choose.PermRemoved.Admin", "This player has had their bending permanently removed!");
 		defaults.put("Display.Choose.Confirm.Title", "Choose {element}?");
 		defaults.put("Display.Choose.Confirm.Yes.Title", "&a&lYES");
-		defaults.put("Display.Choose.Confirm.Yes.Lore", "&7Are you sure you want to choose {element}? This cannot be changed!");
+		defaults.put("Display.Choose.Confirm.Yes.Lore", "&7Are you sure you want to choose {elementcolor}{element}&7? This cannot be changed!");
 		defaults.put("Display.Choose.Confirm.No.Title", "&c&lNO");
 		defaults.put("Display.Choose.Confirm.No.Lore", "&7Return to the previous menu");
 		defaults.put("Display.Choose.Fire.Title", "&cChoose &4&l{ELEMENT}");
@@ -75,15 +76,22 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Players.Back.Title", "&eReturn to bending menu");
 		defaults.put("Display.Players.Back.Lore", "&7Click to return to bending menu");
 		defaults.put("Display.Players.You", "&e{player} &8(You)");
+		defaults.put("Display.Players.Online", "&e{player}");
+		defaults.put("Display.Players.Offline", "&7{player}");
 		defaults.put("Display.Players.NonBender", "&7(Non-bender)");
-		defaults.put("Display.Players.Click", "&c&lCLICK TO VIEW BENDING");
+		defaults.put("Display.Players.Admin.Click", "&c&lCLICK TO VIEW BENDING");
+		defaults.put("Display.Players.Admin.ChooseClick", "&c&lCLICK TO CHOOSE THEIR BENDING");
+		defaults.put("Display.Players.ToggleOffline.On.Title", "&cShow Offline Players");
+		defaults.put("Display.Players.ToggleOffline.Off.Title", "&cHide Offline Players");
+		defaults.put("Display.Players.ToggleOffline.On.Lore", "&7Click to show offline players");
+		defaults.put("Display.Players.ToggleOffline.Off.Lore", "&7Click to hide offline players");
 //CLICK TO VIEW BENDING
 
 		//defaults.put("Display.Edit.Title", "Change Elements");
-		defaults.put("Display.Edit.Title", "Edit {player|your} Elements");
-		defaults.put("Display.Edit.Element.Title", "{elementcolor}{element}");
-		defaults.put("Display.Edit.Element.Lore.Has", "&7This player is already a {elementcolor}{element}{bender}&e!");
-		defaults.put("Display.Edit.Element.Lore.HasNot", "&7Click to make &e{player|yourself} &7{a} {elementcolor}{element}{bender}&e!");
+		defaults.put("Display.Edit.Title", "Edit {player|your} elements");
+		defaults.put("Display.Edit.Element.Title", "{elementcolor}&l{element}");
+		defaults.put("Display.Edit.Element.Lore.Has", "&7This player is already a {elementcolor}{element}{bender}&7!");
+		defaults.put("Display.Edit.Element.Lore.HasNot", "&7Click to make &e{player|yourself} &7{a} {elementcolor}{element}{bender}&7!");
 		defaults.put("Display.Edit.Back.Title", "&eBack");
 		defaults.put("Display.Edit.Back.Lore", "&7Return to the previous menu");
 		defaults.put("Display.Edit.RemoveAll.Title", "&cRemove All Elements");
@@ -95,105 +103,124 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Edit.RemoveAll.Confirm.No.Lore", "&7Return to the element menu");
 		
 		defaults.put("Display.Main.Title", "Bending Options");
-		defaults.put("Display.Main.Items.Info.On.Title", "&eMove Help Tool &7(On)");
-		defaults.put("Display.Main.Items.Info.Off.Title", "&eMove Help Tool &7(Off)");
-		defaults.put("Display.Main.Items.Info.On.Lore", "&7When toggled on, click on an ability for more information.\\n&7Click to turn off again");
-		defaults.put("Display.Main.Items.Info.Off.Lore", "&7When toggled on, click on an ability for more information.\\n&7Click to turn on");
-		defaults.put("Display.Main.Items.Remove.AbilityLore", "&c&lTOGGLE THE REMOVAL TOOL BEFORE\\nREBINDING!\\n&r&7You must turn off the unbind tool before you\\ncan rebind moves again");
-		defaults.put("Display.Main.Items.Remove.On.Title", "&cRemoval Tool &7(On)");
-		defaults.put("Display.Main.Items.Remove.Off.Title", "&cRemoval Tool &7(Off)");
-		defaults.put("Display.Main.Items.Remove.On.Lore", "&7Allows you to remove bound moves to your slots.\\n&7Click to turn off again\\n&7SHIFT click to remove all your bound moves");
-		defaults.put("Display.Main.Items.Remove.Off.Lore", "&7Allows you to remove bound moves to your slots.\\n&7Click to turn on\\n&7SHIFT click to remove all your bound moves");
-		defaults.put("Display.Main.Items.Bind.AbilityLore", "&a&lCURRENTLY SELECTED\\n&r&7Click a slot to bind to this move to!");
-		defaults.put("Display.Main.Items.Edit.Title", "&eAdd/Remove Elements");
-		defaults.put("Display.Main.Items.Edit.Lore", "&7Edit the elements {player|you} can bend");
-		defaults.put("Display.Main.Items.Change.Title", "&eChange Element");
-		defaults.put("Display.Main.Items.Change.Lore", "&7Change your main bending element");
-		defaults.put("Display.Main.Items.Page.Next.Title", "&eNext Page &7(&e{current}&7/&e{max}&7)");
-		defaults.put("Display.Main.Items.Page.Next.Lore", "&7Click to go to the next page of moves");
-		defaults.put("Display.Main.Items.Page.Previous.Title", "&ePrevious Page &7(&e{current}&7/&e{max}&7)");
-		defaults.put("Display.Main.Items.Page.Previous.Lore", "&7Click to go to the previous page of moves");
-		defaults.put("Display.Main.Items.Combos.Title", "&eView Combos");
-		defaults.put("Display.Main.Items.Combos.Lore", "&7View the available combos");
-		defaults.put("Display.Main.Items.ComboAbility.Title", "{abilitycolor}{ability} (Combo)");
-		defaults.put("Display.Main.Items.Toggle.On.Title", "&cDisable Bending");
-		defaults.put("Display.Main.Items.Toggle.Off.Title", "&aEnable Bending");
-		defaults.put("Display.Main.Items.Toggle.On.Lore", "&7Click to disable your bending");
-		defaults.put("Display.Main.Items.Toggle.Off.Lore", "&7Click to re-enable your bending");
-		defaults.put("Display.Main.Items.Board.On.Title", "&aToggle BendingBoard &7(ACTIVE)");
-		defaults.put("Display.Main.Items.Board.Off.Title", "&cToggle BendingBoard &7(INACTIVE)");
-		defaults.put("Display.Main.Items.Board.On.Lore", "&7Click to toggle the bending board");
-		defaults.put("Display.Main.Items.Board.Off.Lore", "&7Click to toggle the bending board");
-		defaults.put("Display.Main.Items.Overview.Title.Self", "&eYour Bending");
-		defaults.put("Display.Main.Items.Overview.Title.Others", "&e{player}'{s} Bending");
-		defaults.put("Display.Main.Items.Overview.Lore.Who", "&e&lClick to view other players bending");
-		defaults.put("Display.Main.Items.Overview.Lore.AdminWho", "&e&lClick to view and edit other players bending");
-		defaults.put("Display.Main.Items.Overview.Lore.AvatarSelf", "&5You are the avatar!");
-		defaults.put("Display.Main.Items.Overview.Lore.Avatar", "&5They are the avatar!");
-		defaults.put("Display.Main.Items.Overview.Lore.AvatarElements", "&7{they|you} are {a}:");
-		defaults.put("Display.Main.Items.Overview.Lore.ElementList", "(Can {list})");
-		defaults.put("Display.Main.Items.Overview.Element.Air", "&7Airbender");
-		defaults.put("Display.Main.Items.Overview.Element.Earth", "&aEarthbender");
-		defaults.put("Display.Main.Items.Overview.Element.Water", "&9Waterbender");
-		defaults.put("Display.Main.Items.Overview.Element.Fire", "&cFirebender");
-		defaults.put("Display.Main.Items.Overview.Element.Chi", "&6Chiblocker");
-		defaults.put("Display.Main.Items.Overview.Element.Flight", "Fly");
-		defaults.put("Display.Main.Items.Overview.Element.SpiritualProjection", "Spiritually Project");
-		defaults.put("Display.Main.Items.Overview.Element.Sand", "Sandbend");
-		defaults.put("Display.Main.Items.Overview.Element.Metal", "Metalbend");
-		defaults.put("Display.Main.Items.Overview.Element.Lava", "Lavabend");
-		defaults.put("Display.Main.Items.Overview.Element.Lightning", "use Lightning");
-		defaults.put("Display.Main.Items.Overview.Element.Combustion", "Combust");
-		defaults.put("Display.Main.Items.Overview.Element.BlueFire", "use Blue Fire");
-		defaults.put("Display.Main.Items.Overview.Element.Blood", "Bloodbend");
-		defaults.put("Display.Main.Items.Overview.Element.Plant", "Plantbend");
-		defaults.put("Display.Main.Items.Overview.Element.Healing", "Heal");
+		defaults.put("Display.Main.Info.On.Title", "&eMove Help Tool &7(On)");
+		defaults.put("Display.Main.Info.Off.Title", "&eMove Help Tool &7(Off)");
+		defaults.put("Display.Main.Info.On.Lore", "&7When toggled on, click on an ability for more information.\\n&7Click to turn off again");
+		defaults.put("Display.Main.Info.Off.Lore", "&7When toggled on, click on an ability for more information.\\n&7Click to turn on");
+		defaults.put("Display.Main.Remove.AbilityLore", "&c&lTOGGLE THE REMOVAL TOOL BEFORE\\nREBINDING!\\n&r&7You must turn off the unbind tool before you\\ncan rebind moves again");
+		defaults.put("Display.Main.Remove.On.Title", "&cRemoval Tool &7(On)");
+		defaults.put("Display.Main.Remove.Off.Title", "&cRemoval Tool &7(Off)");
+		defaults.put("Display.Main.Remove.On.Lore", "&7Allows you to remove bound moves to your slots.\\n&7Click to turn off again\\n&7SHIFT click to remove all your bound moves");
+		defaults.put("Display.Main.Remove.Off.Lore", "&7Allows you to remove bound moves to your slots.\\n&7Click to turn on\\n&7SHIFT click to remove all your bound moves");
+		defaults.put("Display.Main.Bind.AbilityLore", "&a&lCURRENTLY SELECTED\\n&r&7Click a slot to bind to this move to!");
+		defaults.put("Display.Main.Edit.Title", "&eAdd/Remove Elements");
+		defaults.put("Display.Main.Edit.Lore", "&7Edit the elements {player|you} can bend");
+		defaults.put("Display.Main.Change.Title", "&eChange Element");
+		defaults.put("Display.Main.Change.Lore", "&7Change your main bending element");
+		
+		defaults.put("Display.Main.Combos.Title", "&eView Combos");
+		defaults.put("Display.Main.Combos.Lore", "&7View the available combos");
+		defaults.put("Display.Main.ComboAbility.Title", "{abilitycolor}{ability} (Combo)");
+		defaults.put("Display.Main.Toggle.On.Title", "&cDisable Bending");
+		defaults.put("Display.Main.Toggle.Off.Title", "&aEnable Bending");
+		defaults.put("Display.Main.Toggle.On.Lore", "&7Click to disable your bending");
+		defaults.put("Display.Main.Toggle.Off.Lore", "&7Click to re-enable your bending");
+		defaults.put("Display.Main.Board.On.Title", "&aToggle BendingBoard &7(ACTIVE)");
+		defaults.put("Display.Main.Board.Off.Title", "&cToggle BendingBoard &7(INACTIVE)");
+		defaults.put("Display.Main.Board.On.Lore", "&7Click to toggle the bending board");
+		defaults.put("Display.Main.Board.Off.Lore", "&7Click to toggle the bending board");
+		defaults.put("Display.Main.Overview.Title.Self", "&eYour Bending");
+		defaults.put("Display.Main.Overview.Title.Others", "&e{player}'{s} Bending");
+		defaults.put("Display.Main.Overview.Lore.Who", "&e&lClick to view other players bending");
+		defaults.put("Display.Main.Overview.Lore.AdminWho", "&e&lClick to view and edit other \\n&e&lplayers bending");
+		defaults.put("Display.Main.Overview.Lore.AvatarSelf", "&5You are the avatar!");
+		defaults.put("Display.Main.Overview.Lore.Avatar", "&5They are the avatar!");
+		defaults.put("Display.Main.Overview.Lore.ElementPrefix", "&7{they|you} are currently {a}:");
+		defaults.put("Display.Main.Overview.Lore.SubList", "(Can {list})");
+		defaults.put("Display.Main.Overview.Element.Air", "&7Airbender");
+		defaults.put("Display.Main.Overview.Element.Earth", "&aEarthbender");
+		defaults.put("Display.Main.Overview.Element.Water", "&9Waterbender");
+		defaults.put("Display.Main.Overview.Element.Fire", "&cFirebender");
+		defaults.put("Display.Main.Overview.Element.Chi", "&6Chiblocker");
+		defaults.put("Display.Main.Overview.Element.Flight", "Fly");
+		defaults.put("Display.Main.Overview.Element.SpiritualProjection", "Spiritually Project");
+		defaults.put("Display.Main.Overview.Element.Sand", "Sandbend");
+		defaults.put("Display.Main.Overview.Element.Metal", "Metalbend");
+		defaults.put("Display.Main.Overview.Element.Lava", "Lavabend");
+		defaults.put("Display.Main.Overview.Element.Lightning", "use Lightning");
+		defaults.put("Display.Main.Overview.Element.Combustion", "Combust");
+		defaults.put("Display.Main.Overview.Element.BlueFire", "use Blue Fire");
+		defaults.put("Display.Main.Overview.Element.Blood", "Bloodbend");
+		defaults.put("Display.Main.Overview.Element.Plant", "Plantbend");
+		defaults.put("Display.Main.Overview.Element.Healing", "Heal");
 
-		defaults.put("Display.Main.Items.Slot.Full.Title", "{abilitycolor}Slot {slot} &7({abilitycolor}{ability}&7)");
-		defaults.put("Display.Main.Items.Slot.Full.Lore", "&7Currently bound: {abilitycolor}{ability}\\n\\n&7To bind a new move, click a move then click\\n&7the slot you want to bind it to.");
-		defaults.put("Display.Main.Items.Slot.Empty.Title", "&cSlot {slot} &7(Empty)");
-		defaults.put("Display.Main.Items.Slot.Empty.Lore", "&7Nothing is currently bound to this slot!\\n\\n&7Click a move and click a slot to bind!");
-		defaults.put("Display.Main.Items.Slot.Disabled.Multi", "&c&lYOU CANNOT EDIT YOUR BINDS RIGHT NOW!\\n&r&7You are using a multi-ability move and must stop\\n&7using it before you can bind again!");
-		defaults.put("Display.Main.Items.Slot.Disabled.Toggled", "&cBending is disabled!");
-		defaults.put("Display.Main.Items.Slot.Disabled.ToggledLore", "&7Enable bending to use again!");
+		defaults.put("Display.Main.Slot.Full.Title", "{abilitycolor}Slot {slot} &7({abilitycolor}{ability}&7)");
+		defaults.put("Display.Main.Slot.Full.Lore", "&7Currently bound: {abilitycolor}{ability}\\n\\n&7To bind a new move, click a move then click\\n&7the slot you want to bind it to.");
+		defaults.put("Display.Main.Slot.Empty.Title", "&cSlot {slot} &7(Empty)");
+		defaults.put("Display.Main.Slot.Empty.Lore", "&7Nothing is currently bound to this slot!\\n\\n&7Click a move and click a slot to bind!");
+		defaults.put("Display.Main.Slot.Disabled.Multi", "&c&lYOU CANNOT EDIT YOUR BINDS RIGHT NOW!\\n&r&7You are using a multi-ability move and must stop\\n&7using it before you can bind again!");
+		defaults.put("Display.Main.Slot.Disabled.Toggled", "&cBending is disabled!");
+		defaults.put("Display.Main.Slot.Disabled.ToggledLore", "&7Enable bending to use again!");
 
 		defaults.put("Display.Main.All.Lore.Info", "&e&lCLICK FOR MORE INFO!\\n&r&7Click to display more information about this move!");
 		defaults.put("Display.Main.All.Lore.Remove", "&c&lCLICK TO REMOVE!\\n&r&7Click to remove {ability} from this slot!");
 		defaults.put("Display.Main.All.Lore.Selected", "&a&lCURRENTLY SELECTED!\\n&r&7Click a move to bind to this slot!");
 		defaults.put("Display.Main.All.Lore.Offline", "&c&lCANNOT MODIFY BENDING OF OFFLINE PLAYERS!\\n&r&7You can't modify the bending of players that are offline!");
 
+		defaults.put("Display.Common.Page.Next.Title", "&eNext Page &7(&e{current}&7/&e{max}&7)");
+		defaults.put("Display.Common.Page.Next.Lore", "&7Click to go to the next page of moves");
+		defaults.put("Display.Common.Page.Previous.Title", "&ePrevious Page &7(&e{current}&7/&e{max}&7)");
+		defaults.put("Display.Common.Page.Previous.Lore", "&7Click to go to the previous page of moves");
+		defaults.put("Display.Common.Page.Back.Title", "&eReturn to bending menu");
+		defaults.put("Display.Common.Page.Back.Lore", "&7Click to return to bending menu");
+
 		defaults.put("Display.Errors.NoAbilName", "&4Error: &cMove doesn't exist! Please contact StrangeOne101 about this!");
 		defaults.put("Display.Errors.SlotOutOfRange", "&cError: Slot binding out of range! Please contact StrangeOne101 about this!");
 		defaults.put("Display.Errors.FailedToOpen", "&cAn error occurred while trying to open the bending interface. Please report this to your admin or the plugin developer!");
-		defaults.put("Display.Errors.NoAbilityDescription", "&7[[This move doesn't have a description set! Bug your server owner about it!]]");
+		defaults.put("Display.Errors.NoAbilityDescription", "&7\u272F \u272F \u272F This move doesn't have a description set! Bug your server owner about it! \u272F \u272F \u272F");
 		defaults.put("Display.Errors.ClickEvent", "&cAn error occurred while processing the clickevent. Please report this to your admin or the plugin developer!");
 		defaults.put("Display.Errors.CantEditNow", "&cYou cannot edit your binds right now!");
+		defaults.put("Display.Errors.Disabled", "&cThere is a problem with BendingGUI at the moment. Please contact your admin!");
+		defaults.put("Display.Errors.NoTouchy", "&cThe bending gui cannot be tampered with!");
 
 		defaults.put("Chat.Choose.CantChoose", "&cYou must have an element to modify your bending!");
 		defaults.put("Chat.Choose.ChooseNow", "&aYou aren't a bender yet! Please choose an element!");
-		defaults.put("Chat.Choose.Success", "&eYou are now {a} {elementcolor}{element}{bender}!");
-		defaults.put("Chat.Choose.Success.Admin", "&e{player} is now {a} {element}{bender}!");
-		defaults.put("Chat.Choose.Rechoose.NoPermission", "&cYou don't have permission to change your element!!");
+		defaults.put("Chat.Choose.Success.Self", "&eYou are now {a} {elementcolor}{element}{bender}&e!");
+		defaults.put("Chat.Choose.Success.Admin", "&e{player} is now {a} {element}{bender}&e!");
+		defaults.put("Chat.Choose.Rechoose.NoPermission", "&cYou don't have permission to change your element!");
 		defaults.put("Chat.Choose.NoPermissionElement", "&cYou don't have permission to choose this element!");
 		defaults.put("Chat.Choose.PermaRemoved", "&cYou cannot choose an element because your bending has been permanently removed!");
 		defaults.put("Chat.Choose.Admin.PermaRemoved", "&cThis player has had their bending permanently removed!");
 		defaults.put("Chat.Choose.Admin.NoPermission", "&cYou don't have permission to choose this player's bending!");
 		defaults.put("Chat.Board.Offline", "&aCan't toggle an offline player's bending board.");
-		defaults.put("Chat.Toggle.Admin.NoPermission", "&aYou don't have permission to toggle this player's bending!");
+		defaults.put("Chat.Toggle.Admin.NoPermission", "&cYou don't have permission to toggle this player's bending!");
 		defaults.put("Chat.Toggle.Admin.On", "&aYou toggled {player}'{s} bending on!");
 		defaults.put("Chat.Toggle.Admin.Off", "&cYou toggled {player}'{s} bending off!");
 		defaults.put("Chat.Toggle.Player.On", "&aYou have turned your bending back on.");
 		defaults.put("Chat.Toggle.Player.Off", "&cYour bending has been toggled off. You will not be able to use most abilities until you toggle it back.");
-		defaults.put("Chat.Toggle.NoPermission", "&aYou don't have permission to toggle your bending bending!");
+		defaults.put("Chat.Toggle.NoPermission", "&cYou don't have permission to toggle your bending bending!");
 		defaults.put("Chat.Combo.Help", "{abilitycolor}{ability} (Combo) -");
 		defaults.put("Chat.Bind.Ability", "{abilitycolor}{ability} &ebound to slot {slot}!");
 		defaults.put("Chat.Bind.Remove", "&cRemoved {abilitycolor}{ability}&c from slot {slot}!");
 		defaults.put("Chat.Bind.RemoveAll", "&cRemoved all bound moves from slots!");
 		defaults.put("Chat.Edit.Add.Self", "&eYou are now {a} {elementcolor}{element}{bender}&e!");
 		defaults.put("Chat.Edit.Add.Admin", "&e{player} is now {a} {elementcolor}{element}{bender}&e!");
-		defaults.put("Chat.Edit.Remove.Self", "&eYour {elementcolor}{element}{bending} has been removed!");
+		defaults.put("Chat.Edit.Remove.Self", "&eYour {elementcolor}{element}{bending}&e has been removed!");
 		defaults.put("Chat.Edit.Remove.Admin", "&e{player} is no longer {a} {elementcolor}{element}{bender}&e!");
-		defaults.put("Chat.Edit.NoPermission", "&aYou don't have permission to edit this player's bending!");
+		defaults.put("Chat.Edit.RemoveAll.Self", "&cYour elements have been removed! You will need to choose a new element to bend again!");
+		defaults.put("Chat.Edit.RemoveAll.Admin", "&c{player}'{s} elements have been removed!");
+		defaults.put("Chat.Edit.NoPermission", "&cYou don't have permission to edit this player's bending!");
+		defaults.put("Chat.Edit.Admin.Offline", "&cYou can't edit an offline players bending right now!");
+		defaults.put("Chat.Command.PlayerOnly", "&cSorry bud! Only players can run this command!");
+		defaults.put("Chat.Command.NoPermission", "&cYou don't have permission to run this command!");
+		defaults.put("Chat.Command.NoEditPermission", "&cYou don't have permission to edit other players bending!");
+		defaults.put("Chat.Command.GiveItem", "&aRight click the compass to configure your bending!");
+		defaults.put("Chat.Command.NoPlayer", "&cError while finding player!");
+		defaults.put("Chat.Command.Reload", "&eBendingGUI Reloaded!");
+		defaults.put("Chat.Command.Usage", "&eCommand usage is /gui or /gui <choose/version/reload> or /gui [player]");
+		defaults.put("Chat.Command.AlreadyChosen", "&cYou have already chosen an element!");
+		defaults.put("Chat.Command.Version", "&eBendingGUI is version {version}, for ProjectKorra version {pkversion}");
+		defaults.put("Chat.Command.VersionWarning", "&cSupport for this version of ProjectKorra is not guaranteed.");
 
 		defaults.put("Staff.Developer", "&5ProjectKorra Developer");
 		defaults.put("Staff.Contributor", "&5ProjectKorra Contributor");
@@ -353,6 +380,18 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Abilities.Combo-IceWave", "Freeze your WaterWave to damage enemies that you hit!");
 		
 		defaults.put("Abilities.Combo-Immobilize", "Freeze your enemies for a few seconds!");
+
+		for (CoreAbility ability : CoreAbility.getAbilities()) {
+			if (!(ability instanceof PassiveAbility) || ability.isHiddenAbility()) continue;
+
+			String name = ability.getName();
+
+			if (ability instanceof ComboAbility) name = "Combo-" + name;
+
+			if (!defaults.containsKey(name)) {
+				defaults.put("Abilities." + name, ability.getName() + " placeholder here");
+			}
+		}
 		
 		return defaults;
 	}
@@ -381,6 +420,8 @@ public class ConfigLanguage extends ConfigBase {
 				try {
 					BendingGUI.INSTANCE.getLogger().info("Imported old lang.yml data!");
 					this.config.save(getFile());
+
+					oldlang.delete();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

@@ -8,6 +8,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LangBuilder {
 
     private String key;
@@ -40,8 +43,15 @@ public class LangBuilder {
     }
 
     public LangBuilder element(Element element) {
+        if (element == null) {
+            this.value = value.replace("{element}", new LangBuilder("Display.Players.NonBender").toString())
+                    .replace("{ELEMENT}", new LangBuilder("Display.Players.NonBender").toString().toUpperCase())
+                    .replace("{elementcolor}", ChatColor.WHITE + "")
+                    .replace("{bender}", new LangBuilder("Display.Players.NonBender").toString());
+            return this;
+        }
         this.value = value.replace("{element}", element.getName()).replace("{ELEMENT}", element.getName().toUpperCase())
-                .replace("{elementcolor}", element.getColor().toString())
+                .replace("{elementcolor}", BendingGUI.getColor(element).toString())
                 .replace("{bender}", element.getType().getBender())
                 .replace("{bending}", element.getType().getBending())
                 .replace("{bend}", element.getType().getBend());
@@ -53,6 +63,10 @@ public class LangBuilder {
         return this;
     }
 
+    public LangBuilder version(String version) {
+        this.value = value.replace("{version}", version).replace("{pkversion}", "${projectkorra.version}");
+        return this;
+    }
 
     public LangBuilder yourOrPlayer(OfflinePlayer target, OfflinePlayer controller) {
         if (target == controller) {
@@ -94,10 +108,27 @@ public class LangBuilder {
     }
 
     public LangBuilder capitalizeFirst() {
-        String copy = ChatColor.stripColor(this.value);
-        int place = this.value.indexOf(copy.charAt(0));
-        this.value = this.value.substring(0, place) + this.value.substring(place, place + 1).toUpperCase() + this.value.substring(place);
+        this.value = capitalizeWord(this.value);
         return this;
+    }
+
+    public LangBuilder capitalizeAll() {
+        String[] words = this.value.split(" ");
+        List<String> newWords = new ArrayList<>();
+        for (String s : words) {
+            newWords.add(capitalizeWord(s));
+        }
+        this.value = String.join(" ", newWords);
+        return this;
+    }
+
+    private String capitalizeWord(String word) {
+        String copy = ChatColor.stripColor(word.replace('&', '\u00A7'))
+                .replace("\\n", "").replace("\n", "");
+        int place = word.indexOf(copy.charAt(0));
+        word = word.substring(0, place) + word.substring(place, place + 1).toUpperCase()
+                + word.substring(place + 1);
+        return word;
     }
 
     @Override
@@ -110,7 +141,7 @@ public class LangBuilder {
         LangBuilder builder = new LangBuilder("Abilities." + ability.getName());
         if (ability instanceof ComboAbility) builder = new LangBuilder("Abilities.Combo-" + ability.getName());
 
-        if (builder.value.equals("&c" + builder.key)) builder = new LangBuilder("Display.Errors.NoAbilityDescription");
+        if (builder.value.equals("&c" + builder.key) || builder.value.equals(ability.getName() + " placeholder here")) builder = new LangBuilder("Display.Errors.NoAbilityDescription");
         return builder;
     }
 

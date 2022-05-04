@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.strangeone101.bendinggui.LangBuilder;
+import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +17,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
 import com.strangeone101.bendinggui.BendingGUI;
-import com.strangeone101.bendinggui.Config;
 import com.strangeone101.bendinggui.MenuBase;
 import com.strangeone101.bendinggui.MenuItem;
 import com.strangeone101.bendinggui.RunnablePlayer;
@@ -103,7 +103,12 @@ public class MenuPlayers extends MenuBase
 
 	public MenuItem getPlayerItem(final OfflinePlayer player)
 	{
-		MenuItem item = new MenuItem(ChatColor.YELLOW + player.getName() + (!player.isOnline() ? ChatColor.DARK_GRAY + " (Offline)" : (player.getName() == openPlayer.getName() ? ChatColor.DARK_GRAY + " (You)" : "")), Material.PLAYER_HEAD)
+		String key = "Display.Players." + (player == this.openPlayer ? "You" : (player.isOnline() ? "Online" : "Offline"));
+		ChatColor color = !player.isOnline() ? ChatColor.GRAY : ChatColor.YELLOW;
+		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
+		Element element = bPlayer == null || bPlayer.getElements().size() == 0 ? null : (bPlayer.getElements().size() > 1 ? Element.AVATAR : bPlayer.getElements().get(0));
+
+		MenuItem item = new MenuItem(color + new LangBuilder(key).player(player).element(element).toString(), Material.PLAYER_HEAD)
 		{
 			@Override
 			public void onClick(Player player1) 
@@ -115,153 +120,165 @@ public class MenuPlayers extends MenuBase
 			}
 		};
 		
-		if (BendingPlayer.getBendingPlayer(player) == null || BendingPlayer.getBendingPlayer(player).getElements() == null || BendingPlayer.getBendingPlayer(player).getElements().size() == 0)
+		if (bPlayer == null || bPlayer.getElements() == null || bPlayer.getElements().size() == 0)
 		{
 			item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Players.NonBender").toString());
+			if (!Util.getStaff(player.getUniqueId()).equals("")) {
+				item.addDescription(ChatColor.DARK_PURPLE + Util.getStaff(player.getUniqueId()));
+			}
 			if (openPlayer.hasPermission("bendinggui.admin.view"))
 			{
 				item.addDescription("");
-				item.addDescription(ChatColor.RED + new LangBuilder("Display.Players.Click").toString());
+				item.addDescription(ChatColor.RED + new LangBuilder("Display.Players.Admin.ChooseClick").player(player).toString());
 			}
 			return item;
 		}
 		if ((player instanceof Player && ((Player)player).hasPermission("bending.avatar")) || 
-				BendingPlayer.getBendingPlayer(player).getElements().size() > 1)
+				bPlayer.getElements().size() > 1)
 		{
-			boolean b = BendingPlayer.getBendingPlayer(player).hasElement(Element.EARTH) || BendingPlayer.getBendingPlayer(player).hasElement(Element.AIR);
-			item.addDescription((player.getName() != openPlayer.getName() ? ChatColor.GRAY + "Currently the " : ChatColor.GRAY + "You are the " ) + Element.AVATAR.getColor() + "Avatar" );
-			item.addDescription(ChatColor.DARK_GRAY + (player.getName() != openPlayer.getName() ? "They" : "You") + " are currently a" + (b ? "n" : "") + ":");
+
+			//item.addDescription((player.getName() != openPlayer.getName() ? ChatColor.GRAY + "Currently the " : ChatColor.GRAY + "You are the " ) + Element.AVATAR.getColor() + "Avatar" );
+			//item.addDescription(ChatColor.DARK_GRAY + (player.getName() != openPlayer.getName() ? "They" : "You") + " are currently a" + (b ? "n" : "") + ":");
+			item.addDescription(Element.AVATAR.getColor() + new LangBuilder(key + ".Lore.Avatar" + (player == openPlayer ?  "Self" : "")).player(player).plural(player.getName()).toString());
+
 		}
-		else
+		boolean b = bPlayer.hasElement(Element.EARTH) || bPlayer.hasElement(Element.AIR);
+		item.addDescription(GRAY + new LangBuilder("Display.Main.Lore.ElementPrefix").yourOrPlayer(player, openPlayer).anOrA(b ? "airOrEarth" : "").capitalizeFirst().toString());
+		/*else
 		{
-			boolean b = BendingPlayer.getBendingPlayer(player).hasElement(Element.EARTH) || BendingPlayer.getBendingPlayer(player).hasElement(Element.AIR);
+			boolean b = bPlayer.hasElement(Element.EARTH) || bPlayer.hasElement(Element.AIR);
 			item.addDescription((player.getName() != openPlayer.getName() ? ChatColor.DARK_GRAY + "They" : ChatColor.GRAY + "You" ) + " are currently a" + (b ? "n" : "") + ":");
-		}
-		BendingPlayer p = BendingPlayer.getBendingPlayer(player);
+		}*/
 	
-		if (p.getElements().contains(Element.AIR)) 
+		if (bPlayer.getElements().contains(Element.AIR))
 		{
-			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + "Airbender";
-			if (player instanceof Player) 
-			{
-				if (((Player) player).hasPermission("bending.air.flight") && Config.showSubElementsOnUser) {s = s + ChatColor.DARK_GRAY + " (Can" + ChatColor.GRAY + " Fly" + ChatColor.DARK_GRAY + ")";}
+			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + new LangBuilder("Display.Main.Overview.Element.Air");
+			if (ConfigStandard.getInstance().doShowSubElements()) {
+				List<String> list = new ArrayList<String>();
+				if (bPlayer.hasSubElement(Element.SubElement.FLIGHT)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Flight").toString());
+				}
+				if (bPlayer.hasSubElement(Element.SubElement.SPIRITUAL)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.SpiritualProjection").toString()); //Spiritually
+				}
+				for (Element.SubElement sub : Element.getAddonSubElements(Element.AIR)) {
+					if (bPlayer.hasElement(sub)) {
+						list.add(new LangBuilder("Display.Main.Overview.Element." + sub.getName()).toString());
+					}
+				}
+				if (list.size() > 0)
+					s = s + GRAY + " " + new LangBuilder("Display.Main.Overview.Lore.SubList").list(list.toArray(new String[0]));
+				List<String> l = Util.lengthSplit(s, ConfigStandard.getInstance().getOverviewTrim());
+				for (String s1 : l) {
+					item.addDescription(s1);
+				}
+			} else {
 				item.addDescription(s);
 			}
 		}
-		if (p.getElements().contains(Element.EARTH)) 
+		if (bPlayer.getElements().contains(Element.EARTH))
 		{
-			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GREEN + "Earthbender";
-			if (player instanceof Player) 
-			{
-				boolean b = false;
+			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GREEN + new LangBuilder("Display.Main.Overview.Element.Earth");
+			if (ConfigStandard.getInstance().doShowSubElements()) {
 				List<String> list = new ArrayList<String>();
-				if (((Player)player).hasPermission("bending.earth.metalbending") && Config.showSubElementsOnUser) 
-				{
-					b = true;
-					list.add(Element.METAL.getColor() + "Metalbend");
+				if (bPlayer.hasSubElement(Element.METAL)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Metal").toString());
 				}
-				if (((Player)player).hasPermission("bending.earth.lavabending") && Config.showSubElementsOnUser) 
-				{
-					b = true;
-					list.add(Element.LAVA.getColor() + "Lavabend");
+				if (bPlayer.hasSubElement(Element.LAVA)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Lava").toString());
 				}
-				if (((Player)player).hasPermission("bending.earth.sandbending") && Config.showSubElementsOnUser) 
-				{
-					b = true;
-					list.add(Element.SAND.getColor() + "Sandbend");
+				if (bPlayer.hasSubElement(Element.SAND)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Sand").toString());
 				}
-				if (b && Config.showSubElementsOnUser) 
-				{
-					s = s + ChatColor.DARK_GRAY + " (Can " + (BendingGUI.INSTANCE.makeListFancy(list).replaceAll("\\,", ChatColor.DARK_GRAY + ",")
-							.replaceAll(" and ", ChatColor.DARK_GRAY + " and ") + ChatColor.DARK_GRAY + ")");
+				for (Element.SubElement sub : Element.getAddonSubElements(Element.EARTH)) {
+					if (bPlayer.hasElement(sub)) {
+						list.add(new LangBuilder("Display.Main.Overview.Element." + sub.getName()).toString());
+					}
 				}
-				List<String> l = BendingGUI.getDescriptions(s, ChatColor.DARK_GRAY, 65);
+				if (list.size() > 0)
+					s = s + GRAY + " " + new LangBuilder("Display.Main.Overview.Lore.SubList").list(list.toArray(new String[0]));
+
+				List<String> l = Util.lengthSplit(s, ConfigStandard.getInstance().getOverviewTrim());
 				for (String s1 : l) {
 					item.addDescription(s1);
 				}
+			} else {
+				item.addDescription(s);
 			}
 		}
-		if (p.getElements().contains(Element.FIRE)) 
+		if (bPlayer.getElements().contains(Element.FIRE))
 		{
-			String s = ChatColor.DARK_GRAY + "- " + ChatColor.RED + "Firebender";
-			if (player instanceof Player) 
-			{
-				boolean b = false;
+			String s = ChatColor.DARK_GRAY + "- " + ChatColor.RED + new LangBuilder("Display.Main.Overview.Element.Fire");
+			if (ConfigStandard.getInstance().doShowSubElements()) {
 				List<String> list = new ArrayList<String>();
-				if (((Player)player).hasPermission("bending.fire.lightningbending")) 
-				{
-					b = true;
-					list.add("Can use " + Element.LIGHTNING.getColor() + "Lightning");
+				if (bPlayer.hasSubElement(Element.LIGHTNING)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Lightning").toString());
 				}
-				if (((Player)player).hasPermission("bending.fire.combustionbending")) 
-				{
-					b = true;
-					list.add("Can " + Element.COMBUSTION.getColor() + "Combust");
+				if (bPlayer.hasSubElement(Element.COMBUSTION)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Combustion").toString());
 				}
-				if (Config.hasBlueFire && ((Player) player).hasPermission("bending.fire.bluefire"))
-				{
-					b = true;
-					list.add("Can use " + Element.BLUE_FIRE.getColor() + "Blue Fire");
+				if (bPlayer.hasSubElement(Element.BLUE_FIRE)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.BlueFire").toString());
 				}
-				if (b && Config.showSubElementsOnUser) 
-				{
-					s = s + ChatColor.DARK_GRAY + " (" + (BendingGUI.INSTANCE.makeListFancy(list).replaceAll("\\,", ChatColor.DARK_GRAY + ",")
-							.replaceAll(" and ", ChatColor.DARK_GRAY + " and ") + ChatColor.DARK_GRAY + ")");
+				for (Element.SubElement sub : Element.getAddonSubElements(Element.FIRE)) {
+					if (bPlayer.hasElement(sub)) {
+						list.add(new LangBuilder("Display.Main.Overview.Element." + sub.getName()).toString());
+					}
 				}
-				List<String> l = BendingGUI.getDescriptions(s, ChatColor.DARK_GRAY, 65);
+				if (list.size() > 0)
+					s = s + GRAY + " " + new LangBuilder("Display.Main.Overview.Lore.SubList").list(list.toArray(new String[0]));
+
+				List<String> l = Util.lengthSplit(s, ConfigStandard.getInstance().getOverviewTrim());
 				for (String s1 : l) {
 					item.addDescription(s1);
 				}
+			} else {
+				item.addDescription(s);
 			}
-			
 		}
-		if (p.getElements().contains(Element.WATER)) 
+		if (bPlayer.getElements().contains(Element.WATER))
 		{
-			String s = ChatColor.DARK_GRAY + "- " + ChatColor.BLUE + "Waterbender";
-			if (player instanceof Player) 
-			{
-				boolean b = false;
+			String s = ChatColor.DARK_GRAY + "- " + ChatColor.BLUE + new LangBuilder("Display.Main.Overview.Element.Water");
+			if (ConfigStandard.getInstance().doShowSubElements()) {
 				List<String> list = new ArrayList<String>();
-				if (((Player)player).hasPermission("bending.water.bloodbending")) 
-				{
-					b = true;
-					list.add(Element.BLOOD.getColor() + "Bloodbend");
+				if (bPlayer.hasSubElement(Element.BLOOD)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Blood").toString());
 				}
-				if (((Player)player).hasPermission("bending.water.plantbending")) 
-				{
-					b = true;
-					list.add(Element.PLANT.getColor() + "Plantbend");
+				if (bPlayer.hasSubElement(Element.PLANT)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Plant").toString());
 				}
-				if (((Player)player).hasPermission("bending.water.healing")) 
-				{
-					b = true;
-					list.add(Element.HEALING.getColor() + "Heal");
+				if (bPlayer.hasSubElement(Element.HEALING)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Healing").toString());
 				}
-				if (b && Config.showSubElementsOnUser) 
-				{
-					s = s + ChatColor.DARK_GRAY + " (Can " + (BendingGUI.INSTANCE.makeListFancy(list).replaceAll("\\,", ChatColor.DARK_GRAY + ",")
-							.replaceAll(" and ", ChatColor.DARK_GRAY + " and ") + ChatColor.DARK_GRAY + ")");
+				for (Element.SubElement sub : Element.getAddonSubElements(Element.WATER)) {
+					if (bPlayer.hasElement(sub)) {
+						list.add(new LangBuilder("Display.Main.Overview.Element." + sub.getName()).toString());
+					}
 				}
-				List<String> l = BendingGUI.getDescriptions(s, ChatColor.DARK_GRAY, 65);
+				if (list.size() > 0)
+					s = s + GRAY + " " + new LangBuilder("Display.Main.Overview.Lore.SubList").list(list.toArray(new String[0]));
+
+				List<String> l = Util.lengthSplit(s, ConfigStandard.getInstance().getOverviewTrim());
 				for (String s1 : l) {
 					item.addDescription(s1);
 				}
+			} else {
+				item.addDescription(s);
 			}
-			
 		}
-		if (p.getElements().contains(Element.CHI)) 
+		if (bPlayer.getElements().contains(Element.CHI))
 		{
-			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GOLD + "Chiblocker";
+			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GOLD + new LangBuilder("Display.Main.Overview.Element.Chi").toString();
 			item.addDescription(s);
 		}
 		if (!Util.getStaff(player.getUniqueId()).equals("")) {
-			item.addDescription(Util.getStaff(player.getUniqueId()));
+			item.addDescription(ChatColor.DARK_PURPLE + Util.getStaff(player.getUniqueId()));
 		}
 		
-		if (openPlayer.hasPermission("bendinggui.admin.view"))
+		if (openPlayer.hasPermission("bendinggui.admin"))
 		{
 			item.addDescription("");
-			item.addDescription(ChatColor.RED + "" + ChatColor.BOLD + "CLICK TO VIEW BENDING");
+			item.addDescription(ChatColor.RED + new LangBuilder("Display.Players.Admin.Click").player(player).toString());
 		}
 		return item;
 	}
@@ -269,15 +286,31 @@ public class MenuPlayers extends MenuBase
 	public MenuItem getArrowItem(final boolean isRight)
 	{
 		int maxPage = players.size() / (5 * 7) + 1;
-		String s = ChatColor.YELLOW + (isRight ? "Next" : "Previous") + " Page" + ChatColor.DARK_GRAY + 
-				"(" + ChatColor.YELLOW + this.page + ChatColor.DARK_GRAY + "/" + ChatColor.YELLOW + maxPage + ChatColor.DARK_GRAY + ")";
-		s = this.page == 0 ? ChatColor.YELLOW + "Return to Menu" : s;
-		MenuItem item = new MenuItem(ChatColor.YELLOW +  s, Material.ARROW)
+		String baseKey = "Display.Common.Page.";
+		String typeKey = !isRight && page == 0 ? "Back" : (isRight ? "Next" : "Previous");
+		//String s = ChatColor.YELLOW + (isRight ? "Next" : "Previous") + " Page" + ChatColor.DARK_GRAY +
+				//"(" + ChatColor.YELLOW + this.page + ChatColor.DARK_GRAY + "/" + ChatColor.YELLOW + maxPage + ChatColor.DARK_GRAY + ")";
+		//s = this.page == 0 ? ChatColor.YELLOW + "Return to Menu" : s;
+		MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder(baseKey + typeKey + ".Title").toString(), Material.ARROW)
 		{
 			@Override
 			public void onClick(Player player) 
 			{
 				if (page == 0 && !isRight)
+				{
+					switchMenu(player, prev);
+					return;
+				}
+
+				if (page == maxPage - 1 && isRight) return;
+				page = isRight ? page + 1 : page - 1;
+				if (isShiftClicked) {
+					page = isRight ? maxPage - 1 : 0;
+				}
+
+				update();
+
+				/*if (page == 0 && !isRight)
 				{
 					switchMenu(player, prev);
 				}
@@ -286,10 +319,12 @@ public class MenuPlayers extends MenuBase
 					if (isRight) page = page + 1;
 					else page = page - 1;
 					update();
-				}
+				}*/
 			}
 		};
-		if (isRight)
+		item.setDescriptions(Arrays.asList((ChatColor.GRAY + new LangBuilder(baseKey + typeKey + ".Lore").toString()).split("\\n")));
+
+		/*if (isRight)
 		{
 			item.addDescription(ChatColor.DARK_GRAY + "Click to go to the next page!");
 		}
@@ -300,15 +335,15 @@ public class MenuPlayers extends MenuBase
 		else
 		{
 			item.addDescription(ChatColor.DARK_GRAY + "Click to go to the previous page!");
-		}
+		}*/
 		
 		return item;
 	}
 	
 	public MenuItem getOfflinePlayerToggle()
 	{
-		String s = (this.showOffinePlayers ? "Hide" : "Show" ) + " offline players";
-		MenuItem item = new MenuItem(ChatColor.RED + s, Material.ENDER_EYE)
+		String key = "Display.Players.ToggleOffline." + (this.showOffinePlayers ? "On" : "Off" );
+		MenuItem item = new MenuItem(ChatColor.RED + new LangBuilder(key + ".Title").toString(), Material.ENDER_EYE)
 		{
 
 			@Override
@@ -323,7 +358,7 @@ public class MenuPlayers extends MenuBase
 		{
 			item.setEnchanted(true);
 		}
-		item.addDescription(ChatColor.GRAY + "Click to " + (this.showOffinePlayers ? "hide" : "show" ) + " offline players");
+		item.addDescription(ChatColor.GRAY + new LangBuilder(key + ".Lore").toString());
 		return item;
 	}
 	

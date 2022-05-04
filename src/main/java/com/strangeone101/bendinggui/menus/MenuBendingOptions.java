@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.strangeone101.bendinggui.LangBuilder;
-import org.bukkit.Bukkit;
+import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -28,8 +28,6 @@ import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.strangeone101.bendinggui.BendingBoard;
 import com.strangeone101.bendinggui.BendingGUI;
-import com.strangeone101.bendinggui.Config;
-import com.strangeone101.bendinggui.Descriptions;
 import com.strangeone101.bendinggui.DynamicUpdater;
 import com.strangeone101.bendinggui.MenuBase;
 import com.strangeone101.bendinggui.MenuItem;
@@ -70,21 +68,16 @@ public class MenuBendingOptions extends MenuBase
 
 	public MenuItem getItemForMove(OfflinePlayer player, final String move, final int index)
 	{
-		Material mat;
 		Element mainElement = CoreAbility.getAbility(move).getElement();
-		if (mainElement == Element.AVATAR) {
-			mat = Config.avatarIcon;
-		} else {
-			mat = Config.elementIcons.get(mainElement);
-		}
-		
+		Material mat = ConfigStandard.getInstance().getAbilityIconMaterial(mainElement);
+
 		if (mainElement instanceof SubElement) 
 		{
 			mainElement = ((SubElement)mainElement).getParentElement();
 		}
 		
-		final ChatColor c = mainElement == Element.AIR ? ChatColor.GRAY : (mainElement == Element.CHI ? ChatColor.GOLD : (mainElement == Element.EARTH ? ChatColor.GREEN : (mainElement == Element.FIRE ? ChatColor.RED : (mainElement == Element.WATER ?  ChatColor.BLUE : (mainElement == Element.AVATAR ? ChatColor.LIGHT_PURPLE : mainElement.getColor())))));
-		
+		final ChatColor c = BendingGUI.getColor(mainElement);
+
 		MenuItem item = new MenuItem(c + move, mat) {
 
 			@Override
@@ -130,22 +123,22 @@ public class MenuBendingOptions extends MenuBase
 		};
 		String desc = "";
 		String moveDesc = GRAY + LangBuilder.getAbilityDescription(CoreAbility.getAbility(move)).toString();
-		List<String> l = BendingGUI.getDescriptions(moveDesc, GRAY, 45);
+		List<String> l = Util.lengthSplit(moveDesc, ConfigStandard.getInstance().getAbilityTrim());
 		for (String s : l)
 		{
 			desc = desc + s + "\n";
 		}
 		if (move != null && this.mode == Mode.DELETE)
 		{
-			desc = desc + "\n\n" + new LangBuilder("Display.Main.Items.Remove.AbilityLore").toString();
+			desc = desc + "\n\n" + new LangBuilder("Display.Main.Remove.AbilityLore").toString();
 		}
 		else if (move != null && this.mode == Mode.INFO)
 		{
-			desc = desc + "\n\n" + new LangBuilder("Display.Main.Items.Info.AbilityLore").toString();
+			desc = desc + "\n\n" + new LangBuilder("Display.Main.Info.AbilityLore").toString();
 		}
 		else if (this.abilityIndex == move)
 		{
-			desc = desc + "\n\n" + new LangBuilder("Display.Main.Items.Bind.AbilityLore").toString();
+			desc = desc + "\n\n" + new LangBuilder("Display.Main.Bind.AbilityLore").toString();
 		}
 		item.setDescriptions(Arrays.asList(desc.split("\n")));
 		if (abilityIndex == move)
@@ -180,13 +173,13 @@ public class MenuBendingOptions extends MenuBase
 		
 		if (move == null || move.equals("null"))
 		{
-			itemname = new LangBuilder("Display.Main.Items.Slot.Empty.Title").slot(index + 1).toString();
-			desc = new LangBuilder("Display.Main.Items.Slot.Empty.Lore").slot(index + 1).toString();
+			itemname = new LangBuilder("Display.Main.Slot.Empty.Title").slot(index + 1).toString();
+			desc = new LangBuilder("Display.Main.Slot.Empty.Lore").slot(index + 1).toString();
 		}
 		else
 		{
-			itemname = new LangBuilder("Display.Main.Items.Slot.Full.Title").slot(index + 1).ability(CoreAbility.getAbility(move)).toString();
-			desc = new LangBuilder("Display.Main.Items.Slot.Full.Lore").slot(index + 1).ability(CoreAbility.getAbility(move)).toString();
+			itemname = new LangBuilder("Display.Main.Slot.Full.Title").slot(index + 1).ability(CoreAbility.getAbility(move)).toString();
+			desc = new LangBuilder("Display.Main.Slot.Full.Lore").slot(index + 1).ability(CoreAbility.getAbility(move)).toString();
 		}
 		
 
@@ -194,7 +187,7 @@ public class MenuBendingOptions extends MenuBase
 		{
 			if (MultiAbilityManager.playerAbilities.containsKey((Player)player))
 			{
-				desc = desc + "\n\n" + new LangBuilder("Display.Main.Items.Slot.Disabled.Multi");
+				desc = desc + "\n\n" + new LangBuilder("Display.Main.Slot.Disabled.Multi");
 			}
 			else if (move != null && mode == Mode.DELETE)
 			{
@@ -214,7 +207,7 @@ public class MenuBendingOptions extends MenuBase
 			desc = desc + "\n\n" + new LangBuilder("Display.Main.All.Lore.Offline").player(thePlayer);
 		}
 		
-		MenuItem item = new MenuItem(itemname, mat) {
+		MenuItem item = new MenuItem(ChatColor.YELLOW + itemname, mat) {
 
 			@Override
 			public void onClick(Player player) 
@@ -265,7 +258,7 @@ public class MenuBendingOptions extends MenuBase
 				}
 			}
 		};
-		item.setDescriptions(Arrays.asList(desc.split("\n")));
+		item.setDescriptions(Arrays.asList((ChatColor.GRAY + desc).split("\n")));
 		if (index == this.slotIndex)
 		{
 			item.setEnchanted(true);
@@ -278,7 +271,7 @@ public class MenuBendingOptions extends MenuBase
 	{
 		Material material = Material.BARRIER;
 
-		String key = "Display.Main.Items.Remove." + (this.mode == Mode.DELETE ? "On" : "Off");
+		String key = "Display.Main.Remove." + (this.mode == Mode.DELETE ? "On" : "Off");
 		MenuItem item = new MenuItem(ChatColor.RED + new LangBuilder(key + ".Title").toString(), material) {
 
 			@Override
@@ -303,7 +296,7 @@ public class MenuBendingOptions extends MenuBase
 				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
-		item.addDescription(new LangBuilder(key + ".Lore").toString());
+		item.addDescription(ChatColor.GRAY + new LangBuilder(key + ".Lore").toString());
 		if (this.mode == Mode.DELETE)
 		{
 			item.setEnchanted(true);
@@ -316,9 +309,9 @@ public class MenuBendingOptions extends MenuBase
 	{
 		final boolean b = !BendingBoard.isToggled(player);
 		Material material = b ? Material.LIME_DYE : Material.GRAY_DYE;
-		String key = "Display.Main.Items.Board." + (b ? "On" : "Off") + ".";
+		String key = "Display.Main.Board." + (b ? "On" : "Off") + ".";
 		//String s = (b ? ChatColor.GREEN : ChatColor.RED) + "Toggle BendingBoard " + GRAY + (b ? "(ACTIVE)" : "(INACTIVE)");
-		MenuItem item = new MenuItem(new LangBuilder(key + "Title").toString(), material) {
+		MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder(key + "Title").toString(), material) {
 
 			@Override
 			public void onClick(Player player) 
@@ -348,7 +341,7 @@ public class MenuBendingOptions extends MenuBase
 			material = Material.getMaterial("OAK_SIGN");
 		}
 
-		String key = "Display.Main.Items.Info." + (this.mode == Mode.INFO ? "On" : "Off");
+		String key = "Display.Main.Info." + (this.mode == Mode.INFO ? "On" : "Off");
 		MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder(key + ".Title").toString(), material) {
 
 			@Override
@@ -371,12 +364,12 @@ public class MenuBendingOptions extends MenuBase
 	public MenuItem getPageArrow(OfflinePlayer player, final boolean isRightDirection)
 	{
 		Material material = Material.ARROW;
-		String baseKey = "Display.Main.Items.Page." + (isRightDirection ? "Next" : "Previous");
+		String baseKey = "Display.Common.Page." + (isRightDirection ? "Next" : "Previous");
 		String s = new LangBuilder(baseKey + ".Title").page(this.movePage + 1, this.getMaxPages()).toString();
 		//String s = ChatColor.YELLOW + (isRightDirection ? "Next Page " : "Previous Page ");
 
 		//s = s + GRAY + "(" + ChatColor.YELLOW + (this.movePage + 1) + GRAY + "/" + ChatColor.YELLOW + this.getMaxPages() + GRAY + ")";
-		MenuItem item = new MenuItem(s, material) {
+		MenuItem item = new MenuItem(ChatColor.YELLOW + s, material) {
 
 			
 			@Override
@@ -411,7 +404,7 @@ public class MenuBendingOptions extends MenuBase
 				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
-		item.setDescriptions(Arrays.asList(new LangBuilder(baseKey + ".Lore").toString().split("\\n")));
+		item.setDescriptions(Arrays.asList((ChatColor.GRAY + new LangBuilder(baseKey + ".Lore").toString()).split("\\n")));
 		return item;
 	}
 	
@@ -419,7 +412,7 @@ public class MenuBendingOptions extends MenuBase
 	{
 		final MenuBendingOptions instance = this;
 		final boolean b = this.openPlayer.hasPermission("bending.admin.add");
-		String key = "Display.Main.Items." + (b ? "Edit" : "Change");
+		String key = "Display.Main." + (b ? "Edit" : "Change");
 		MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder(key + ".Title").toString(), Material.NETHER_STAR) {
 			@Override
 			public void onClick(Player player) 
@@ -442,11 +435,11 @@ public class MenuBendingOptions extends MenuBase
 		};
 		if (b)
 		{
-			item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Items.Edit.Lore").yourOrPlayer(thePlayer, openPlayer).toString());
+			item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Edit.Lore").yourOrPlayer(thePlayer, openPlayer).toString());
 		}
 		else
 		{
-			item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Items.Change.Lore").toString());
+			item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Change.Lore").toString());
 		}
 		
 		return item;
@@ -454,7 +447,7 @@ public class MenuBendingOptions extends MenuBase
 	
 	public MenuItem getComboItem()
 	{
-		MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder("Display.Main.Items.Combos.Title").toString(), Material.MAGMA_CREAM) {
+		MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder("Display.Main.Combos.Title").toString(), Material.MAGMA_CREAM) {
 			@Override
 			public void onClick(Player player) 
 			{
@@ -463,7 +456,7 @@ public class MenuBendingOptions extends MenuBase
 				update();
 			}
 		};
-		item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Items.Combos.Lore").toString());
+		item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Combos.Lore").toString());
 		if (combos) item.setEnchanted(true);
 		return item;
 	}
@@ -473,8 +466,8 @@ public class MenuBendingOptions extends MenuBase
 		boolean isToggled = !BendingPlayer.getBendingPlayer(this.thePlayer).isToggled();
 		Material mat = isToggled ? Material.LIME_WOOL : Material.RED_WOOL;
 		final OfflinePlayer p = this.thePlayer;
-		String key = "Display.Main.Items.Toggle." + (isToggled ? "Off" : "On") + ".";
-		MenuItem item = new MenuItem(new LangBuilder(key + "Title").toString(), mat) {
+		String key = "Display.Main.Toggle." + (isToggled ? "Off" : "On") + ".";
+		MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder(key + "Title").toString(), mat) {
 			@Override
 			public void onClick(Player player)
 			{
@@ -522,7 +515,7 @@ public class MenuBendingOptions extends MenuBase
 	{
 		final MenuBendingOptions menu1 = this;
 		//String string = thePlayer.getName() != openPlayer.getName() ? ChatColor.YELLOW + thePlayer.getName() + "'s Bending" : ChatColor.YELLOW + "Your bending";
-		String key = "Display.Main.Items.Overview";
+		String key = "Display.Main.Overview";
 		MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder(key + ".Title." + (thePlayer == openPlayer ? "Self" : "Other")).player(thePlayer).plural(thePlayer.getName()).toString(), Material.PLAYER_HEAD) {
 
 			@Override
@@ -538,9 +531,8 @@ public class MenuBendingOptions extends MenuBase
 		BendingPlayer p = BendingPlayer.getBendingPlayer(thePlayer.getName());
 		if ((thePlayer instanceof Player && ((Player)thePlayer).hasPermission("bending.avatar")) || p.hasElement(Element.AVATAR))
 		{
-			boolean b = p.hasElement(Element.EARTH) || p.hasElement(Element.AIR);
+
 			item.addDescription(Element.AVATAR.getColor() + new LangBuilder(key + ".Lore.Avatar" + (thePlayer == openPlayer ?  "Self" : "")).player(thePlayer).plural(thePlayer.getName()).toString());
-			item.addDescription(GRAY + new LangBuilder(key + ".Lore.AvatarElements").yourOrPlayer(thePlayer, openPlayer).anOrA(b ? "airOrEarth" : "").capitalizeFirst().toString());
 			//item.addDescription(GRAY + (thePlayer.getName() != openPlayer.getName() ? "They" : "You") + " are currently a" + (b ? "n" : "") + ":");
 		}
 		/*else
@@ -548,28 +540,30 @@ public class MenuBendingOptions extends MenuBase
 			boolean b = BendingPlayer.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.EARTH) || BendingPlayer.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.AIR);
 			item.addDescription((thePlayer.getName() != openPlayer.getName() ? GRAY + "They" : ChatColor.GRAY + "You" ) + " are currently a" + (b ? "n" : "") + ":");
 		}*/
-		
-	
+		boolean b = p.hasElement(Element.EARTH) || p.hasElement(Element.AIR);
+		item.addDescription(GRAY + new LangBuilder(key + ".Lore.ElementPrefix").yourOrPlayer(thePlayer, openPlayer).anOrA(b ? "airOrEarth" : "").capitalizeFirst().toString());
+
+
 		if (p.getElements().contains(Element.AIR)) 
 		{
-			String s = GRAY + "- " + ChatColor.GRAY + new LangBuilder("Display.Main.Items.Overview.Element.Air");
-			if (Config.showSubElementsOnUser) 
+			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + new LangBuilder("Display.Main.Overview.Element.Air");
+			if (ConfigStandard.getInstance().doShowSubElements())
 			{
 				List<String> list = new ArrayList<String>();
 				if (p.hasSubElement(SubElement.FLIGHT)) {
-					list.add(new LangBuilder("Display.Main.Items.Overview.Element.Flight").toString());
+					list.add(new LangBuilder("Display.Main.Overview.Element.Flight").toString());
 				}
 				if (p.hasSubElement(SubElement.SPIRITUAL)) {
-					list.add(new LangBuilder("Display.Main.Items.Overview.Element.SpiritualProjection").toString()); //Spiritually
+					list.add(new LangBuilder("Display.Main.Overview.Element.SpiritualProjection").toString()); //Spiritually
 				}
 				for (SubElement sub : Element.getAddonSubElements(Element.AIR)) {
 					if (p.hasElement(sub)) {
-						list.add(new LangBuilder("Display.Main.Items.Overview.Element." + sub.getName()).toString());
+						list.add(new LangBuilder("Display.Main.Overview.Element." + sub.getName()).toString());
 					}
 				}
 				if (list.size() > 0)
-					s = s + GRAY + " " + new LangBuilder("Display.Main.Items.Overview.Lore.ElementList").list(list.toArray(new String[0]));
-				List<String> l = BendingGUI.getDescriptions(s, GRAY, 65);
+					s = s + GRAY + " " + new LangBuilder("Display.Main.Overview.Lore.SubList").list(list.toArray(new String[0]));
+				List<String> l = Util.lengthSplit(s, ConfigStandard.getInstance().getOverviewTrim());
 				for (String s1 : l) {
 					item.addDescription(s1);
 				}
@@ -579,31 +573,27 @@ public class MenuBendingOptions extends MenuBase
 		}
 		if (p.getElements().contains(Element.EARTH)) 
 		{
-			String s = GRAY + "- " + ChatColor.GREEN + new LangBuilder("Display.Main.Items.Overview.Element.Earth");
-			if (Config.showSubElementsOnUser) 
-			{
+			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GREEN + new LangBuilder("Display.Main.Overview.Element.Earth");
+			if (ConfigStandard.getInstance().doShowSubElements()) {
 				List<String> list = new ArrayList<String>();
-				if (p.hasSubElement(Element.METAL)) 
-				{
-					list.add(new LangBuilder("Display.Main.Items.Overview.Element.Metal").toString());
+				if (p.hasSubElement(Element.METAL)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Metal").toString());
 				}
-				if (p.hasSubElement(Element.LAVA)) 
-				{
-					list.add(new LangBuilder("Display.Main.Items.Overview.Element.Lava").toString());
+				if (p.hasSubElement(Element.LAVA)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Lava").toString());
 				}
-				if (p.hasSubElement(Element.SAND)) 
-				{
-					list.add(new LangBuilder("Display.Main.Items.Overview.Element.Sand").toString());
+				if (p.hasSubElement(Element.SAND)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Sand").toString());
 				}
 				for (SubElement sub : Element.getAddonSubElements(Element.EARTH)) {
 					if (p.hasElement(sub)) {
-						list.add(new LangBuilder("Display.Main.Items.Overview.Element." + sub.getName()).toString());
+						list.add(new LangBuilder("Display.Main.Overview.Element." + sub.getName()).toString());
 					}
 				}
 				if (list.size() > 0)
-					s = s + GRAY + " " + new LangBuilder("Display.Main.Items.Overview.Lore.ElementList").list(list.toArray(new String[0]));
+					s = s + GRAY + " " + new LangBuilder("Display.Main.Overview.Lore.SubList").list(list.toArray(new String[0]));
 				
-				List<String> l = BendingGUI.getDescriptions(s, GRAY, 65);
+				List<String> l = Util.lengthSplit(s, ConfigStandard.getInstance().getOverviewTrim());
 				for (String s1 : l) {
 					item.addDescription(s1);
 				}
@@ -613,96 +603,86 @@ public class MenuBendingOptions extends MenuBase
 		}
 		if (p.getElements().contains(Element.FIRE)) 
 		{
-			String s = GRAY + "- " + ChatColor.RED + new LangBuilder("Display.Main.Items.Overview.Element.Fire");
-			if (Config.showSubElementsOnUser) 
-			{
+			String s = ChatColor.DARK_GRAY + "- " + ChatColor.RED + new LangBuilder("Display.Main.Overview.Element.Fire");
+			if (ConfigStandard.getInstance().doShowSubElements()) {
 				List<String> list = new ArrayList<String>();
-				if (p.hasSubElement(Element.LIGHTNING)) 
-				{
-					list.add(new LangBuilder("Display.Main.Items.Overview.Element.Lightning").toString());
+				if (p.hasSubElement(Element.LIGHTNING)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Lightning").toString());
 				}
-				if (p.hasSubElement(Element.COMBUSTION)) 
-				{
-					list.add(new LangBuilder("Display.Main.Items.Overview.Element.Combustion").toString());
+				if (p.hasSubElement(Element.COMBUSTION)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Combustion").toString());
 				}
-				if (Config.hasBlueFire && p.hasSubElement(Element.BLUE_FIRE))
-				{
-					list.add(new LangBuilder("Display.Main.Items.Overview.Element.BlueFire").toString());
+				if (p.hasSubElement(Element.BLUE_FIRE)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.BlueFire").toString());
 				}
 				for (SubElement sub : Element.getAddonSubElements(Element.FIRE)) {
 					if (p.hasElement(sub)) {
-						list.add(new LangBuilder("Display.Main.Items.Overview.Element." + sub.getName()).toString());
+						list.add(new LangBuilder("Display.Main.Overview.Element." + sub.getName()).toString());
 					}
 				}
 				if (list.size() > 0)
-					s = s + GRAY + " " + new LangBuilder("Display.Main.Items.Overview.Lore.ElementList").list(list.toArray(new String[0]));
+					s = s + GRAY + " " + new LangBuilder("Display.Main.Overview.Lore.SubList").list(list.toArray(new String[0]));
 
-				List<String> l = BendingGUI.getDescriptions(s, GRAY, 65);
+				List<String> l = Util.lengthSplit(s, ConfigStandard.getInstance().getOverviewTrim());
 				for (String s1 : l) {
 					item.addDescription(s1);
 				}
 			} else {
 				item.addDescription(s);
 			}
-			
 		}
 		if (p.getElements().contains(Element.WATER)) 
 		{
-			String s = GRAY + "- " + ChatColor.BLUE + new LangBuilder("Display.Main.Items.Overview.Element.Water");
-			if (Config.showSubElementsOnUser) 
-			{
+			String s = ChatColor.DARK_GRAY + "- " + ChatColor.BLUE + new LangBuilder("Display.Main.Overview.Element.Water");
+			if (ConfigStandard.getInstance().doShowSubElements()) {
 				List<String> list = new ArrayList<String>();
-				if (p.hasSubElement(Element.BLOOD)) 
-				{
-					list.add(new LangBuilder("Display.Main.Items.Overview.Element.Blood").toString());
+				if (p.hasSubElement(Element.BLOOD)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Blood").toString());
 				}
-				if (p.hasSubElement(Element.PLANT)) 
-				{
-					list.add(new LangBuilder("Display.Main.Items.Overview.Element.Plant").toString());
+				if (p.hasSubElement(Element.PLANT)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Plant").toString());
 				}
-				if (p.hasSubElement(Element.HEALING)) 
-				{
-					list.add(new LangBuilder("Display.Main.Items.Overview.Element.Healing").toString());
+				if (p.hasSubElement(Element.HEALING)) {
+					list.add(new LangBuilder("Display.Main.Overview.Element.Healing").toString());
 				}
 				for (SubElement sub : Element.getAddonSubElements(Element.WATER)) {
 					if (p.hasElement(sub)) {
-						list.add(new LangBuilder("Display.Main.Items.Overview.Element." + sub.getName()).toString());
+						list.add(new LangBuilder("Display.Main.Overview.Element." + sub.getName()).toString());
 					}
 				}
 				if (list.size() > 0)
-					s = s + GRAY + " " + new LangBuilder("Display.Main.Items.Overview.Lore.ElementList").list(list.toArray(new String[0]));
+					s = s + GRAY + " " + new LangBuilder("Display.Main.Overview.Lore.SubList").list(list.toArray(new String[0]));
 
-				List<String> l = BendingGUI.getDescriptions(s, GRAY, 65);
+				List<String> l = Util.lengthSplit(s, ConfigStandard.getInstance().getOverviewTrim());
 				for (String s1 : l) {
 					item.addDescription(s1);
 				}
 			} else {
 				item.addDescription(s);
 			}
-			
 		}
 		if (p.getElements().contains(Element.CHI)) 
 		{
-			String s = GRAY + "- " + ChatColor.GOLD + new LangBuilder("Display.Main.Items.Overview.Element.Chi").toString();
+			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GOLD + new LangBuilder("Display.Main.Overview.Element.Chi").toString();
 			item.addDescription(s);
 		}
 		for (Element element : Element.getAddonElements()) {
-			String s = GRAY + "- " + new LangBuilder("Display.Main.Items.Overview.Element." + element.getName()).toString();
+			String s = ChatColor.DARK_GRAY + "- " + new LangBuilder("Display.Main.Overview.Element." + element.getName()).toString();
 			item.addDescription(s);
 		}
 		if (!Util.getStaff(thePlayer.getUniqueId()).equals("")) {
-			item.addDescription(Util.getStaff(thePlayer.getUniqueId()));
+			item.addDescription(ChatColor.DARK_PURPLE + Util.getStaff(thePlayer.getUniqueId()));
 		}
 		
 		if (this.openPlayer.hasPermission("bendinggui.admin"))
 		{
 			item.addDescription("");
-			item.addDescription(ChatColor.YELLOW + "" + new LangBuilder("Display.Main.Items.Overview.Lore.AdminWho"));
+			item.addDescription(ChatColor.YELLOW + "" + new LangBuilder("Display.Main.Overview.Lore.AdminWho"));
 		}
 		else if (this.openPlayer.hasPermission("bending.command.who"))
 		{
 			item.addDescription("");
-			item.addDescription(ChatColor.YELLOW + "" + new LangBuilder("Display.Main.Items.Overview.Lore.Who"));
+			item.addDescription(ChatColor.YELLOW + "" + new LangBuilder("Display.Main.Overview.Lore.Who"));
 		}
 		/*NBTTagCompound tag = item.getNBTData();
 		tag.setString("SkullOwner", thePlayer.getName());
@@ -715,11 +695,7 @@ public class MenuBendingOptions extends MenuBase
 		Material mat;
 		Element mainElement = getComboElement(move);
 
-		if (mainElement == Element.AVATAR) {
-			mat = Config.avatarIcon;
-		} else {
-			mat = Config.elementIcons.get(mainElement);
-		}
+		mat = ConfigStandard.getInstance().getAbilityIconMaterial(mainElement);
 
 		if (mainElement instanceof SubElement) 
 		{
@@ -729,7 +705,7 @@ public class MenuBendingOptions extends MenuBase
 		final ChatColor c = mainElement == Element.AIR ? ChatColor.GRAY : (mainElement == Element.CHI ? ChatColor.GOLD : (mainElement == Element.EARTH ? ChatColor.GREEN : (mainElement == Element.FIRE ? ChatColor.RED : (mainElement == Element.WATER ?  ChatColor.BLUE : (mainElement == Element.AVATAR ? ChatColor.LIGHT_PURPLE : mainElement.getColor())))));
 		CoreAbility coreAbility = CoreAbility.getAbility(move);
 
-		MenuItem item = new MenuItem(new LangBuilder("Display.Main.Items.ComboAbility.Title").ability(CoreAbility.getAbility(move)).toString(), mat) {
+		MenuItem item = new MenuItem(new LangBuilder("Display.Main.ComboAbility.Title").ability(CoreAbility.getAbility(move)).toString(), mat) {
 
 			@Override
 			public void onClick(Player player) 
@@ -754,7 +730,7 @@ public class MenuBendingOptions extends MenuBase
 		};
 		String desc = "";
 		String moveDesc = GRAY + LangBuilder.getAbilityDescription(coreAbility).toString();
-		List<String> l = BendingGUI.getDescriptions(moveDesc, GRAY, 45);
+		List<String> l = Util.lengthSplit(moveDesc, ConfigStandard.getInstance().getAbilityTrim());
 		
 		String desc2 = ComboManager.getInstructions().get(move);
 		if (desc2 != null) {
@@ -839,11 +815,11 @@ public class MenuBendingOptions extends MenuBase
 		{
 			for (int i = 0; i < 18; i++)
 			{
-				MenuItem disabledSlot = new MenuItem(ChatColor.RED + new LangBuilder("Display.Main.Items.Slot.Disabled.Toggled").toString(), Material.GRAY_STAINED_GLASS_PANE) {
+				MenuItem disabledSlot = new MenuItem(ChatColor.RED + new LangBuilder("Display.Main.Slot.Disabled.Toggled").toString(), Material.GRAY_STAINED_GLASS_PANE) {
 					@Override
 					public void onClick(Player player) {}		
 				};
-				disabledSlot.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Items.Slot.Disabled.ToggledLore").toString());
+				disabledSlot.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Slot.Disabled.ToggledLore").toString());
 				this.addMenuItem(disabledSlot, i);
 			}
 			//this.addMenuItem(MenuItems.bendingRebind_ToggleBendingGreen, 8, 3);

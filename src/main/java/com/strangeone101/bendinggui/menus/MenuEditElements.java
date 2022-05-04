@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.strangeone101.bendinggui.LangBuilder;
+import com.strangeone101.bendinggui.Util;
+import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -34,7 +36,6 @@ public class MenuEditElements extends MenuBase
 		super(new LangBuilder("Display.Edit.Title").yourOrPlayer(player, player).toString(), 3);
 		this.prev = previousMenu;
 		this.player = player;
-		update();
 	}
 
 	/**Called to update menu*/
@@ -65,8 +66,27 @@ public class MenuEditElements extends MenuBase
 			@Override
 			public void run(Player player1) 
 			{
+				BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(p);
+				if (bPlayer == null) {
+					player1.sendMessage(ChatColor.RED + new LangBuilder("Chat.Edit.Admin.Offline").player(p).toString());
+					closeMenu(player1);
+				}
+				bPlayer.getElements().clear();
+				bPlayer.getSubElements().clear();
+				GeneralMethods.saveElements(bPlayer);
+				GeneralMethods.saveSubElements(bPlayer);
+				GeneralMethods.removeUnusableAbilities(p.getName());
+				if (p instanceof Player) {
+					Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent(player1, (Player)player, null, Result.REMOVE));
 
-				//Bukkit.dispatchCommand(openPlayer, "bending remove " + p.getName());
+					if (player1 != p){
+						//playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is no longer " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + ChatColor.YELLOW + element.getName().toLowerCase() + element.getType().getBender() + "!");
+						((Player)p).sendMessage(ChatColor.RED + new LangBuilder("Chat.Edit.RemoveAll.Self").player(player).toString());
+					}
+				}
+
+				player1.sendMessage(ChatColor.RED + new LangBuilder("Chat.Edit.RemoveAll.Admin").player(player).plural(player.getName()).toString());
+
 				DynamicUpdater.setPage(p.getPlayer(), 0);
 				switchMenu(player1, prev);
 			}
@@ -81,9 +101,10 @@ public class MenuEditElements extends MenuBase
 			
 		}, /*Arrays.asList(new String[] {ChatColor.GRAY + "Are you sure you want to remove all",ChatColor.GRAY + player.getName() + "'s elements? This can't",ChatColor.GRAY + "be undone"}),
 		Arrays.asList(new String[] {ChatColor.GRAY + "Return back to the element menu"})*/
-		"RemoveAll");
+				(context) -> context.yourOrPlayer(p, openPlayer).player(p).plural(p.getName()),
+				"Edit.RemoveAll");
 		
-		MenuItem item = new MenuItem(ChatColor.RED + "Remove All Elements", Material.BARRIER)
+		MenuItem item = new MenuItem(ChatColor.RED + new LangBuilder("Display.Edit.RemoveAll.Title").toString(), Material.BARRIER)
 		{
 			@Override
 			public void onClick(Player player) 
@@ -91,8 +112,7 @@ public class MenuEditElements extends MenuBase
 				switchMenu(player, confirm);
 			}
 		};
-		item.addDescription(ChatColor.GRAY + "This will remove all elements this");
-		item.addDescription(ChatColor.GRAY + "can bend");
+		item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Edit.RemoveAll.Lore").yourOrPlayer(player, openPlayer).plural(player.getName()).player(player).toString());
 		return item;
 	}
 	
@@ -107,7 +127,7 @@ public class MenuEditElements extends MenuBase
 		final OfflinePlayer player = this.player;
 		final ChatColor c = BendingGUI.getColor(element);
 		String key = "Display.Edit.Element";
-		item = new MenuItem(ChatColor.BOLD + "" + c + new LangBuilder(key + ".Tile"), this.getElementData(element)) {
+		item = new MenuItem( c + new LangBuilder(key + ".Title").element(element).toString(), this.getElementData(element)) {
 			@Override
 			public void onClick(Player playerwhoclicked) 
 			{
@@ -172,11 +192,11 @@ public class MenuEditElements extends MenuBase
 			}
 		};
 		boolean b = BendingPlayer.getBendingPlayer(player).hasElement(element);
-		String lore = new LangBuilder(key + ".Lore." + (b ? "Has" : "HasNot")).yourOrPlayer(player, openPlayer).element(element).player(player).toString();
+		String lore = new LangBuilder(key + ".Lore." + (b ? "Has" : "HasNot")).yourOrPlayer(player, openPlayer).anOrA(element.getName()).element(element).player(player).toString();
 		//String notBender = ChatColor.GRAY + "Click to make " + ChatColor.YELLOW + player.getName() + ChatColor.RESET + ChatColor.GRAY + " " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender!";
 		//String isBender = ChatColor.GRAY + "This player is already a " + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender! Click to remove this element!";
 		//item.setDescriptions(Arrays.asList((b ? isBender.split("\n") : notBender.split("\n"))));
-		item.setDescriptions(BendingGUI.getDescriptions(lore, ChatColor.GRAY, 58));
+		item.setDescriptions(Util.lengthSplit(lore, 58));
 		if (BendingPlayer.getBendingPlayer(player).hasElement(element))
 		{
 			item.setEnchanted(true);
@@ -210,19 +230,16 @@ public class MenuEditElements extends MenuBase
 		{
 			type = ((SubElement)type).getParentElement();
 		}
-		if (type == Element.FIRE) return Material.BLAZE_POWDER;
-		if (type == Element.WATER) return Material.WATER_BUCKET;
-		if (type == Element.CHI) return Material.STICK;
-		if (type == Element.EARTH) return Material.GRASS_BLOCK;
-		if (type == Element.AIR) return Material.STRING;
-		else return Material.REDSTONE;
+		Material mat = ConfigStandard.getInstance().getChooseIconMaterial(type);
+		return mat == null ? Material.REDSTONE : mat;
 	}
 	
 	@Override
 	public void openMenu(Player player) 
 	{
 		this.openPlayer = player;
-		this.title = new LangBuilder("Display.Edit.Title").yourOrPlayer(this.player, openPlayer).toString();
+		update();
+		//this.title = new LangBuilder("Display.Edit.Title").yourOrPlayer(this.player, openPlayer).toString();
 		super.openMenu(player);
 	}
 }

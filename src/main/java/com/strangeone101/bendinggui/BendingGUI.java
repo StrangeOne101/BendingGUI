@@ -5,19 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.strangeone101.bendinggui.config.ConfigLanguage;
+import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.projectkorra.projectkorra.Element;
@@ -42,22 +37,7 @@ public class BendingGUI extends JavaPlugin
 
 	public static List<Element> elementOrder;
 
-	private static ItemStack GUI_ITEM;
-
-	public static ItemStack getGuiItem()
-	{
-		return GUI_ITEM;
-	}
-
-	public static ItemStack getAdminGuiItem(Player player)
-	{
-		ItemStack stack = Config.guiItem;
-		ItemMeta meta = stack.getItemMeta();
-		meta.setDisplayName(ChatColor.RED + "Configure Bending (" + player.getName() + ")");
-		meta.setLore(Arrays.asList(new String[] {ChatColor.GRAY + "Right click to configure " + player.getName() + "'s bending!"}));
-		stack.setItemMeta(meta);
-		return stack;
-	}
+	public static NamespacedKey COMPASS;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -84,6 +64,7 @@ public class BendingGUI extends JavaPlugin
 	{
 		INSTANCE = this;
 		log = getLogger();
+		COMPASS = new NamespacedKey(this, "item");
 		getServer().getPluginManager().registerEvents(new Listener(), this);
 		if (Bukkit.getPluginManager().getPlugin("ProjectKorra") == null || !Bukkit.getPluginManager().getPlugin("ProjectKorra").isEnabled())
 		{
@@ -91,16 +72,6 @@ public class BendingGUI extends JavaPlugin
 			this.setEnabled(false);
 			return;
 		}
-
-		ItemStack stack = Config.guiItem;
-		ItemMeta meta = stack.getItemMeta();
-		meta.setDisplayName(ChatColor.GREEN + "Configure Bending");
-		meta.setLore(Arrays.asList(new String[] {ChatColor.GRAY + "Right click to configure your bending!"}));
-		stack.setItemMeta(meta);
-
-		GUI_ITEM = stack;
-
-
 
 		BendingBoard.checkPlugins();
 
@@ -157,14 +128,14 @@ public class BendingGUI extends JavaPlugin
 		}*/
 
 
-		Config.load();
 		//Descriptions.load();
 		//Descriptions.save();
+		new ConfigStandard();
 		new ConfigLanguage();
 		loadElementOrder();
 		new GuiCommand();
 
-		log.log(Level.INFO, enabled ? "BendingGUI Fully Loaded!" : "BendingGUI loaded but functional.");
+		log.log(Level.INFO, enabled ? "BendingGUI Fully Loaded!" : "BendingGUI loaded but not functional.");
 
 		loaded = true;
 	}
@@ -180,7 +151,7 @@ public class BendingGUI extends JavaPlugin
 		elementOrder.add(Element.FIRE);
 		elementOrder.add(Element.LIGHTNING);
 		elementOrder.add(Element.COMBUSTION);
-		if (Config.hasBlueFire) elementOrder.add(Element.BLUE_FIRE);
+		elementOrder.add(Element.BLUE_FIRE);
 		if (Element.getAddonSubElements(Element.FIRE).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.FIRE)));
 		elementOrder.add(Element.WATER);  elementOrder.add(Element.ICE);     elementOrder.add(Element.HEALING);  elementOrder.add(Element.PLANT);     elementOrder.add(Element.BLOOD);
 		if (Element.getAddonSubElements(Element.WATER).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.WATER)));
@@ -200,7 +171,7 @@ public class BendingGUI extends JavaPlugin
 
 	public void reload()
 	{
-		Config.load();
+		ConfigStandard.getInstance().load();
 		ConfigLanguage.getInstance().load();
 		log.log(Level.INFO, "BendingGUI Reloaded!");
 	}
@@ -215,55 +186,9 @@ public class BendingGUI extends JavaPlugin
 		}
 		else if (!varg1.startsWith("1.9.3") && !varg1.startsWith("1.9."))
 		{
-			return "his version of BendingGUI is made for ProjectKorra Core 1.9.3! You are running a higher or modded version which may not be fully supported yet.";
+			return "This version of BendingGUI is made for ProjectKorra Core 1.9.3! You are running a higher or modded version which may not be fully supported yet.";
 		}
 		return "";
-	}
-
-	/**Makes a description list for items. Use BendingGUI.getDescriptions now instead!*/
-	/*@Deprecated
-	public List<String> formatDescription(String string, ChatColor color)
-	{
-		List<String> s = new ArrayList<String>();
-		for (String s1 : string.split("\n"))
-		{
-			if (s1.equals("")) s.add("");
-			else s.add(color + s1 + "\n");
-		}
-		return s;
-	}*/
-
-	/**Makes a description list for items.*/
-	public static List<String> getDescriptions(String description, ChatColor color, int length)
-	{
-		Pattern p = Pattern.compile("\\G\\s*(.{1,"+length+"})(?=\\s|$)", Pattern.DOTALL);
-		Matcher m = p.matcher(description);
-		List<String> l = new ArrayList<String>();
-		while (m.find())
-		{
-			l.add(color + m.group(1));
-		}
-		return l;
-	}
-
-	public String makeListFancy(List<? extends Object> list)
-	{
-		String s = "";
-		for (int i = 0; i < list.size(); i++)
-		{
-			if (i == 0) {s = list.get(0).toString();}
-			else if (i == list.size() - 1) {s = s + " and " + list.get(i);}
-			else {s = s + ", " + list.get(i);}
-		}
-		return s;
-	}
-
-	public static void addGlow(ItemStack itemStack)
-	{
-	    ItemMeta itemMeta = itemStack.getItemMeta();
-	    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-			itemMeta.addEnchant(Enchantment.LUCK, 1, true);
-			itemStack.setItemMeta(itemMeta);
 	}
 
 	public static ChatColor getColor(Element element)
@@ -275,30 +200,6 @@ public class BendingGUI extends JavaPlugin
 		if (element == Element.FIRE) return ChatColor.RED;
 		if (element == Element.AIR) return ChatColor.GRAY;
 		if (element == Element.AVATAR) return ChatColor.LIGHT_PURPLE;
-		return element.getColor();
-	}
-
-	public static ChatColor getColorLight(Element element)
-	{
-		if (element instanceof SubElement) element = ((SubElement)element).getParentElement();
-		if (element == Element.WATER) return ChatColor.BLUE;
-		if (element == Element.CHI) return ChatColor.YELLOW;
-		if (element == Element.EARTH) return ChatColor.GREEN;
-		if (element == Element.FIRE) return ChatColor.RED;
-		if (element == Element.AIR) return ChatColor.GRAY;
-		if (element == Element.AVATAR) return ChatColor.LIGHT_PURPLE;
-		return element.getColor();
-	}
-
-	public static ChatColor getColorDeep(Element element)
-	{
-		if (element instanceof SubElement) element = ((SubElement)element).getParentElement();
-		if (element == Element.WATER) return ChatColor.DARK_BLUE;
-		if (element == Element.CHI) return ChatColor.GOLD;
-		if (element == Element.EARTH) return ChatColor.DARK_GREEN;
-		if (element == Element.FIRE) return ChatColor.DARK_RED;
-		if (element == Element.AIR) return ChatColor.GRAY;
-		if (element == Element.AVATAR) return ChatColor.DARK_PURPLE;
 		return element.getColor();
 	}
 }

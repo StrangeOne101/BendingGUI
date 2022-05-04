@@ -1,12 +1,12 @@
 package com.strangeone101.bendinggui.menus;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.strangeone101.bendinggui.LangBuilder;
+import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,8 +19,6 @@ import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.Element.SubElement;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent.Result;
-import com.strangeone101.bendinggui.BendingGUI;
-import com.strangeone101.bendinggui.Config;
 import com.strangeone101.bendinggui.MenuBase;
 import com.strangeone101.bendinggui.MenuItem;
 import com.strangeone101.bendinggui.RunnablePlayer;
@@ -88,14 +86,13 @@ public class MenuSelectElement extends MenuBase
 	
 	public MenuItem getChooseElement(final Element element)
 	{
-		Material mat = Material.STICK;
+		Material mat = ConfigStandard.getInstance().getChooseIconMaterial(element);
 		ChatColor c1 = ChatColor.YELLOW;
-		ChatColor c2 = ChatColor.GOLD;
 		final boolean b1 = thePlayer == openPlayer;
-		if (element == Element.AIR) {mat = Material.STRING; c1 = ChatColor.WHITE; c2 = ChatColor.GRAY;}
-		else if (element == Element.EARTH) {mat = Material.GRASS_BLOCK; c1 = ChatColor.GREEN; c2 = ChatColor.DARK_GREEN;}
-		else if (element == Element.FIRE) {mat = Material.BLAZE_POWDER; c1 = ChatColor.RED; c2 = ChatColor.DARK_RED;}
-		else if (element == Element.WATER) {mat = Material.WATER_BUCKET; c1 = ChatColor.BLUE; c2 = ChatColor.DARK_BLUE;}
+		if (element == Element.AIR) {c1 = ChatColor.WHITE;}
+		else if (element == Element.EARTH) {c1 = ChatColor.GREEN;}
+		else if (element == Element.FIRE) {c1 = ChatColor.RED;}
+		else if (element == Element.WATER) {c1 = ChatColor.BLUE;}
 		final ChatColor c3 = c1;
 		final MenuSelectElement instance = this;
 		final MenuConfirm confirm = new MenuConfirm(this, new RunnablePlayer() {
@@ -121,7 +118,7 @@ public class MenuSelectElement extends MenuBase
 				GeneralMethods.removeUnusableAbilities(bPlayer.getName());
 				
 				if (thePlayer instanceof Player)
-					((Player)thePlayer).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Choose.Success").element(element).anOrA(element.getName()).toString());
+					((Player)thePlayer).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Choose.Success.Self").element(element).anOrA(element.getName()).toString());
 				
 				GeneralMethods.saveElements(bPlayer);
 				GeneralMethods.saveSubElements(bPlayer);
@@ -140,8 +137,9 @@ public class MenuSelectElement extends MenuBase
 				switchMenu(player, instance);
 				
 			}
-		}, /*Arrays.asList(new String[] {ChatColor.GRAY + "Are you sure you want to choose " + c3 + element.toString().toUpperCase() + ChatColor.RESET + ChatColor.GRAY + "?", ChatColor.GRAY + "This cannot be changed!"})
-		, Arrays.asList(new String[] {ChatColor.GRAY + "Return to the previous menu"*/
+		}, (context) -> context.element(element).player(thePlayer)
+				.yourOrPlayer(thePlayer, openPlayer)
+				.plural(thePlayer.getName()).anOrA(element.getName()),
 	"Choose");
 		MenuItem item = new MenuItem(c1 + new LangBuilder("Display.Choose." + element.getName() + ".Title").element(element).toString(), mat) {
 
@@ -157,7 +155,7 @@ public class MenuSelectElement extends MenuBase
 						return;
 					}
 					//openPlayer.sendMessage(ChatColor.YELLOW + "You have made " + thePlayer.getName() + " a " + c3 + (element == Element.CHI ? "Chiblocker" : element.toString()));
-					openPlayer.sendMessage(ChatColor.GREEN + new LangBuilder("Chat.Choose.Admin.Success").element(element).player(thePlayer).anOrA(element.getName()).toString());
+					openPlayer.sendMessage(ChatColor.GREEN + new LangBuilder("Chat.Choose.Success.Admin").element(element).player(thePlayer).anOrA(element.getName()).toString());
 				}
 				else
 				{
@@ -182,7 +180,7 @@ public class MenuSelectElement extends MenuBase
 	
 	protected List<String> getDesc(String line)
 	{
-		int maxLenght = 45;
+		int maxLenght = ConfigStandard.getInstance().getElementTrim();
 		Pattern p = Pattern.compile("\\G\\s*(.{1,"+maxLenght+"})(?=\\s|$)", Pattern.DOTALL);
 		Matcher m = p.matcher(line);
 		List<String> l = new ArrayList<String>();
