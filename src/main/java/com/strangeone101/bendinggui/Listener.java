@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
@@ -134,10 +135,11 @@ public class Listener implements org.bukkit.event.Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onMenuItemClickedHigh(InventoryClickEvent event) {
-		if (event.getCursor() != null && isCompass(event.getCursor())) {
+		//If the item is a compass AND it is in the top of the inventory, not the player part
+		if (event.getCursor() != null && isCompass(event.getCursor()) && event.getRawSlot() < event.getInventory().getSize()) {
 			boolean prevent = isChest(event.getInventory()) ? ConfigStandard.getInstance().doDestroyOnStoreInChests() : ConfigStandard.getInstance().doDestroyOnStore();
 			if (prevent) {
-				event.setCancelled(true);
+				event.setResult(Event.Result.DENY);
 			}
 		}
 	}
@@ -169,7 +171,7 @@ public class Listener implements org.bukkit.event.Listener {
 
 
 	private boolean isCompass(ItemStack stack) {
-		return stack != null && (stack.getItemMeta().getDisplayName().hashCode() == NAME
+		return stack != null && stack.getItemMeta() != null && (stack.getItemMeta().getDisplayName().hashCode() == NAME
 				|| stack.getItemMeta().getPersistentDataContainer().has(BendingGUI.COMPASS, PersistentDataType.BYTE));
 	}
 

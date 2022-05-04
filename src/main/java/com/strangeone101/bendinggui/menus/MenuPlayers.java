@@ -143,7 +143,7 @@ public class MenuPlayers extends MenuBase
 
 		}
 		boolean b = bPlayer.hasElement(Element.EARTH) || bPlayer.hasElement(Element.AIR);
-		item.addDescription(GRAY + new LangBuilder("Display.Main.Lore.ElementPrefix").yourOrPlayer(player, openPlayer).anOrA(b ? "airOrEarth" : "").capitalizeFirst().toString());
+		item.addDescription(GRAY + new LangBuilder("Display.Main.Overview.Lore.ElementPrefix").yourOrPlayer(player, openPlayer).anOrA(b ? "airOrEarth" : "").capitalizeFirst().toString());
 		/*else
 		{
 			boolean b = bPlayer.hasElement(Element.EARTH) || bPlayer.hasElement(Element.AIR);

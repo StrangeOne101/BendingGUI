@@ -104,7 +104,7 @@ public class ConfigStandard extends ConfigBase {
 		defaults.put("Display.ShowSubElementsOnPlayer", false);
 		defaults.put("Display.AbilityDescriptionTrim", 45);
 		defaults.put("Display.PlayerOverviewTrim", 55);
-		defaults.put("Display.ElementDescriptionTrim", 55);
+		defaults.put("Display.ElementDescriptionTrim", 50);
 
 		return defaults;
 	}
@@ -114,7 +114,7 @@ public class ConfigStandard extends ConfigBase {
 		if (YamlConfiguration.loadConfiguration(getFile()).contains("General.Description.Fire")) { //Old config
 			BendingGUI.INSTANCE.getLogger().info("Old config detected! Moving it and generating the new one!");
 			try {
-				Files.move(this.getFile().toPath(), new File(this.getFile().getParent(), "config_old.yml").toPath(), StandardCopyOption.COPY_ATTRIBUTES);
+				Files.move(this.getFile().toPath(), new File(this.getFile().getParent(), "config_old.yml").toPath(), StandardCopyOption.REPLACE_EXISTING);
 				if (this.getFile().exists()) this.getFile().delete();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -127,7 +127,7 @@ public class ConfigStandard extends ConfigBase {
 			Material mat = getMaterial("AbilityIcons.Element." + element.getName());
 			abilityElementIcons.put(element, mat == null ? UNKNOWN_ELEMENT : mat);
 
-			mat = getMaterial("DisplayIcons.Element." + element.getName());
+			mat = getMaterial("DisplayIcons." + element.getName());
 			chooseElementIcons.put(element, mat == null ? UNKNOWN_ELEMENT : mat);
 		}
 
@@ -151,8 +151,12 @@ public class ConfigStandard extends ConfigBase {
 
 		showSubElements = getBoolean("Display.ShowSubElementsOnPlayer");
 		abilityTrim = getInteger("Display.AbilityDescriptionTrim");
-		elementTrim = getInteger("ElementDescriptionTrim");
+		elementTrim = getInteger("Display.ElementDescriptionTrim");
 		overviewTrim = getInteger("Display.PlayerOverviewTrim");
+
+		if (abilityTrim < 1) abilityTrim = 45;
+		if (elementTrim < 1) elementTrim = 55;
+		if (overviewTrim < 1) overviewTrim = 50;
 	}
 
 	public boolean hasAdminAlerts() {

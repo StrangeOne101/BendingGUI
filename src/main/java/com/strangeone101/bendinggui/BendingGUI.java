@@ -35,6 +35,8 @@ public class BendingGUI extends JavaPlugin
 	public static boolean enabled = true;
 	public static String versionInfo;
 
+	public static final String PK_VERSION = "1.9.3";
+
 	public static List<Element> elementOrder;
 
 	public static NamespacedKey COMPASS;
@@ -182,11 +184,11 @@ public class BendingGUI extends JavaPlugin
 		String varg1 = version.split(" ")[0];
 		if (varg1.startsWith("1.4.0") || varg1.startsWith("1.5.0") || varg1.startsWith("1.6.0") || varg1.startsWith("1.7.") || varg1.startsWith("1.8."))
 		{
-			return "!BendingGUI does not support version ProjectKorra " + varg1 + "! Please upgrade to version 1.9.3 or higher!";
+			return "!BendingGUI does not support version ProjectKorra " + varg1 + "! Please upgrade to version " + PK_VERSION + " or higher!";
 		}
-		else if (!varg1.startsWith("1.9.3") && !varg1.startsWith("1.9."))
+		else if (!varg1.startsWith(PK_VERSION) && !varg1.startsWith("1.9."))
 		{
-			return "This version of BendingGUI is made for ProjectKorra Core 1.9.3! You are running a higher or modded version which may not be fully supported yet.";
+			return "This version of BendingGUI is made for ProjectKorra Core " + PK_VERSION + "! You are running a higher or modded version which may not be fully supported yet.";
 		}
 		return "";
 	}

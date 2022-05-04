@@ -38,7 +38,7 @@ public abstract class ConfigBase {
 			} else if (o instanceof ItemStack) {
 				o = ((ItemStack)o).getType().toString(); //Convert to string from ItemStack
 			}
-			config.addDefault(key, defaults.get(key));
+			config.addDefault(key, o);
 		}
 		
 		try {
@@ -84,7 +84,9 @@ public abstract class ConfigBase {
 	}
 	
 	public Material getMaterial(String key) {
-		return Material.valueOf(config.getString(key));
+		String s = config.getString(key);
+		if (s != null) return Material.getMaterial(s);
+		return Material.GOLD_INGOT;
 	}
 	
 	public void set(String key, Object object) {

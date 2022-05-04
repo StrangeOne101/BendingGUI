@@ -64,7 +64,7 @@ public class LangBuilder {
     }
 
     public LangBuilder version(String version) {
-        this.value = value.replace("{version}", version).replace("{pkversion}", "${projectkorra.version}");
+        this.value = value.replace("{version}", version).replace("{pkversion}", BendingGUI.PK_VERSION);
         return this;
     }
 

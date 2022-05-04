@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.strangeone101.bendinggui.LangBuilder;
+import com.strangeone101.bendinggui.Util;
 import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -169,16 +170,13 @@ public class MenuSelectElement extends MenuBase
 				confirm.openMenu(openPlayer);
 			}
 		};
-		if (element == Element.FIRE) item.setDescriptions(this.getDesc(new LangBuilder("Display.Choose.Fire.Lore").toString()));
-		else if (element == Element.WATER) item.setDescriptions(this.getDesc(new LangBuilder("Display.Choose.Water.Lore").toString()));
-		else if (element == Element.AIR) item.setDescriptions(this.getDesc(new LangBuilder("Display.Choose.Air.Lore").toString()));
-		else if (element == Element.EARTH) item.setDescriptions(this.getDesc(new LangBuilder("Display.Choose.Earth.Lore").toString()));
-		else if (element == Element.CHI) item.setDescriptions(this.getDesc(new LangBuilder("Display.Choose.Chi.Lore").toString()));
-		
+		item.setDescriptions(Util.lengthSplit(new LangBuilder("Display.Choose." + element.getName() + ".Lore").toString(),
+				ConfigStandard.getInstance().getElementTrim()));
+
 		return item;
 	}
 	
-	protected List<String> getDesc(String line)
+	/*protected List<String> getDesc(String line)
 	{
 		int maxLenght = ConfigStandard.getInstance().getElementTrim();
 		Pattern p = Pattern.compile("\\G\\s*(.{1,"+maxLenght+"})(?=\\s|$)", Pattern.DOTALL);
@@ -189,7 +187,7 @@ public class MenuSelectElement extends MenuBase
 			l.add(ChatColor.GRAY + m.group(1));
 		}
 		return l;
-	}
+	}*/
 
 	public void openMenu(Player player) 
 	{
