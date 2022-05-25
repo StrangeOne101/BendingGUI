@@ -2,10 +2,14 @@ package com.strangeone101.bendinggui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigLanguage;
 import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.Bukkit;
@@ -27,6 +31,8 @@ public class BendingGUI extends JavaPlugin
 	 * in the future.*/
 	public static boolean enableOfflinePlayers = false;
 
+	protected static Map<Element, ElementSupport> SUPPORTED_ELEMENTS = new HashMap<>();
+
 	public static Logger log;
 
 	public static BendingGUI INSTANCE;
@@ -37,6 +43,7 @@ public class BendingGUI extends JavaPlugin
 
 	public static final String PK_VERSION = "1.9.3";
 
+	@Deprecated
 	public static List<Element> elementOrder;
 
 	public static NamespacedKey COMPASS;
@@ -193,6 +200,8 @@ public class BendingGUI extends JavaPlugin
 		return "";
 	}
 
+
+
 	public static ChatColor getColor(Element element)
 	{
 		if (element instanceof SubElement) element = ((SubElement)element).getParentElement();
@@ -202,6 +211,15 @@ public class BendingGUI extends JavaPlugin
 		if (element == Element.FIRE) return ChatColor.RED;
 		if (element == Element.AIR) return ChatColor.GRAY;
 		if (element == Element.AVATAR) return ChatColor.LIGHT_PURPLE;
+		if (SUPPORTED_ELEMENTS.containsKey(element)) return SUPPORTED_ELEMENTS.get(element).getColor();
 		return element.getColor();
+	}
+
+	public ElementSupport getSupportedElement(Element element) {
+		return SUPPORTED_ELEMENTS.get(element);
+	}
+
+	public Set<Element> getSupportedElements() {
+		return SUPPORTED_ELEMENTS.keySet();
 	}
 }

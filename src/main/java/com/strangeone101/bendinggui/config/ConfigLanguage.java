@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.ability.ComboAbility;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.PassiveAbility;
 import com.strangeone101.bendinggui.BendingGUI;
+import com.strangeone101.bendinggui.api.ChooseSupport;
+import com.strangeone101.bendinggui.api.ElementSupport;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigLanguage extends ConfigBase {
@@ -25,7 +28,7 @@ public class ConfigLanguage extends ConfigBase {
 
 	@Override
 	public Map<String, Object> addDefaults() {
-		Map<String, Object> defaults = new HashMap<String, Object>();
+		Map<String, Object> defaults = new HashMap<>();
 
 		defaults.put("Item.Title", "&aConfigure Bending");
 		defaults.put("Item.Lore", "&7Right click to configure your bending!");
@@ -226,160 +229,205 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Staff.Contributor", "&5ProjectKorra Contributor");
 		defaults.put("Staff.Admin", "&4ProjectKorra Administrator");
 		defaults.put("Staff.Mist", "&4ProjectKorra Founder");
+		
+		Map<String, String> abilities = new HashMap<>();
 
-		defaults.put("Abilities.AirBlast", "Releases a blast of air that pushing all mobs and items");
-		defaults.put("Abilities.AirBubble", "Allows the user to keep a bubble of air around them while traveling underwater");
-		defaults.put("Abilities.AcrobatStance", "Makes the users faster and stronger but uses more energy in the process");
-		defaults.put("Abilities.AirBurst", "Creates a powerful gust of air that can blow away your enemies");
-		defaults.put("Abilities.AirScooter", "Allows the user to ride a ball of air to scale across terrain fast");
-		defaults.put("Abilities.AirSpout", "Allows the user to walk on a spout of air");
-		defaults.put("Abilities.AirSuction", "Pulls all mobs and items towards the the user");
-		defaults.put("Abilities.AirSwipe", "Releases a wider gust of air, pushing mobs and items");
-		defaults.put("Abilities.AirShield", "Shield yourself from everything using air");
-		defaults.put("Abilities.Flight", "Allows the user to fly by holding sneak (SHIFT)");
-		defaults.put("Abilities.Suffocate", "Bends the air right out of another player's lungs");
-		defaults.put("Abilities.Tornado", "Creates a tornado of air that will misplace other users");	
+		abilities.put("AirBlast", "Releases a blast of air that pushing all mobs and items");
+		abilities.put("AirBubble", "Allows the user to keep a bubble of air around them while traveling underwater");
+		abilities.put("AcrobatStance", "Makes the users faster and stronger but uses more energy in the process");
+		abilities.put("AirBurst", "Creates a powerful gust of air that can blow away your enemies");
+		abilities.put("AirScooter", "Allows the user to ride a ball of air to scale across terrain fast");
+		abilities.put("AirSpout", "Allows the user to walk on a spout of air");
+		abilities.put("AirSuction", "Pulls all mobs and items towards the the user");
+		abilities.put("AirSwipe", "Releases a wider gust of air, pushing mobs and items");
+		abilities.put("AirShield", "Shield yourself from everything using air");
+		abilities.put("Flight", "Allows the user to fly freely in the sky");
+		abilities.put("Suffocate", "Bends the air right out of another player's lungs");
+		abilities.put("Tornado", "Creates a tornado of air that will misplace other users");	
 		
-		defaults.put("Abilities.Bloodbending", "Allows the user to manipulate other players and mobs with their bending");
-		defaults.put("Abilities.HealingWaters", "Allows the user to heal with water");	
-		defaults.put("Abilities.IceBlast", "Blasts a chunk of ice towards your target");	
-		defaults.put("Abilities.IceSpike", "Pulls a spike of ice up from bellow your enemy");	
-		defaults.put("Abilities.OctopusForm", "Creates a octopus of water around the user");	
-		defaults.put("Abilities.PhaseChange", "Allows the user to freeze and melt water");
-		defaults.put("Abilities.Surge", "Creates a wave or a shield of water and ice");	
-		defaults.put("Abilities.Torrent", "Creates a ring of water around the user which can be used to freeze targets or push them away");	
-		defaults.put("Abilities.WaterArms", "Allows the user to use water to create arms with lots of different abilities");
-		defaults.put("Abilities.WaterBubble", "Allows the user to travel underwater with a bubble of air around them");
-		defaults.put("Abilities.WaterManipulation", "Allows the user to fire water at a target");
-		defaults.put("Abilities.WaterSpout", "Allows the user to stand on a spout of water");
+		abilities.put("Bloodbending", "Allows the user to manipulate other players and mobs with their bending");
+		abilities.put("HealingWaters", "Allows the user to heal with water");	
+		abilities.put("IceBlast", "Blasts a chunk of ice towards your target");	
+		abilities.put("IceSpike", "Pulls a spike of ice up from bellow your enemy");	
+		abilities.put("OctopusForm", "Creates a octopus of water around the user");	
+		abilities.put("PhaseChange", "Allows the user to freeze and melt water");
+		abilities.put("Surge", "Creates a wave or a shield of water and ice");	
+		abilities.put("Torrent", "Creates a ring of water around the user which can be used to freeze targets or push them away");	
+		abilities.put("WaterArms", "Allows the user to use water to create arms with lots of different abilities");
+		abilities.put("WaterBubble", "Allows the user to travel underwater with a bubble of air around them");
+		abilities.put("WaterManipulation", "Allows the user to fire water at a target");
+		abilities.put("WaterSpout", "Allows the user to stand on a spout of water");
 		
-		defaults.put("Abilities.Blaze", "Releases a powerful ring of fire around you");
-		defaults.put("Abilities.Combustion", "Creates a fire-like projectile with their the user's mind");
-		defaults.put("Abilities.FireBlast", "Blasts a ball of fire towards your enemy");	
-		defaults.put("Abilities.FireBurst", "Sets fire to everything around you");	
-		defaults.put("Abilities.FireJet", "Allows the user to fly for short distances with fire");	
-		defaults.put("Abilities.FireShield", "Allows the user to create a shield of fire in front of them");	
-		defaults.put("Abilities.HeatControl", "Allows the user to put out fire and not burn");	
-		defaults.put("Abilities.Illumination", "Allows the bender to see by holding a flame");	
-		defaults.put("Abilities.Lightning", "Allows the user to release a strike of lightning");
+		abilities.put("Blaze", "Releases a powerful ring of fire around you");
+		abilities.put("Combustion", "Creates a fire-like projectile with their the user's mind");
+		abilities.put("FireBlast", "Blasts a ball of fire towards your enemy");	
+		abilities.put("FireBurst", "Sets fire to everything around you");	
+		abilities.put("FireJet", "Allows the user to fly for short distances with fire");	
+		abilities.put("FireShield", "Allows the user to create a shield of fire in front of them");	
+		abilities.put("HeatControl", "Allows the user to put out fire and not burn");	
+		abilities.put("Illumination", "Allows the bender to see by holding a flame");	
+		abilities.put("Lightning", "Allows the user to release a strike of lightning");
 		
-		defaults.put("Abilities.Catapult", "Allows the user to catapult themselves through the air by launching themselves up from the earth");
-		defaults.put("Abilities.Collapse", "Collapses or pulls down the earth");
-		defaults.put("Abilities.EarthArmor", "Uses earth as armor for short periods of time");
-		defaults.put("Abilities.EarthBlast", "Blasts a chunk of earth wherever the user wants it to go");
-		defaults.put("Abilities.EarthGrab", "Allows the user to trap other mobs and players in earth");
-		defaults.put("Abilities.EarthSmash", "Allows the user to grab a huge chunk of earth and throw it");
-		defaults.put("Abilities.EarthTunnel", "Allows the user to tunnel through the earth");	
-		defaults.put("Abilities.RaiseEarth", "Creates walls or columns of earth in front of the user");
-		defaults.put("Abilities.SandSpout", "Creates a spout of sand for the user to stand on while blinding users bellow");
-		defaults.put("Abilities.Shockwave", "Releases a powerful shockwave of earth that sends targets flying");
-		defaults.put("Abilities.Tremorsense", "Allows the user to see nearby airpockets (caves)");	
+		abilities.put("Catapult", "Allows the user to catapult themselves through the air by launching themselves up from the earth");
+		abilities.put("Collapse", "Collapses or pulls down the earth");
+		abilities.put("EarthArmor", "Uses earth as armor for short periods of time");
+		abilities.put("EarthBlast", "Blasts a chunk of earth wherever the user wants it to go");
+		abilities.put("EarthGrab", "Allows the user to trap other mobs and players in earth");
+		abilities.put("EarthSmash", "Allows the user to grab a huge chunk of earth and throw it");
+		abilities.put("EarthTunnel", "Allows the user to tunnel through the earth");	
+		abilities.put("RaiseEarth", "Creates walls or columns of earth in front of the user");
+		abilities.put("SandSpout", "Creates a spout of sand for the user to stand on while blinding users bellow");
+		abilities.put("Shockwave", "Releases a powerful shockwave of earth that sends targets flying");
+		abilities.put("Tremorsense", "Allows the user to see nearby airpockets (caves)");	
 		
-		defaults.put("Abilities.Extraction", "Allows the user to extract metals directly from the ore");
-		defaults.put("Abilities.LavaFlow", "Turns earth into a pool or lava or creates a ring of lava around the user");	
-		defaults.put("Abilities.MetalClips", "Allows the user to fire slices of metal at a target and capture them");	
+		abilities.put("Extraction", "Allows the user to extract metals directly from the ore");
+		abilities.put("LavaFlow", "Turns earth into a pool or lava or creates a ring of lava around the user");	
+		abilities.put("MetalClips", "Allows the user to fire slices of metal at a target and capture them");	
 		
-		defaults.put("Abilities.HighJump", "Makes the user jump high in the air");	
-		defaults.put("Abilities.Paralyze", "Allows the user to paralyze other benders and block their bending");	
-		defaults.put("Abilities.QuickStrike", "Allows the user to attack quickly with a chance to chi block the target");	
-		defaults.put("Abilities.RapidPunch", "Allows the user to attack faster while dealing more damage");	
-		defaults.put("Abilities.Smokescreen", "Releases smoke and blinds all nearby players");	
-		defaults.put("Abilities.SwiftKick", "Damages the target with a high chance of blocking their chi, if the user is in the air");	
-		defaults.put("Abilities.WarriorStance", "Makes the user's attacks more powerful but also makes the user more vulnerable");
+		abilities.put("HighJump", "Makes the user jump high in the air");	
+		abilities.put("Paralyze", "Allows the user to paralyze other benders and block their bending");	
+		abilities.put("QuickStrike", "Allows the user to attack quickly with a chance to chi block the target");	
+		abilities.put("RapidPunch", "Allows the user to attack faster while dealing more damage");	
+		abilities.put("Smokescreen", "Releases smoke and blinds all nearby players");	
+		abilities.put("SwiftKick", "Damages the target with a high chance of blocking their chi, if the user is in the air");	
+		abilities.put("WarriorStance", "Makes the user's attacks more powerful but also makes the user more vulnerable");
 		
-		defaults.put("Abilities.AvatarState", "Users in the Avatar State are much more powerful than normal benders. Their bending power is multiplied heavily and they take far less damage from attacks.");
+		abilities.put("AvatarState", "Users in the Avatar State are much more powerful than normal benders. Their bending power is multiplied heavily and they take far less damage from attacks.");
 		
+		//Jedcore Abilities
+		abilities.put("AirBlade", "Creates a powerful blade of air that damages mobs and players");
+		abilities.put("AirBreath", "Releases a powerful breath of air that knocks back your target");
+		abilities.put("AirGlide", "Allows the user to glide down safely instead of falling");
+		abilities.put("AirPunch", "Allows the user to punch in rapid succession with blasts of air");
+		abilities.put("Meditate", "Allows the user to become stronger for short periods of time after meditating");
+		abilities.put("SonicBlast", "Creates an ear-piecing sonicblast that does high damage to other mobs and players");
+		abilities.put("FartBlast", "Allows the user to stink other players out by farting on them");
 		
-		defaults.put("Abilities.AirBlade", "Creates a powerful blade of air that damages mobs and players");
-		defaults.put("Abilities.AirBreath", "Releases a powerful breath of air that knocks back your target");
-		defaults.put("Abilities.AirGlide", "Allows the user to glide down safely instead of falling");
-		defaults.put("Abilities.AirPunch", "Allows the user to punch in rapid succession with blasts of air");
-		defaults.put("Abilities.Meditate", "Allows the user to become stronger for short periods of time after meditating");
-		defaults.put("Abilities.SonicBlast", "Creates an ear-piecing sonicblast that does high damage to other mobs and players");
-		defaults.put("Abilities.FartBlast", "Allows the user to stink other players out by farting on them");
+		abilities.put("EarthKick", "Allows the user to kick the earth and hurl chunks at their opponent");
+		abilities.put("EarthLine", "Creates a line of risen earth that inflicts damage on all mobs and players that it hits");
+		abilities.put("EarthShard", "Allows the user to pickup multiple chunks of earth and hurl them towards their target");
+		abilities.put("EarthSurf", "Allows the user to ride on earth to scale the terrain fast");
+		abilities.put("EarthPillar", "Pulls a pillar of earth out in whatever direction you look");
+		abilities.put("MudSurge", "Hurls mud towards a target");
+		abilities.put("SandBlast", "Blasts sand towards an enemy, temporarily blinding them");
+		abilities.put("SandShift", "Allows the user to change sandstone without the need for crafting it");
+		abilities.put("StatePhase", "Allows the bender to create sand from earth and vise versa");
+		abilities.put("MetalFragments", "Allows the bender to shoot fragments of metal towards a target");
+		abilities.put("MetalShred", "Allows the user to shred a metal wall to gain access through it");
+		abilities.put("MetalHook", "Allows the bender to use metalbending to hook or grapple onto a surface and pull themselves in");
+		abilities.put("MagnetShield", "Repels all metal objects hurling towards the user");
+		abilities.put("LavaFlux", "Creates a wave of lava that can be hurled towards a target");
+		abilities.put("LavaDisc", "Melts a block of earth into a disk of lava that can be thrown");
+		abilities.put("Fissure", "Creates a line of lava that can swallow up mobs");
+		abilities.put("LavaThrow", "Allows the user to hurl waves of lava at a target");
 		
-		defaults.put("Abilities.EarthKick", "Allows the user to kick the earth and hurl chunks at their opponent");
-		defaults.put("Abilities.EarthLine", "Creates a line of risen earth that inflicts damage on all mobs and players that it hits");
-		defaults.put("Abilities.EarthShard", "Allows the user to pickup multiple chunks of earth and hurl them towards their target");
-		defaults.put("Abilities.EarthSurf", "Allows the user to ride on earth to scale the terrain fast");
-		defaults.put("Abilities.EarthPillar", "Pulls a pillar of earth out in whatever direction you look");
-		defaults.put("Abilities.MudSurge", "Hurls mud towards a target");
-		defaults.put("Abilities.SandBlast", "Blasts sand towards an enemy, temporarily blinding them");
-		defaults.put("Abilities.SandShift", "Allows the user to change sandstone without the need for crafting it");
-		defaults.put("Abilities.StatePhase", "Allows the bender to create sand from earth and vise versa");
-		defaults.put("Abilities.MetalFragments", "Allows the bender to shoot fragments of metal towards a target");
-		defaults.put("Abilities.MetalShred", "Allows the user to shred a metal wall to gain access through it");
-		defaults.put("Abilities.MetalHook", "Allows the bender to use metalbending to hook or grapple onto a surface and pull themselves in");
-		defaults.put("Abilities.MagnetShield", "Repels all metal objects hurling towards the user");
-		defaults.put("Abilities.LavaFlux", "Creates a wave of lava that can be hurled towards a target");
-		defaults.put("Abilities.LavaDisc", "Melts a block of earth into a disk of lava that can be thrown");
-		defaults.put("Abilities.Fissure", "Creates a line of lava that can swallow up mobs");
-		defaults.put("Abilities.LavaThrow", "Allows the user to hurl waves of lava at a target");
+		abilities.put("FireBall", "Creates a fireball that can be cast towards a user");
+		abilities.put("FireBreath", "Allows the user to breathe a powerful breath of fire");
+		abilities.put("FirePunch", "Allows the user to damage and set fire to their enemy with just one punch");
+		abilities.put("FireComet", "Charge up the power of an entire comet to throw towards your enemies");
+		abilities.put("FireShots", "Allows the user to cast multiple and short fireballs towards a target");
+		abilities.put("WallOfFire", "Creates wall of fire that blocks all incoming projectiles and mobs");
+		abilities.put("Discharge", "Creates a powerful bolt of electricity to fry your targets");
+		abilities.put("LightningBurst", "Allows the user to charge lightning and release it in all directions at once");
 		
-		defaults.put("Abilities.FireBall", "Creates a fireball that can be cast towards a user");
-		defaults.put("Abilities.FireBreath", "Allows the user to breathe a powerful breath of fire");
-		defaults.put("Abilities.FirePunch", "Allows the user to damage and set fire to their enemy with just one punch");
-		defaults.put("Abilities.FireComet", "Charge up the power of an entire comet to throw towards your enemies");
-		defaults.put("Abilities.FireShots", "Allows the user to cast multiple and short fireballs towards a target");
-		defaults.put("Abilities.WallOfFire", "Creates wall of fire that blocks all incoming projectiles and mobs");
-		defaults.put("Abilities.Discharge", "Creates a powerful bolt of electricity to fry your targets");
-		defaults.put("Abilities.LightningBurst", "Allows the user to charge lightning and release it in all directions at once");
+		abilities.put("Maelstrom", "Creates a whirlpool that sucks all mobs and players into it");
+		abilities.put("Drain", "Fill up all bottles in your inventory from the water in plants around you!");
+		abilities.put("WakeFishing", "Allows the user to use waterbending to fish");
+		abilities.put("WaterGimbal", "Creates wall of fire that blocks all incoming projectiles and mobs");
+		abilities.put("PlantDrain", "Drains all nearby plants of water to create water for waterbending");
+		abilities.put("PlantWhip", "Creates a vine of leaves that can quickly whip a target");
+		abilities.put("PlantArmor", "Allows the user to create basic armor for themselves with leaves");
+		abilities.put("PlantBlast", "Allows the user to blast quick, plant projectiles at their target");
+		abilities.put("IceClaws", "Creates ice on your hand that can damage and slow your target");
+		abilities.put("IceWall", "Creates a wall of ice in front of the user");
+		abilities.put("IceStream", "Creates an stream-like projectile that freezes and slows targets on impact");
+		abilities.put("FrostBreath", "Allows the user to freeze their breath, damaging and slowing their targets");
+		abilities.put("BloodPuppet", "Allows the manipulation of mobs and players to make them damage each other");
 		
-		defaults.put("Abilities.Maelstrom", "Creates a whirlpool that sucks all mobs and players into it");
-		defaults.put("Abilities.Drain", "Fill up all bottles in your inventory from the water in plants around you!");
-		defaults.put("Abilities.WakeFishing", "Allows the user to use waterbending to fish");
-		defaults.put("Abilities.WaterGimbal", "Creates wall of fire that blocks all incoming projectiles and mobs");
-		defaults.put("Abilities.PlantDrain", "Drains all nearby plants of water to create water for waterbending");
-		defaults.put("Abilities.PlantWhip", "Creates a vine of leaves that can quickly whip a target");
-		defaults.put("Abilities.PlantArmor", "Allows the user to create basic armor for themselves with leaves");
-		defaults.put("Abilities.PlantBlast", "Allows the user to blast quick, plant projectiles at their target");
-		defaults.put("Abilities.IceClaws", "Creates ice on your hand that can damage and slow your target");
-		defaults.put("Abilities.IceWall", "Creates a wall of ice in front of the user");
-		defaults.put("Abilities.IceStream", "Creates an stream-like projectile that freezes and slows targets on impact");
-		defaults.put("Abilities.FrostBreath", "Allows the user to freeze their breath, damaging and slowing their targets");
-		defaults.put("Abilities.BloodPuppet", "Allows the manipulation of mobs and players to make them damage each other");
-		
-		defaults.put("Abilities.DaggerThrow", "Allows the user to rapidfire arrows towards a target");
-		defaults.put("Abilities.Backstab", "Hit the user in their back to block their chi and deal a lot of damage");
-		defaults.put("Abilities.WallRun", "Click rapidly to run up walls");
+		abilities.put("DaggerThrow", "Allows the user to rapidfire arrows towards a target");
+		abilities.put("Backstab", "Hit the user in their back to block their chi and deal a lot of damage");
+		abilities.put("WallRun", "Click rapidly to run up walls");
 
-		defaults.put("Abilities.SpiritBeam", "Releases a powerful blast as the spirit of the avatar. The user must be in the AvatarState to use this move.");
-		defaults.put("Abilities.ElementSphere", "Creates a sphere of all the elements around the user, allowing them to use all four at once");
+		abilities.put("SpiritBeam", "Releases a powerful blast as the spirit of the avatar. The user must be in the AvatarState to use this move.");
+		abilities.put("ElementSphere", "Creates a sphere of all the elements around the user, allowing them to use all four at once");
 		
-		defaults.put("Abilities.LoonyBlast", "Use Loonergy to blast away enemies with extreme power!");
-		defaults.put("Abilities.ToonShield", "Shield yourself from any attack with the power of Loonergy!");
-		defaults.put("Abilities.BanBlaze", "Charge up a deadly admin-blast that 'bans' any user it hits!");
-		defaults.put("Abilities.OwnerState", "The avatar state, buffed with the power of an admin to the extreme!");
+		abilities.put("LoonyBlast", "Use Loonergy to blast away enemies with extreme power!");
+		abilities.put("ToonShield", "Shield yourself from any attack with the power of Loonergy!");
+		abilities.put("BanBlaze", "Charge up a deadly admin-blast that 'bans' any user it hits!");
+		abilities.put("OwnerState", "The avatar state, buffed with the power of an admin to the extreme!");
 
-		defaults.put("Abilities.CactusBlast", "Fight in the desert by throwing cactus!");
-		defaults.put("Abilities.Sandstorm", "Allows the user to whip up a sandstorm!");
-		defaults.put("Abilities.EarthBurrow", "Allows the user to burrow themselves in the ground");
-		defaults.put("Abilities.BloodRip", "Rip the blood out of living things with bloodbending");
+		//Spirit Element
+		abilities.put("Agility", "Dash with left click or soar with sneak!");
+		abilities.put("Possess", "Jump inside the body of another to possess and harm them");
+		abilities.put("Vanish", "Vanish into thin air and reappear a distance away");
+		abilities.put("Combo-Phase", "Dematerialize yourself to be able to phase through any kind of wall");
 
-		defaults.put("Abilities.Combo-AirSlam", "Kick your enemy up in the air then kick them away!");
-		defaults.put("Abilities.Combo-AirStream", "Creates a current of air that can be controlled by the player for a while");
-		defaults.put("Abilities.Combo-AirSweep", "Create a sweeping current of air that can sweep enemies off their feet!");
-		defaults.put("Abilities.Combo-Twister", "Create a twister to suck up and blow away your opponents!");
-		defaults.put("Abilities.Combo-SwiftStream", "Pull all enemies along with you as you fly!");
-		
-		defaults.put("Abilities.Combo-Crevice", "Creates a crevice in the ground that can swallow players!");
-		defaults.put("Abilities.Combo-MagmaBlast", "Fire balls of magma at your enemies!");
-		defaults.put("Abilities.Combo-EarthDome", "Surround yourself (or others) in earth for protection");
-		defaults.put("Abilities.Combo-EarthPillars", "Send players flying into the air by raising the earth bellow them suddenly");
+		//Light Spirits
+		abilities.put("Shelter", "Create a safe haven for you or another player for a while");
+		abilities.put("Alleviate", "Heal yourself or others by clearing all negative effects and giving regen and night vision");
+		abilities.put("Orb", "Place an orb of positive energy that harms anything that crosses it");
+		abilities.put("Combo-Rejuvenate", "Mark the ground with positive energy that heals others but damages dark spirits");
 
-		defaults.put("Abilities.Combo-FireKick", "Create a small arc of fire from your feet!");
-		defaults.put("Abilities.Combo-FireSpin", "Create a huge ring of fire around you that does damage and huge knockback!");
-		defaults.put("Abilities.Combo-FireWheel", "Hurl a spinning wheel of fire towards your enemies!");
-		defaults.put("Abilities.Combo-JetBlaze", "Blaze it up as you launch from your powerful FireJet!");
-		defaults.put("Abilities.Combo-JetBlast", "Launch with a boom as your launch with a powerful FireJet!");
+		//Dark Spirits
+		abilities.put("Shackle", "Trap your attacker in a field of dark energy while you get away");
+		abilities.put("Intoxicate", "Sacrifice your health to imbue your target with extremely toxic energy");
+		abilities.put("Strike", "Rush up to your target and bite them. This will make you appear above the target instantly");
+		abilities.put("Combo-Infest", "Mark the ground with chaotic energy that buffs monsters and harms everything else");
+
+		//Water Spirit Abilities
+		abilities.put("Corrupt", "Use waterbending to corrupt a light spirit");
+		abilities.put("Purify", "Use waterbending to purify a dark spirit");
+
+		//Spirits Complete Pack - Spirit
+		abilities.put("Float", "Use your spirit powers to float in the air");
+		abilities.put("Combo-Skyrocket", "Skyrocket yourself into the air before slamming back to earth with a deadly impact");
+
+		//Spirits Complete Pack - Light
+		abilities.put("Wish", "Use your positive energy to create a wish that will heal you later on");
+		abilities.put("LightBeam", "Charge up your positive energy to release a deadly beam");
+		abilities.put("Safeguard", "Create a personal shield to protect you as you move");
+		abilities.put("Enlightenment", "Enlighten you and other light spirits in the area to power everyone up");
+		abilities.put("Combo-Awakening", "Summon Light Spirits to your aid that will assist you against other Dark Spirits");
+		abilities.put("Combo-Sanctuary", "Create a protective barrier that also buffs your fellow Light Spirits");
+
+		//Spirits Complete Pack - Dark
+		abilities.put("DarkBeam", "Charge up your negative energy to release a deadly beam");
+		abilities.put("Onslaught", "Charge towards your target while corrupting them with your dark energy");
+		abilities.put("Shadow", "Transform yourself into the darkness to evade everything as you blip through the darkness instantly");
+		abilities.put("Corruption", "Summon Dark Spirits to spread corruption to the land and other spirits");
+		abilities.put("Combo-Nightmare", "Infect everything around you with negative energy to debuff them for a while");
+		abilities.put("Combo-Pandemonium", "Corrupts the free will of all entities around you by pulling them towards the center of this ability");
+
+		abilities.put("CactusBlast", "Fight in the desert by throwing cactus!");
+		abilities.put("Sandstorm", "Allows the user to whip up a sandstorm!");
+		abilities.put("EarthBurrow", "Allows the user to burrow themselves in the ground");
+		abilities.put("BloodRip", "Rip the blood out of living things with bloodbending");
+
+		//JedCore combo abilities
+		abilities.put("Combo-AirSlam", "Kick your enemy up in the air then kick them away!");
+		abilities.put("Combo-AirStream", "Creates a current of air that can be controlled by the player for a while");
+		abilities.put("Combo-AirSweep", "Create a sweeping current of air that can sweep enemies off their feet!");
+		abilities.put("Combo-Twister", "Create a twister to suck up and blow away your opponents!");
+		abilities.put("Combo-SwiftStream", "Pull all enemies along with you as you fly!");
 		
-		defaults.put("Abilities.Combo-WaterFlow", "Create a huge torrent of water that can sweep away your enemies!");
-		defaults.put("Abilities.Combo-Maelstrom", "Suck everyone and everything up in a deep whirlpool!");
-		defaults.put("Abilities.Combo-WaterGimbal", "Control two torrents of water at once!");
-		defaults.put("Abilities.Combo-IceBullet", "Make a dome of ice and that can shoot shards of ice!");
-		defaults.put("Abilities.Combo-IceWave", "Freeze your WaterWave to damage enemies that you hit!");
+		abilities.put("Combo-Crevice", "Creates a crevice in the ground that can swallow players!");
+		abilities.put("Combo-MagmaBlast", "Fire balls of magma at your enemies!");
+		abilities.put("Combo-EarthDome", "Surround yourself (or others) in earth for protection");
+		abilities.put("Combo-EarthPillars", "Send players flying into the air by raising the earth bellow them suddenly");
+
+		abilities.put("Combo-FireKick", "Create a small arc of fire from your feet!");
+		abilities.put("Combo-FireSpin", "Create a huge ring of fire around you that does damage and huge knockback!");
+		abilities.put("Combo-FireWheel", "Hurl a spinning wheel of fire towards your enemies!");
+		abilities.put("Combo-JetBlaze", "Blaze it up as you launch from your powerful FireJet!");
+		abilities.put("Combo-JetBlast", "Launch with a boom as your launch with a powerful FireJet!");
 		
-		defaults.put("Abilities.Combo-Immobilize", "Freeze your enemies for a few seconds!");
+		abilities.put("Combo-WaterFlow", "Create a huge torrent of water that can sweep away your enemies!");
+		abilities.put("Combo-Maelstrom", "Suck everyone and everything up in a deep whirlpool!");
+		abilities.put("Combo-WaterGimbal", "Control two torrents of water at once!");
+		abilities.put("Combo-IceBullet", "Make a dome of ice and that can shoot shards of ice!");
+		abilities.put("Combo-IceWave", "Freeze your WaterWave to damage enemies that you hit!");
+		
+		abilities.put("Combo-Immobilize", "Freeze your enemies for a few seconds!");
 
 		for (CoreAbility ability : CoreAbility.getAbilities()) {
 			if (!(ability instanceof PassiveAbility) || ability.isHiddenAbility()) continue;
@@ -388,9 +436,23 @@ public class ConfigLanguage extends ConfigBase {
 
 			if (ability instanceof ComboAbility) name = "Combo-" + name;
 
-			if (!defaults.containsKey(name)) {
-				defaults.put("Abilities." + name, ability.getName() + " placeholder here");
+			if (!abilities.containsKey(name)) {
+				defaults.put("Ability." + name, ability.getName() + " placeholder here");
+			} else {
+				defaults.put("Ability." + name, abilities.get(name));
 			}
+		}
+
+		for (Element customSupport : BendingGUI.INSTANCE.getSupportedElements()) {
+			ElementSupport support = BendingGUI.INSTANCE.getSupportedElement(customSupport);
+
+			defaults.put("Display.Main.Overview.Element." + support.getElement(), support.getLangOverviewName());
+
+			if (support instanceof ChooseSupport) {
+				defaults.put("Display.Choose." + support.getElement().getName() + ".Title", ((ChooseSupport) support).getLangChooseTitle());
+				defaults.put("Display.Choose." + support.getElement().getName() + ".Lore", ((ChooseSupport) support).getLangChooseLore());
+			}
+
 		}
 		
 		return defaults;

@@ -4,6 +4,8 @@ import com.projectkorra.projectkorra.Element;
 import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Util;
+import com.strangeone101.bendinggui.api.ChooseSupport;
+import com.strangeone101.bendinggui.api.ElementSupport;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -105,6 +107,18 @@ public class ConfigStandard extends ConfigBase {
 		defaults.put("Display.AbilityDescriptionTrim", 45);
 		defaults.put("Display.PlayerOverviewTrim", 55);
 		defaults.put("Display.ElementDescriptionTrim", 50);
+
+		for (Element customElement : BendingGUI.INSTANCE.getSupportedElements()) {
+			ElementSupport support = BendingGUI.INSTANCE.getSupportedElement(customElement);
+
+			String subOrNot = support.getElement() instanceof Element.SubElement ? "SubElement" : "Element";
+
+			defaults.put("AbilityIcons." + subOrNot + "." + support.getElement().getName(), support.getAbilityMaterial());
+
+			if (support instanceof ChooseSupport) {
+				defaults.put("DisplayIcons." + support.getElement().getName(), ((ChooseSupport) support).getChooseMaterial());
+			}
+		}
 
 		return defaults;
 	}
