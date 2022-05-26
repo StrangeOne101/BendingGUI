@@ -5,9 +5,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Util;
+import com.strangeone101.bendinggui.api.ChooseSupport;
+import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigStandard;
+import com.strangeone101.bendinggui.spirits.SpiritsSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -61,6 +65,13 @@ public class MenuSelectElement extends MenuBase
 			};
 			this.addMenuItem(item, 18);
 		}
+
+		for (Element customElement : BendingGUI.INSTANCE.getSupportedElements()) {
+			ElementSupport support = BendingGUI.INSTANCE.getSupportedElement(customElement);
+			if (support instanceof ChooseSupport) {
+				this.addMenuItem(this.getChooseElement(support.getElement()), ((ChooseSupport) support).getChooseMenuIndex());
+			}
+		}
 	}
 	
 	/*private class ChooseElementItem extends MenuItem
@@ -108,7 +119,13 @@ public class MenuSelectElement extends MenuBase
 				}
 				
 				BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer);
-				bPlayer.setElement(element);
+
+				if (SpiritsSupport.isSpiritElement(element)) {
+					bPlayer.getElements().clear();
+					SpiritsSupport.giveElement(element, bPlayer);
+				} else {
+					bPlayer.setElement(element);
+				}
 				
 				for (SubElement sub : Element.getAllSubElements()) {
 					if (sub.getParentElement() == element && bPlayer.hasSubElementPermission(sub)) {

@@ -1,6 +1,9 @@
 package com.strangeone101.bendinggui.menus;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -71,6 +74,35 @@ public class MenuSelectPresets extends MenuBase
 		};
 		item.setDescriptions(Arrays.asList(desc.split("\n")));
 		return item;
+	}
+
+	public static Map<String, Set<Material>> getKeyedDefaults() {
+		Map<String, Set<Material>> defaults = new HashMap<>();
+
+		Set<Material> arena = Set.of(Material.BOW, Material.GOLDEN_SWORD, Material.IRON_SWORD, Material.DIAMOND_SWORD, Material.NETHERITE_SWORD);
+		Set<Material> survival = Set.of(Material.LEATHER_HELMET, Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET, Material.COMPASS, Material.CLOCK);
+		Set<Material> water = Set.of(Material.POTION, Material.SNOWBALL, Material.WATER_BUCKET, Material.ICE, Material.BLUE_ICE, Material.SNOW_BLOCK);
+		Set<Material> fire = Set.of(Material.FIRE_CHARGE, Material.COAL, Material.BLAZE_POWDER, Material.FLINT_AND_STEEL, Material.NETHER_BRICK);
+		Set<Material> earth = Set.of(Material.GRASS_BLOCK, Material.GRANITE, Material.STONE, Material.GREEN_TERRACOTTA);
+		Set<Material> air = Set.of(Material.FEATHER, Material.STICK, Material.STRING, Material.QUARTZ_BLOCK, Material.GLASS, Material.WHITE_WOOL);
+		Set<Material> chi = Set.of(Material.ARROW, Material.LEATHER_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.IRON_LEGGINGS, Material.FLINT);
+		Set<Material> metal = Set.of(Material.IRON_INGOT, Material.IRON_BLOCK, Material.RAW_IRON, Material.IRON_PICKAXE, Material.IRON_CHESTPLATE);
+		Set<Material> global = Set.of(Material.IRON_SWORD, Material.DIAMOND_SWORD, Material.BOW, Material.SHIELD, Material.ARROW);
+		Set<Material> avatar = Set.of(Material.PURPLE_DYE, Material.END_CRYSTAL, Material.NETHER_STAR, Material.BEACON, Material.PURPLE_TERRACOTTA);
+
+		defaults.put("arena", arena);
+		defaults.put("pvp", arena);
+		defaults.put("survival", survival);
+		defaults.put("water", water);
+		defaults.put("fire", fire);
+		defaults.put("earth", earth);
+		defaults.put("air", air);
+		defaults.put("chi", chi);
+		defaults.put("metal", metal);
+		defaults.put("avatar", avatar);
+		defaults.put("global", global);
+
+		return defaults;
 	}
 
 }

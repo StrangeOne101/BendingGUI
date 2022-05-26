@@ -5,7 +5,10 @@ import java.util.List;
 
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Util;
+import com.strangeone101.bendinggui.api.ChooseSupport;
+import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigStandard;
+import com.strangeone101.bendinggui.spirits.SpiritsSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -46,16 +49,18 @@ public class MenuEditElements extends MenuBase
 		BendingPlayer p = BendingPlayer.getBendingPlayer(player);
 		List<Element> list = Arrays.asList(new Element[] {Element.FIRE, Element.WATER, Element.CHI, Element.EARTH, Element.AIR});
 		
-		for (int i = 0; i < list.size(); i++)
-		{
+		for (int i = 0; i < list.size(); i++) {
 			this.addMenuItem(this.getBendingItem(list.get(i)), 9 + 2 + i);
-			if (p.hasElement(list.get(i)))
-			{
-				//this.addGlow(this.getBendingItem(list.get(i)), 9 + 2 + i);
-			}
 		}
 		this.addMenuItem(this.getBackItem(), 18);
 		this.addMenuItem(this.getRemoveAllItem(), 26);
+
+		for (Element customElement : BendingGUI.INSTANCE.getSupportedElements()) {
+			ElementSupport support = BendingGUI.INSTANCE.getSupportedElement(customElement);
+			if (support instanceof ChooseSupport) {
+				this.addMenuItem(this.getBendingItem(support.getElement()), ((ChooseSupport) support).getChooseMenuIndex());
+			}
+		}
 	}
 	
 	public MenuItem getRemoveAllItem()
@@ -139,8 +144,12 @@ public class MenuEditElements extends MenuBase
 						if (player instanceof Player)
 							((Player)player).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Add.Self").element(element).anOrA(element.getName()).toString());
 							//((Player)player).sendMessage(ChatColor.YELLOW + "You are now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + " " + element.getType().getBender() + ChatColor.YELLOW + "!");
-						
-						p.addElement(element);
+
+						if (SpiritsSupport.isSpiritElement(element)) {
+							SpiritsSupport.giveElement(element, p);
+						} else {
+							p.addElement(element);
+						}
 						
 						for (SubElement sub : Element.getAllSubElements()) {
 							if (sub.getParentElement() == element && p.hasSubElementPermission(sub)) {
@@ -175,7 +184,13 @@ public class MenuEditElements extends MenuBase
 					if (player instanceof Player)
 						((Player)player).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Remove.Self").element(element).toString());
 								//((Player)player).sendMessage(ChatColor.YELLOW + "Your " + c + element.getName().toLowerCase() + element.getType().getBending() + ChatColor.YELLOW + " was removed!");
-					p.getElements().remove(element);
+
+					if (SpiritsSupport.isSpiritElement(element)) {
+						SpiritsSupport.removeElement(element, p);
+					} else {
+						p.getElements().remove(element);
+					}
+
 					GeneralMethods.saveElements(p);
 					GeneralMethods.removeUnusableAbilities(p.getName());
 					if (player instanceof Player)
@@ -197,8 +212,7 @@ public class MenuEditElements extends MenuBase
 		//String isBender = ChatColor.GRAY + "This player is already a " + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender! Click to remove this element!";
 		//item.setDescriptions(Arrays.asList((b ? isBender.split("\n") : notBender.split("\n"))));
 		item.setDescriptions(Util.lengthSplit(lore, 58));
-		if (BendingPlayer.getBendingPlayer(player).hasElement(element))
-		{
+		if (BendingPlayer.getBendingPlayer(player).hasElement(element)) {
 			item.setEnchanted(true);
 		}
 		return item;

@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.strangeone101.bendinggui.LangBuilder;
+import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigStandard;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -53,6 +55,21 @@ public class MenuBendingOptions extends MenuBase
 	protected boolean hasBeenToggled = false;
 	
 	protected boolean combos = false;
+
+	private final MenuBendingOptions instance = this;
+
+	protected boolean chooseUpdaterRunning = false;
+	protected BukkitRunnable chooseCooldownUpdate = new BukkitRunnable() {
+		@Override
+		public void run() {
+			BendingPlayer player = BendingPlayer.getBendingPlayer(thePlayer);
+			if (getChooseCooldown(player) > 0 && openPlayer != null && openPlayer.getOpenInventory() == instance.getInventory()) {
+				addMenuItem(getEditElements(), 3 * 9 + 4);
+
+				this.runTaskLater(BendingGUI.INSTANCE, 20L);
+			}
+		}
+	};
 	
 	
 	public MenuBendingOptions(OfflinePlayer player) 
@@ -158,13 +175,20 @@ public class MenuBendingOptions extends MenuBase
 		{
 			Element element = CoreAbility.getAbility(move).getElement();
 			if (element instanceof SubElement) element = ((SubElement)element).getParentElement();
-			c = element == Element.AIR ? ChatColor.GRAY : (element == Element.CHI ? ChatColor.GOLD : (element == Element.EARTH ? ChatColor.GREEN : (element == Element.FIRE ? ChatColor.RED : (element == Element.WATER ? ChatColor.BLUE : (element == Element.AVATAR ? ChatColor.LIGHT_PURPLE : element.getColor())))));
-			if (element == Element.AIR) {mat = Material.WHITE_STAINED_GLASS_PANE;}
-			else if (element == Element.EARTH) {mat = Material.LIME_STAINED_GLASS_PANE;}
-			else if (element == Element.FIRE) {mat = Material.RED_STAINED_GLASS_PANE;}
-			else if (element == Element.WATER) {mat = Material.BLUE_STAINED_GLASS_PANE;}
-			else if (element == Element.CHI) {mat = Material.YELLOW_STAINED_GLASS_PANE;}
-			else {mat = Material.PURPLE_STAINED_GLASS_PANE;}
+
+			if (BendingGUI.INSTANCE.getSupportedElements().contains(element)) {
+				ElementSupport support = BendingGUI.INSTANCE.getSupportedElement(element);
+				mat = support.getSlotMaterial();
+				c = support.getColor();
+			} else {
+				c = element == Element.AIR ? ChatColor.GRAY : (element == Element.CHI ? ChatColor.GOLD : (element == Element.EARTH ? ChatColor.GREEN : (element == Element.FIRE ? ChatColor.RED : (element == Element.WATER ? ChatColor.BLUE : (element == Element.AVATAR ? ChatColor.LIGHT_PURPLE : element.getColor())))));
+				if (element == Element.AIR) {mat = Material.WHITE_STAINED_GLASS_PANE;}
+				else if (element == Element.EARTH) {mat = Material.LIME_STAINED_GLASS_PANE;}
+				else if (element == Element.FIRE) {mat = Material.RED_STAINED_GLASS_PANE;}
+				else if (element == Element.WATER) {mat = Material.BLUE_STAINED_GLASS_PANE;}
+				else if (element == Element.CHI) {mat = Material.YELLOW_STAINED_GLASS_PANE;}
+				else {mat = Material.PURPLE_STAINED_GLASS_PANE;}
+			}
 		}
 		final ChatColor c1 = c;
 		
@@ -411,38 +435,51 @@ public class MenuBendingOptions extends MenuBase
 	public MenuItem getEditElements()
 	{
 		final MenuBendingOptions instance = this;
-		final boolean b = this.openPlayer.hasPermission("bending.admin.add");
-		String key = "Display.Main." + (b ? "Edit" : "Change");
+		final boolean edit = this.openPlayer.hasPermission("bending.admin.add");
+		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer);
+		String key = "Display.Main." + (edit ? "Edit" : "Change");
 		MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder(key + ".Title").toString(), Material.NETHER_STAR) {
 			@Override
 			public void onClick(Player player) 
 			{
-				if (b && (player.hasPermission("bending.admin.add") || player.hasPermission("bending.admin.remove")))
+				if (edit && (player.hasPermission("bending.admin.add") || player.hasPermission("bending.admin.remove")))
 				{
 					switchMenu(player, new MenuEditElements(thePlayer, instance));
 				}
-				else if (b)
+				else if (edit)
 				{
 					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Edit.Admin.NoPermission").toString());
 					closeMenu(player);
 				}
-				else if (!b && player.hasPermission("bending.command.rechoose"))
+				else if (!edit && player.hasPermission("bending.command.rechoose"))
 				{
 					switchMenu(player, new MenuSelectElement(thePlayer, instance));
 				}
 				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
-		if (b)
+		if (edit)
 		{
 			item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Edit.Lore").yourOrPlayer(thePlayer, openPlayer).toString());
 		}
 		else
 		{
-			item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Change.Lore").toString());
+			if (thePlayer instanceof Player && ((Player) thePlayer).hasPermission("bending.choose.ignorecooldown") &&
+					BendingPlayer.getBendingPlayer(thePlayer).isOnCooldown("ChooseElement")) {
+				long time = getChooseCooldown(bPlayer);
+				item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Change.LoreTime").time(time).toString());
+			} else
+				item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Change.Lore").toString());
 		}
 		
 		return item;
+	}
+
+	private long getChooseCooldown(BendingPlayer player) {
+		if (player.isOnCooldown("ChooseElement")) {
+			return System.currentTimeMillis() - player.getCooldown("ChooseElement");
+		}
+		return 0L;
 	}
 	
 	public MenuItem getComboItem()
@@ -904,55 +941,16 @@ public class MenuBendingOptions extends MenuBase
 				//Hopefully fix bug
 				if (this.playerMoves.isEmpty())
 				{
-					/*if (!DynamicUpdater.getData(player).abilityData.isEmpty())
-					{
-						//this.playerMoves = DynamicUpdator.getData(player).abilityData;
-						//DynamicUpdator.updateAbilityData(player);
-					}
-					else
-					{
-						*/BukkitRunnable run = new BukkitRunnable() {
+					BukkitRunnable run = new BukkitRunnable() {
 
 							public void run() 
 							{
 								update();
 							}	
 						};
-						run.runTaskLater(BendingGUI.INSTANCE, 200L);
-						 //Try again
-					//}
-				} 
-				/*else
-				{
-					DynamicUpdater.getData(player).abilityData = this.playerMoves;
-				}*/
-				
-				
-				
-				
+					run.runTaskLater(BendingGUI.INSTANCE, 200L);
+				}
 			}
-			
-			
-			/*int i1 = 0; //Where to start
-			int j = 0; //Max moves on the page
-			j = maxPage == 1 ? 9 : (maxPage == 2 ? 8 : (movePage == 0 ? 8 : (movePage + 1 == maxPage ? 8 : 7))); //Decide max moves per page based on the max no. of pages
-			i1 = ((movePage + 1 == maxPage || j == 7) && j != 9) ? 1 : 0; //If on last page or in mid page, start the index at 1
-			
-	
-			for (int j1 = i1; j1 < j; j1++)
-			{
-				Abilities move = maxPage == 1 ? this.playerMoves.get(j1 - i1) : this.playerMoves.get(this.movePage * 7 + 1 + j1 - i1);
-				MenuItem item = this.getItemForMove(player, move, j1);
-				if (abilityIndexInt == j1)
-				{
-					//Adds the enchanted glow
-					this.addGlow(item, j1);
-				}
-				else //Don't add it with this method if you need custom NBT data.
-				{
-					this.addMenuItem(item, j1);
-				}
-			}*/
 			
 			int maxPage = this.getMaxPages();
 			
@@ -1045,6 +1043,10 @@ public class MenuBendingOptions extends MenuBase
 			if (this.openPlayer.hasPermission("bending.command.add") || this.openPlayer.hasPermission("bending.command.remove") || this.openPlayer.hasPermission("bending.command.rechoose"))
 			{
 				this.addMenuItem(this.getEditElements(), 3 * 9 + 4);
+				if (!chooseUpdaterRunning) {
+					this.chooseCooldownUpdate.runTaskLater(BendingGUI.INSTANCE, 20L);
+					chooseUpdaterRunning = true;
+				}
 			}
 		}
 		

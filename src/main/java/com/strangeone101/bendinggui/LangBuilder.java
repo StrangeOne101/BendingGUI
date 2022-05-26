@@ -3,6 +3,8 @@ package com.strangeone101.bendinggui;
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.ability.ComboAbility;
 import com.projectkorra.projectkorra.ability.CoreAbility;
+import com.projectkorra.projectkorra.util.TimeUtil;
+import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigLanguage;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -50,11 +52,18 @@ public class LangBuilder {
                     .replace("{bender}", new LangBuilder("Display.Players.NonBender").toString());
             return this;
         }
-        this.value = value.replace("{element}", element.getName()).replace("{ELEMENT}", element.getName().toUpperCase())
+
+        String name = element.getName();
+        if (BendingGUI.INSTANCE.getSupportedElements().contains(element)) {
+            ElementSupport support = BendingGUI.INSTANCE.getSupportedElement(element);
+            name = support.getFancyName();
+        }
+
+        this.value = value.replace("{element}", name).replace("{ELEMENT}", name.toUpperCase())
                 .replace("{elementcolor}", BendingGUI.getColor(element).toString())
-                .replace("{bender}", element.getType().getBender())
-                .replace("{bending}", element.getType().getBending())
-                .replace("{bend}", element.getType().getBend());
+                .replace("{bender}", element.getType() == null ? "" : element.getType().getBender())
+                .replace("{bending}", element.getType() == null ? "" : element.getType().getBending())
+                .replace("{bend}", element.getType() == null ? "" : element.getType().getBend());
         return this;
     }
 
@@ -122,6 +131,13 @@ public class LangBuilder {
         return this;
     }
 
+    public LangBuilder time(long time) {
+        if (time < 0) this.value = this.value.replace("{time}", "0s");
+        else this.value = this.value.replace("{time}", TimeUtil.formatTime(time));
+
+        return this;
+    }
+
     private String capitalizeWord(String word) {
         String copy = ChatColor.stripColor(word.replace('&', '\u00A7'))
                 .replace("\\n", "").replace("\n", "");
@@ -130,6 +146,8 @@ public class LangBuilder {
                 + word.substring(place + 1);
         return word;
     }
+
+
 
     @Override
     public String toString() {
