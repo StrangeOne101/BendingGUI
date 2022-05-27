@@ -16,19 +16,30 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 
 import com.strangeone101.bendinggui.menus.MenuBendingOptions;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class Listener implements org.bukkit.event.Listener {
 
 	private final int NAME = "\u00A7aConfigure Bending".hashCode();
+
+	private static Map<UUID, Consumer<String>> CHAT_LISTENERS = new HashMap<>();
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void onItemRightClick(PlayerInteractEvent e) {
@@ -169,6 +180,22 @@ public class Listener implements org.bukkit.event.Listener {
 		}, 1L);
 	}
 
+	@EventHandler
+	public void onLogout(PlayerQuitEvent event) {
+		CHAT_LISTENERS.remove(event.getPlayer().getUniqueId()); //Remove all players from here
+	}
+
+	@EventHandler
+	public void onChat(AsyncPlayerChatEvent event) {
+		if (CHAT_LISTENERS.containsKey(event.getPlayer().getUniqueId())) {
+			Consumer<String> consumer = CHAT_LISTENERS.get(event.getPlayer().getUniqueId());
+
+			//Do this on the main thread so it doesn't run async
+			Bukkit.getScheduler().runTask(BendingGUI.INSTANCE, () -> consumer.accept(event.getMessage()));
+			CHAT_LISTENERS.remove(event.getPlayer().getUniqueId());
+		}
+	}
+
 
 	private boolean isCompass(ItemStack stack) {
 		return stack != null && stack.getItemMeta() != null && (stack.getItemMeta().getDisplayName().hashCode() == NAME
@@ -177,5 +204,19 @@ public class Listener implements org.bukkit.event.Listener {
 
 	private boolean isChest(Inventory inventory) {
 		return inventory.getType() == InventoryType.CHEST && (inventory.getSize() == 9 * 3 || inventory.getSize() == 9 * 6) && inventory.getHolder() instanceof Chest;
+	}
+
+	public static void chatListen(Player player, Consumer<String> onChat, long timeout, Runnable onTimeout) {
+		CHAT_LISTENERS.put(player.getUniqueId(), onChat);
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				//If the player hasn't sent any chat message and the callback hasn't been fired
+				if (CHAT_LISTENERS.containsKey(player.getUniqueId()) && CHAT_LISTENERS.get(player.getUniqueId()) == onChat) {
+					onTimeout.run();
+				}
+			}
+		}.runTaskLater(BendingGUI.INSTANCE, timeout / 50);
 	}
 }

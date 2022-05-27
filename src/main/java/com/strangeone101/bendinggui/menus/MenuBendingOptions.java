@@ -498,6 +498,21 @@ public class MenuBendingOptions extends MenuBase
 		return item;
 	}
 
+	public MenuItem getPresetItem()
+	{
+		MenuBendingOptions instance = this;
+		MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder("Display.Main.Presets.Title").toString(), Material.MAP) {
+			@Override
+			public void onClick(Player player)
+			{
+				MenuSelectPresets presetMenu = new MenuSelectPresets(thePlayer, instance);
+				switchMenu(player, presetMenu);
+			}
+		};
+		item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Presets.Lore").toString());
+		return item;
+	}
+
 	public MenuItem getBendingToggle()
 	{
 		boolean isToggled = !BendingPlayer.getBendingPlayer(this.thePlayer).isToggled();
@@ -825,10 +840,6 @@ public class MenuBendingOptions extends MenuBase
 		OfflinePlayer player = this.thePlayer;
 		if (combos && mode == Mode.INFO) mode = Mode.NONE;
 		
-		
-		//BendingGUI.log.log(Level.INFO, "Player: " + player.getDisplayName() + ",Page: " + movePage + ", MaxPage: " + this.getMaxPages() + ", MoveSize: " + playerMoves.size());
-		//this.getInventory().clear();
-		
 		for (int i = 0; i < this.getInventory().getContents().length; i++)
 		{
 			if (this.getInventory().getContents()[i] == null)
@@ -988,15 +999,7 @@ public class MenuBendingOptions extends MenuBase
 			        item = this.getItemForMove(player, move, slotIndex);
 		    	}
 		        
-				/*if (abilityIndexInt == slotIndex)
-				{
-					//Adds the enchanted glow
-					//this.addGlow(item, slotIndex);
-				}
-				else //Don't add it with this method if you need custom NBT data.
-				{*/
-					this.addMenuItem(item, slotIndex);
-				//}        
+				this.addMenuItem(item, slotIndex);
 		    }
 			
 			//Add arrows
@@ -1013,29 +1016,14 @@ public class MenuBendingOptions extends MenuBase
 			for (int i = 0; i < 9; i++)
 			{
 				MenuItem item = this.getItemForSlot(player, i);
-				/*if (slotIndex == i)
-				{
-					//this.addGlow(item, i + 9);
-				}
-				else
-				{*/
-					this.addMenuItem(item, i, 1);
-				//}
-				
+				this.addMenuItem(item, i, 1);
 			}
 		}
 		
 		MenuItem removeTool = this.getRemoveToolItem(player);
-		/*if (this.mode == Mode.DELETE)
-		{
-			//this.addGlow(removeTool, 3 * 9 + 0); //Y * 9 + X
-			//this.addGlow(removeTool, 3 * 9 + 6); //Y * 9 + X
-		}
-		else
-		{*/
-			//this.addMenuItem(removeTool, 3 * 9 + 0);
-			this.addMenuItem(removeTool, 3 * 9 + 6);
-		//}
+		this.addMenuItem(removeTool, 3 * 9 + 6);
+
+		boolean addedRechooseThing = false; //If we dont add a rechoose item, we are gonna move the bending board toggle over
 		
 		if (this.openPlayer != null)
 		{
@@ -1047,6 +1035,7 @@ public class MenuBendingOptions extends MenuBase
 					this.chooseCooldownUpdate.runTaskLater(BendingGUI.INSTANCE, 20L);
 					chooseUpdaterRunning = true;
 				}
+				addedRechooseThing = true;
 			}
 		}
 		
@@ -1064,58 +1053,12 @@ public class MenuBendingOptions extends MenuBase
 		}
 		
 		if (BendingBoard.isBoardEnabled() && thePlayer instanceof Player) {
-			this.addMenuItem(getBBToggle((Player) thePlayer), 3, 3);
+			this.addMenuItem(getBBToggle((Player) thePlayer), 3 + (addedRechooseThing ? 0 : 1), 3);
 		}
+
+		this.addMenuItem(getPresetItem(), 2, 3);
 		
 	}
-	
-	/**Add an enchanted glow to an item based on inv index*/
-	/*public void addGlow(MenuItem item, int index)
-	{
-		net.minecraft.server.v1_8_R3.ItemStack stack = CraftItemStack.asNMSCopy(item.getItemStack());
-		NBTTagCompound tag = null;
-        if (!stack.hasTag()) {
-            tag = new NBTTagCompound();
-            stack.setTag(tag);
-        }
-        if (tag == null) tag = stack.getTag();
-        NBTTagList ench = new NBTTagList();
-        tag.set("ench", ench);
-        NBTTagCompound display = new NBTTagCompound();
-        display.setString("Name", item.getText());
-        NBTTagList lore = new NBTTagList();
-        for (String s : item.lore)
-        {
-        	lore.add(new NBTTagString(s));
-        }
-        display.set("Lore", lore);
-        tag.set("display", display);
-        stack.setTag(tag);
-		ItemStack stack1 = CraftItemStack.asCraftMirror(stack);
-        this.getInventory().setItem(index, stack1);
-	}*/
-	
-	/**Add NBT data to the stack*/
-	/*public void addNBTData(int x, int y, String key, Object data)
-	{
-		net.minecraft.server.v1_8_R3.ItemStack stack = CraftItemStack.asNMSCopy(this.getInventory().getItem(y * 9 + x));
-		NBTTagCompound tag = null;
-        if (!stack.hasTag()) {
-            tag = new NBTTagCompound();
-            stack.setTag(tag);
-        }
-        if (tag == null) tag = stack.getTag();
-        if (data instanceof String) {tag.setString(key, (String) data);}
-        else if (data instanceof Integer) {tag.setInt(key, (Integer) data);}
-        else if (data instanceof Boolean) {tag.setBoolean(key, (Boolean) data);}
-        else if (data instanceof Byte) {tag.setByte(key, (Byte) data);}
-        else if (data instanceof Short) {tag.setShort(key, (Short) data);}
-        else if (data instanceof Long) {tag.setLong(key, (Long) data);}
-        else {tag.set(key, (NBTBase) data);}
-        stack.setTag(tag);
-        ItemStack stack1 = CraftItemStack.asCraftMirror(stack);
-        this.getInventory().setItem(y * 9 + x, stack1);
-	}*/
 	
 	@Override
 	public void openMenu(Player player) 
@@ -1128,10 +1071,10 @@ public class MenuBendingOptions extends MenuBase
 		{
 			if (!player.hasPermission("bending.command.choose")) 
 			{
-				player.sendMessage(new LangBuilder("Chat.Choose.CantChoose").toString());
+				player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Choose.CantChoose").toString());
 				return;
 			}
-			player.sendMessage(new LangBuilder("Chat.Choose.ChooseNow").toString());
+			player.sendMessage(ChatColor.GREEN + new LangBuilder("Chat.Choose.ChooseNow").toString());
 			this.switchMenu(player, new MenuSelectElement(thePlayer));
 			return;
 		}
@@ -1146,28 +1089,6 @@ public class MenuBendingOptions extends MenuBase
 		update();
 		super.openMenu(player);
 	}
-	
-	
-	@Override
-	public void closeMenu(Player player) 
-	{
-		//this.playerMoves = null;
-		super.closeMenu(player);
-	}
-	
-	/*public int getMaxPages()
-	{
-		if (this.playerMoves.size() > 9)
-		{
-			int i = (this.playerMoves.size() - 8) / 7;
-			if ((this.playerMoves.size() - 8) % 7 == 1)
-			{
-				i--;
-			}
-			return i + 2;
-		}
-		return 1;
-	}*/
 	
 	public int getMaxPages() {
 		int i = combos ? this.playerCombos.size() : this.playerMoves.size();

@@ -56,13 +56,14 @@ public class MenuSelectElement extends MenuBase
 		
 		if (menu_ != null)
 		{
-			MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder("Display.Choose.Back").toString(), Material.ARROW) {
+			MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder("Display.Common.Page.Back.Title").toString(), Material.ARROW) {
 				@Override
 				public void onClick(Player player) 
 				{
 					switchMenu(player, menu_);
 				}
 			};
+			item.setDescriptions(List.of(new LangBuilder("Display.Common.Page.Back.Lore").toString().split("\n")));
 			this.addMenuItem(item, 18);
 		}
 

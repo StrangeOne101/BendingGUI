@@ -3,15 +3,18 @@ package com.strangeone101.bendinggui;
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.ability.ComboAbility;
 import com.projectkorra.projectkorra.ability.CoreAbility;
+import com.projectkorra.projectkorra.object.Preset;
 import com.projectkorra.projectkorra.util.TimeUtil;
 import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigLanguage;
+import com.strangeone101.bendinggui.menus.MenuSelectPresets;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class LangBuilder {
 
@@ -135,6 +138,24 @@ public class LangBuilder {
         if (time < 0) this.value = this.value.replace("{time}", "0s");
         else this.value = this.value.replace("{time}", TimeUtil.formatTime(time));
 
+        return this;
+    }
+
+    public LangBuilder preset(String name, Map<Integer, String> abilities) {
+        this.value = this.value.replace("{preset}", name)
+                .replace("{presetcolor}", MenuSelectPresets.getPresetElement(abilities).getColor().toString());
+
+        for (int i = 1; i <= 9; i++) {
+            if (abilities.containsKey(i)) {
+                String ability = abilities.get(i);
+                ChatColor color = Element.AVATAR.getColor();
+                if (CoreAbility.getAbility(ability) != null) color = CoreAbility.getAbility(ability).getElement().getColor();
+
+                this.value = this.value.replace("{slot" + i + "}", color + ability);
+            } else {
+                this.value = this.value.replace("{slot" + i + "}", new LangBuilder("Display.Presets.Preset.Empty").toString());
+            }
+        }
         return this;
     }
 

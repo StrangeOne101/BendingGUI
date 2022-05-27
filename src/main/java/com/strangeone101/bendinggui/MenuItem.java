@@ -18,20 +18,17 @@ public abstract class MenuItem{
 	protected boolean isShiftClicked = false;
 	protected boolean isEnchanted = false;
 	
-	public MenuItem(String text, Material icon, int number)
-	{
-				this.text = text;
+	public MenuItem(String text, Material icon, int number) {
+		this.text = text;
         this.icon = icon;
         this.number = number;
 	}
 	
-	public MenuItem(String string, Material icon)
-	{
+	public MenuItem(String string, Material icon) {
 		this(string, icon, 1);
 	}
 	
-	public void setEnchanted(boolean bool)
-	{
+	public void setEnchanted(boolean bool) {
 		this.isEnchanted = bool;
 	}
 	
@@ -51,9 +48,8 @@ public abstract class MenuItem{
         return text;
     }
 
-	public ItemStack getItemStack() 
-	{
-				ItemStack slot = new ItemStack(getIcon(), getNumber());
+	public ItemStack getItemStack() {
+		ItemStack slot = new ItemStack(getIcon(), getNumber());
         ItemMeta meta = slot.getItemMeta();
         meta.setLore(lore);
         meta.setDisplayName(getText());
@@ -68,57 +64,19 @@ public abstract class MenuItem{
 	 * @param player The player clicking*/
 	public abstract void onClick(Player player);
 	
-	public void setDescriptions(List<String> lines) 
-	{
+	public void setDescriptions(List<String> lines) {
 		this.lore = lines;
 	}
 	
-	public void addDescription(String line)
-	{
+	public void addDescription(String line) {
 		this.lore.addAll(List.of(line.split("\\n")));
 	}
 	
-	public void setMenu(MenuBase menu)
-	{
+	public void setMenu(MenuBase menu) {
 		this.menu = menu;
 	}
 	
-	/*public NBTTagCompound getNBTData()
-	{
-		NBTTagCompound tag = new NBTTagCompound();
-		if (this.data != null)
-		{
-			tag = this.data;
-		}
-		NBTTagCompound display = new NBTTagCompound();
-        display.setString("Name", this.getText());
-        NBTTagList lore = new NBTTagList();
-        for (String s : this.lore)
-        {
-        	lore.add(new NBTTagString(s));
-        }
-        display.set("Lore", lore);
-        tag.set("display", display);
-        return tag;
-	}
-	
-	public void setNBTData(NBTTagCompound tag)
-	{
-		this.data = tag;
-	}*/
-	
-	/*/**Adds an enchanted glow to the item*/
-	/*public void addEnchantedGlow()
-	{
-		NBTTagCompound tag = this.getNBTData();
-		NBTTagList ench = new NBTTagList();
-        tag.set("ench", ench);
-        this.setNBTData(tag);
-	}*/
-	
-	public boolean isShiftClicked()
-	{
+	public boolean isShiftClicked() {
 		return this.isShiftClicked;
 	}
-
 }
