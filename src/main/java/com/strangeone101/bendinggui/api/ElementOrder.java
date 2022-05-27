@@ -2,12 +2,17 @@ package com.strangeone101.bendinggui.api;
 
 import com.projectkorra.projectkorra.Element;
 import com.strangeone101.bendinggui.spirits.SpiritsSupport;
-import me.numin.spirits.SpiritElement;
+import me.xnuminousx.spirits.elements.SpiritElement;
 
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
+
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ElementOrder {
 
@@ -41,12 +46,7 @@ public class ElementOrder {
 
     private static LinkedHashMap<Element, Integer> ORDER = new LinkedHashMap<>();
 
-    static {
-
-
-    }
-
-    private void sortOrder() {
+    public static void sortOrder() {
         ORDER.clear();
 
         ORDER.put(Element.AIR, AIR);
@@ -75,7 +75,7 @@ public class ElementOrder {
             }
         }
 
-        List<Element> customElements = Arrays.asList(Element.getAddonElements());
+        List<Element> customElements = new ArrayList<>(Arrays.asList(Element.getAddonElements()));
         Element lastBehind = Element.CHI;
 
         //Add Spirit Elements
@@ -96,9 +96,11 @@ public class ElementOrder {
             ORDER.put(customElement, behind(lastBehind, customElement));
 
             for (Element.SubElement customElementSub : Element.getSubElements(customElement)) {
-                ORDER.put(customElement, behind(lastBehind, customElement));
+                ORDER.put(customElementSub, behind(lastBehind, customElement));
             }
         }
+
+        ORDER = sortByValue(ORDER);
     }
 
     public static int between(int a, int b) {
@@ -146,5 +148,18 @@ public class ElementOrder {
             index++;
         }
         return between(ORDER.get(behind), ORDER.get(behind) + 500);
+    }
+
+    private static LinkedHashMap<Element, Integer> sortByValue(Map<Element, Integer> unsortMap) {
+        List<Map.Entry<Element, Integer>> list = new LinkedList<>(unsortMap.entrySet());
+
+        // Sorting the list based on values
+        list.sort(Map.Entry.comparingByValue());
+        return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
+
+    }
+
+    public static Set<Element> getOrder() {
+        return ORDER.keySet();
     }
 }

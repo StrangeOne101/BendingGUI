@@ -7,6 +7,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 
 public abstract class MenuItem{
 
@@ -53,6 +56,9 @@ public abstract class MenuItem{
         ItemMeta meta = slot.getItemMeta();
         meta.setLore(lore);
         meta.setDisplayName(getText());
+		if (meta instanceof PotionMeta) {
+			((PotionMeta) meta).setBasePotionData(new PotionData(PotionType.WATER));
+		}
         slot.setItemMeta(meta);
         //net.minecraft.server.v1_8_R3.ItemStack stack1 = CraftItemStack.asNMSCopy(slot);
         //stack1.setTag(this.getNBTData());

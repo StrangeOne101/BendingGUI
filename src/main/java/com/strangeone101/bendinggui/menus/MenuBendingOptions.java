@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.strangeone101.bendinggui.LangBuilder;
+import com.strangeone101.bendinggui.api.ElementOrder;
 import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.Bukkit;
@@ -595,6 +596,8 @@ public class MenuBendingOptions extends MenuBase
 		boolean b = p.hasElement(Element.EARTH) || p.hasElement(Element.AIR);
 		item.addDescription(GRAY + new LangBuilder(key + ".Lore.ElementPrefix").yourOrPlayer(thePlayer, openPlayer).anOrA(b ? "airOrEarth" : "").capitalizeFirst().toString());
 
+		//TODO Redo this bit and loop over all elements instead of doing it manually
+		//TODO Current bug: All spirit elements appear as elements the player has even when they don't have them
 
 		if (p.getElements().contains(Element.AIR)) 
 		{
@@ -884,7 +887,7 @@ public class MenuBendingOptions extends MenuBase
 				
 				for (String name : ComboManager.getComboAbilities().keySet())
 				{
-					if ((thePlayer instanceof Player) || ((!(thePlayer instanceof Player)) && !this.playerCombos.contains(name)))
+					if (thePlayer instanceof Player || !this.playerCombos.contains(name))
 					{
 						//this.playerMoves.add(move);
 						Element element = getComboElement(name);
@@ -900,7 +903,7 @@ public class MenuBendingOptions extends MenuBase
 					}
 				}
 				
-				for (Element element : BendingGUI.elementOrder)
+				for (Element element : ElementOrder.getOrder())
 				{
 					List<String> abilities_ = abilities.get(element);
 					if (abilities_ == null || abilities_.isEmpty()) continue;
@@ -933,7 +936,7 @@ public class MenuBendingOptions extends MenuBase
 					}
 				}
 				
-				for (Element element : BendingGUI.elementOrder)
+				for (Element element : ElementOrder.getOrder())
 				{
 					List<CoreAbility> abilities_ = abilities.get(element);
 					if (abilities_ == null || abilities_.isEmpty()) continue;
@@ -945,8 +948,6 @@ public class MenuBendingOptions extends MenuBase
 					
 					Collections.sort(abilitylist);
 					this.playerMoves.addAll(abilitylist);
-					
-					
 				}
 				
 				//Hopefully fix bug

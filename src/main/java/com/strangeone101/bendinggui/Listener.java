@@ -193,6 +193,7 @@ public class Listener implements org.bukkit.event.Listener {
 			//Do this on the main thread so it doesn't run async
 			Bukkit.getScheduler().runTask(BendingGUI.INSTANCE, () -> consumer.accept(event.getMessage()));
 			CHAT_LISTENERS.remove(event.getPlayer().getUniqueId());
+			event.setCancelled(true);
 		}
 	}
 

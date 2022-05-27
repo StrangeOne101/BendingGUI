@@ -21,6 +21,9 @@ import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Listener;
 import com.strangeone101.bendinggui.RunnablePlayer;
 import com.strangeone101.bendinggui.api.ElementSupport;
+import com.strangeone101.bendinggui.config.ConfigPresets;
+import com.strangeone101.bendinggui.spirits.SpiritsSupport;
+import me.xnuminousx.spirits.elements.SpiritElement;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -48,24 +51,37 @@ public class MenuSelectPresets extends MenuBase
 	{
 		super(new LangBuilder("Display.Presets.Title").toString(), getMenuSize(player));
 		this.thePlayer = player;
-		this.presets = Preset.presets.get(player.getUniqueId());
-		if (player instanceof Player && ((Player) player).hasPermission("bending.command.preset.external")) {
-			globalPresets = Preset.externalPresets.keySet();
-		}
-
 		this.previousMenu = previousMenu;
 
 		update();
 	}
 	
 	public void update() {
-		for (int i = 0; i < 9; i++) {
-			this.addMenuItem(getItemForSlot(thePlayer, i), i);
+		//Load the presets again
+		this.presets = Preset.presets.get(thePlayer.getUniqueId());
+		if (this.presets == null) this.presets = new ArrayList<>();
+		if (thePlayer instanceof Player && ((Player) thePlayer).hasPermission("bending.command.preset.external")) {
+			globalPresets = Preset.externalPresets.keySet();
 		}
 
+		//Clear the existing stuff
+		for (int i = 0; i < this.getInventory().getContents().length; i++) {
+			if (this.getInventory().getContents()[i] == null) {
+				this.getInventory().clear(i);
+			} else if (this.getInventory().getContents()[i].getType() != Material.PLAYER_HEAD) {
+				this.getInventory().clear(i);
+			}
+		}
+
+		//Put the slots at the top
+		for (int i = 0; i < 9; i++) {
+			this.addMenuItem(getItemForSlot(thePlayer, i + 1), i);
+		}
+
+		//Empty placeholder item
 		if (globalPresets.size() == 0 && presets.size() == 0) {
 			this.addMenuItem(getEmptyPresetThing(), 9);
-		} else {
+		} else { //Or all the presets
 			int index = 9;
 			for (String globalKey : globalPresets) {
 				this.addMenuItem(getGlobalPreset(globalKey), index);
@@ -90,7 +106,7 @@ public class MenuSelectPresets extends MenuBase
 		item.setDescriptions(List.of((ChatColor.GRAY + new LangBuilder("Display.Common.Page.Back.Lore").toString()).split("\n")));
 		this.addMenuItem(item, getInventory().getSize() - 9); //Bottom left
 
-		this.addMenuItem(getCreatePreset(), getInventory().getSize() - 6);
+		this.addMenuItem(getCreatePreset(), getInventory().getSize() - 5);
 		this.addMenuItem(getRemoveToggle(), getInventory().getSize() - 1);
 	}
 
@@ -124,7 +140,11 @@ public class MenuSelectPresets extends MenuBase
 		}
 
 		//Adding a 'global' prefix to it will make the material different from player ones with the same name
-		Material material = getMaterialFromName("Global" + name);
+		Material material = getMaterialFromName("Global" + preset);
+
+		if (ConfigPresets.getInstance().getGlobal().containsKey(preset.toLowerCase(Locale.ROOT))) {
+			material = ConfigPresets.getInstance().getGlobal().get(preset.toLowerCase(Locale.ROOT));
+		}
 
 		MenuItem item = new MenuItem(name, material) {
 			@Override
@@ -188,6 +208,7 @@ public class MenuSelectPresets extends MenuBase
 							preset.delete();
 							player.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Presets.Delete").preset(preset.getName(), abilities).player(thePlayer).toString());
 							switchMenu(player, instance);
+							instance.deleteMode = !instance.deleteMode;
 							instance.update();
 						}
 					}, new RunnablePlayer() {
@@ -196,7 +217,7 @@ public class MenuSelectPresets extends MenuBase
 							switchMenu(player, instance);
 							instance.update();
 						}
-					}, context -> context.preset(preset.getName(), abilities).player(thePlayer), "Delete");
+					}, context -> context.preset(preset.getName(), abilities).player(thePlayer), "Presets.Delete");
 
 					switchMenu(player, confirm);
 				}
@@ -255,10 +276,10 @@ public class MenuSelectPresets extends MenuBase
 
 	public MenuItem getRemoveToggle() {
 		String onOff = deleteMode ? "On" : "Off";
-		String name = new LangBuilder("Display.Presets.Remove." + onOff + ".Title").toString();
-		List<String> lore = List.of(new LangBuilder("Display.Presets.Remove." + onOff + ".Lore").toString().split("\n"));
+		String name = new LangBuilder("Display.Presets.Delete." + onOff + ".Title").toString();
+		List<String> lore = List.of(new LangBuilder("Display.Presets.Delete." + onOff + ".Lore").toString().split("\n"));
 
-		MenuItem item = new MenuItem(name, Material.BARRIER) {
+		MenuItem item = new MenuItem(ChatColor.RED + name, Material.BARRIER) {
 			@Override
 			public void onClick(Player player) {
 				deleteMode = !deleteMode;
@@ -274,7 +295,7 @@ public class MenuSelectPresets extends MenuBase
 		int max = GeneralMethods.getMaxPresets((Player) thePlayer);
 		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer);
 
-		String createOrMax = max >= presets.size() ? "Max" : "Create";
+		String createOrMax = presets.size() >= max ? "Max" : "Create";
 
 		String name = ChatColor.YELLOW + new LangBuilder("Display.Presets." + createOrMax + ".Title").toString();
 		List<String> lore = List.of((ChatColor.GRAY + new LangBuilder("Display.Presets." + createOrMax + ".Lore").toString()).split("\n"));
@@ -304,8 +325,14 @@ public class MenuSelectPresets extends MenuBase
 					}
 
 					//Make sure no special characters are in it
-					if (chatMessage.matches(".*([ |&=?$!<>()\"':;,./`~#@\\[\\]]).*")) {
+					if (chatMessage.matches(".*([ |&=?$!<>()\"':;,./`~#@\u00A7\\[\\]]).*")) {
 						player.sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.InvalidPresetName").preset(chatMessage, new HashMap<>()).player(thePlayer).toString());
+						return;
+					}
+
+					//Make sure they can't double up on preset names
+					if (Preset.presetExists((Player) thePlayer, chatMessage)) {
+						player.sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.DupePreset").preset(chatMessage, new HashMap<>()).player(thePlayer).toString());
 						return;
 					}
 
@@ -324,7 +351,7 @@ public class MenuSelectPresets extends MenuBase
 							switchMenu(player, instance);
 							instance.update();
 						}
-					}, context -> context.player(thePlayer).preset(chatMessage, bPlayer.getAbilities()), "Create");
+					}, context -> context.player(thePlayer).preset(chatMessage, bPlayer.getAbilities()), "Presets.Create");
 
 					switchMenu(player, confirm);
 				};
@@ -357,8 +384,9 @@ public class MenuSelectPresets extends MenuBase
 		List<Material> air = List.of(Material.FEATHER, Material.STICK, Material.STRING, Material.QUARTZ_BLOCK, Material.GLASS, Material.WHITE_WOOL);
 		List<Material> chi = List.of(Material.ARROW, Material.LEATHER_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.IRON_LEGGINGS, Material.FLINT);
 		List<Material> metal = List.of(Material.IRON_INGOT, Material.IRON_BLOCK, Material.RAW_IRON, Material.IRON_PICKAXE, Material.IRON_CHESTPLATE);
-		List<Material> global = List.of(Material.IRON_SWORD, Material.DIAMOND_SWORD, Material.BOW, Material.SHIELD, Material.ARROW);
+		List<Material> global = List.of(Material.IRON_SWORD, Material.DIAMOND_SWORD, Material.BOW, Material.SHIELD, Material.SPECTRAL_ARROW);
 		List<Material> avatar = List.of(Material.PURPLE_DYE, Material.END_CRYSTAL, Material.NETHER_STAR, Material.BEACON, Material.PURPLE_TERRACOTTA);
+		List<Material> spirit = List.of(Material.PURPLE_DYE, Material.BLUE_WOOL, Material.TUBE_CORAL_BLOCK, Material.LAPIS_LAZULI, Material.ENDER_PEARL);
 
 		defaults.put("arena", arena);
 		defaults.put("pvp", arena);
@@ -370,18 +398,21 @@ public class MenuSelectPresets extends MenuBase
 		defaults.put("chi", chi);
 		defaults.put("metal", metal);
 		defaults.put("avatar", avatar);
+		defaults.put("spirit", spirit);
 		defaults.put("global", global);
 
 		return defaults;
 	}
 
 	public static Material getMaterialFromName(String name) {
-		Map<String, List<Material>> keywords = getKeyedDefaults(); //TODO Make this load from config instead
+		Map<String, List<Material>> keywords = ConfigPresets.getInstance().getKeywords();
 
 		List<Material> materials = keywords.get("global");
 
+		if (materials == null) materials = getKeyedDefaults().get("global");
+
 		for (String key : keywords.keySet()) {
-			if (name.toLowerCase(Locale.ROOT).contains(key)) {
+			if (name.toLowerCase(Locale.ROOT).contains(key.toLowerCase(Locale.ROOT))) {
 				materials = keywords.get(key);
 				break;
 			}
@@ -423,7 +454,22 @@ public class MenuSelectPresets extends MenuBase
 			 }
 		}
 
-		if (elements.size() != 1) return Element.AVATAR;
+		if (elements.size() == 0) { //Since Avatar elements aren't stored, 0 elements means only avatar elements are on
+			return Element.AVATAR;
+		}
+
+		if (elements.size() != 1) {
+			boolean spiritTest = true;
+
+			//Test if each element is a spirit element. If it is, set the element to the base spirit element
+			for (Element e : elements) {
+				if (!SpiritsSupport.isSpiritElement(e)) spiritTest = false;
+			}
+
+			if (spiritTest) return SpiritElement.SPIRIT;
+
+			return Element.AVATAR;
+		}
 
 		return elements.toArray(new Element[0])[0]; //Return first element
 	}

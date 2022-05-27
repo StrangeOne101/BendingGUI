@@ -9,7 +9,6 @@
     <version>1.4</version>
     <packaging>jar</packaging>
 
-
     <name>BendingGUI</name>
 
     <properties>
@@ -86,9 +85,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>me.numin</groupId>
+            <groupId>me.xnuminousx</groupId>
             <artifactId>spirits</artifactId>
-            <version>BETA-1.0.14</version>
+            <version>BETA-1.0.13</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

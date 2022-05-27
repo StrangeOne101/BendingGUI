@@ -88,6 +88,10 @@ public abstract class ConfigBase {
 		if (s != null) return Material.getMaterial(s);
 		return Material.GOLD_INGOT;
 	}
+
+	public Object get(String key) {
+		return config.get(key);
+	}
 	
 	public void set(String key, Object object) {
 		config.set(key, object);

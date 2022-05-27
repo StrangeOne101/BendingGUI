@@ -3,7 +3,7 @@ package com.strangeone101.bendinggui.spirits;
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
 import com.strangeone101.bendinggui.API;
-import me.numin.spirits.SpiritElement;
+import me.xnuminousx.spirits.elements.SpiritElement;
 import org.bukkit.Bukkit;
 
 public class SpiritsSupport {
@@ -18,10 +18,6 @@ public class SpiritsSupport {
 
     public static boolean isEnabled() {
         return Bukkit.getPluginManager().isPluginEnabled("Spirits");
-    }
-
-    private void registerSpiritStuff() {
-
     }
 
     public static boolean isSpiritElement(Element element) {
@@ -40,7 +36,7 @@ public class SpiritsSupport {
         player.getElements().remove(lightOrDark);
 
         for (Element element : player.getElements()) {
-            if (isSpiritElement(element)) return;
+            if (isSpiritElement(element) && element != SpiritElement.SPIRIT) return;
         }
 
         player.getElements().remove(SpiritElement.SPIRIT);

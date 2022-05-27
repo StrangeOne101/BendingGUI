@@ -64,9 +64,9 @@ public class LangBuilder {
 
         this.value = value.replace("{element}", name).replace("{ELEMENT}", name.toUpperCase())
                 .replace("{elementcolor}", BendingGUI.getColor(element).toString())
-                .replace("{bender}", element.getType() == null ? "" : element.getType().getBender())
-                .replace("{bending}", element.getType() == null ? "" : element.getType().getBending())
-                .replace("{bend}", element.getType() == null ? "" : element.getType().getBend());
+                .replace("{bender}", element.getType() == Element.ElementType.NO_SUFFIX ? "" : element.getType().getBender())
+                .replace("{bending}", element.getType() == Element.ElementType.NO_SUFFIX ? new LangBuilder("Generic.NoElementBending").toString() : element.getType().getBending())
+                .replace("{bend}", element.getType() == Element.ElementType.NO_SUFFIX ? "" : element.getType().getBend());
         return this;
     }
 
@@ -81,7 +81,7 @@ public class LangBuilder {
     }
 
     public LangBuilder yourOrPlayer(OfflinePlayer target, OfflinePlayer controller) {
-        if (target == controller) {
+        if (target.equals(controller)) {
             this.value = value.replace("{player|your}", new LangBuilder("Generic.Your").toString())
                     .replace("{player|yourself}", new LangBuilder("Generic.Yourself").toString())
                     .replace("{player|you}", new LangBuilder("Generic.You").toString())

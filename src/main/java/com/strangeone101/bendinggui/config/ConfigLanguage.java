@@ -36,6 +36,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Generic.Yourself", "yourself");
 		defaults.put("Generic.You", "you");
 		defaults.put("Generic.Your", "your");
+		defaults.put("Generic.NoElementBending", " element");
 		defaults.put("Generic.A", "a");
 		defaults.put("Generic.An", "an");
 		defaults.put("Generic.They", "they");
@@ -97,9 +98,9 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Presets.Preset.Lore", "&e> {slot1}\\n&e> {slot2}\\n&e> {slot3}\\n&e> {slot4}\\n&e> {slot5}\\n&e> {slot6}\\n&e> {slot7}\\n&e> {slot8}\\n&e> {slot9}");
 		defaults.put("Display.Presets.Preset.BindLore", "&e&lClick to bind this preset!");
 		defaults.put("Display.Presets.Preset.DeleteLore", "&c&lClick to delete this preset!");
-		defaults.put("Display.Presets.Preset.BoundLore", "&aCurrently bound");
+		defaults.put("Display.Presets.Preset.BoundLore", "&a&lCurrently bound");
 		defaults.put("Display.Presets.Preset.Empty", "&8(Empty)");
-		defaults.put("Display.Presets.Global.Title", "&9Server Preset: &c{preset}");
+		defaults.put("Display.Presets.Global.Title", "&9Server Preset: &c{presetcolor}{preset}");
 		defaults.put("Display.Presets.Global.Lore", "&7This is a preset defined by the server\\n\\n&e> {slot1}\\n&e> {slot2}\\n&e> {slot3}\\n&e> {slot4}\\n&e> {slot5}\\n&e> {slot6}\\n&e> {slot7}\\n&e> {slot8}\\n&e> {slot9}");
 		defaults.put("Display.Presets.Global.Empty", "&8(Empty)");
 		defaults.put("Display.Presets.Global.BindLore", "&e&lClick to bind this preset!");
@@ -112,7 +113,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Presets.Create.Confirm.Yes.Lore", "&7This will create a new preset using your current binds");
 		defaults.put("Display.Presets.Create.Confirm.No.Title", "&c&lNO");
 		defaults.put("Display.Presets.Create.Confirm.No.Lore", "&7Return to the preset menu");
-		defaults.put("Display.Presets.Delete.On.Title", "&cDelete a preset &7(On)");
+		defaults.put("Display.Presets.Delete.On.Title", "&cDelete a preset &7(&eOn&7)");
 		defaults.put("Display.Presets.Delete.On.Lore", "&7Delete an existing preset forever\\n\\n&c&lCLICK A PRESET TO DELETE");
 		defaults.put("Display.Presets.Delete.Off.Title", "&cDelete a preset &7(Off)");
 		defaults.put("Display.Presets.Delete.Off.Lore", "&7Delete an existing preset forever\\n\\n&eClick this and then click a preset to delete it");
@@ -128,7 +129,7 @@ public class ConfigLanguage extends ConfigBase {
 
 		defaults.put("Display.Edit.Title", "Edit {player|your} elements");
 		defaults.put("Display.Edit.Element.Title", "{elementcolor}&l{element}");
-		defaults.put("Display.Edit.Element.Lore.Has", "&7This player is already a {elementcolor}{element}{bender}&7!");
+		defaults.put("Display.Edit.Element.Lore.Has", "&7Click to take away &e{player|your} {elementcolor}{element}{bending}&7!");
 		defaults.put("Display.Edit.Element.Lore.HasNot", "&7Click to make &e{player|yourself} &7{a} {elementcolor}{element}{bender}&7!");
 		defaults.put("Display.Edit.Back.Title", "&eBack");
 		defaults.put("Display.Edit.Back.Lore", "&7Return to the previous menu");
@@ -224,7 +225,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Errors.Disabled", "&cThere is a problem with BendingGUI at the moment. Please contact your admin!");
 		defaults.put("Display.Errors.NoTouchy", "&cThe bending gui cannot be tampered with!");
 		defaults.put("Display.Errors.ChangeCooldown", "&cYou cannot change your element for another {time}!");
-		defaults.put("Display.Errors.DupePrefix", "&cYou already have a prefix named {prefix}!");
+		defaults.put("Display.Errors.DupePreset", "&cYou already have a preset named {preset}!");
 		defaults.put("Display.Errors.MaxPresets", "&cYou cannot create anymore than {max} presets!");
 		defaults.put("Display.Errors.NoBinds", "&cYou cannot create a preset without any binds!");
 		defaults.put("Display.Errors.InvalidPresetName", "&cInvalid preset name! It must have no spaces or special characters!");
@@ -261,7 +262,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Chat.Presets.Delete", "&eYou deleted your {presetcolor}{preset} &epreset!");
 		defaults.put("Chat.Presets.Create.Prompt", "&ePlease enter the name for your new preset bellow, or type \"cancel\"!");
 		defaults.put("Chat.Presets.Create.CancelInput", "cancel");
-		defaults.put("Chat.Presets.Create.Success", "&aNew preset &2{preset}&a created!");
+		defaults.put("Chat.Presets.Create.Success", "&aNew preset &e{presetcolor}{preset}&a created!");
 		defaults.put("Chat.Presets.Create.Timeout", "&cPreset creation canceled due to timeout/inactivity");
 		defaults.put("Chat.Command.PlayerOnly", "&cSorry bud! Only players can run this command!");
 		defaults.put("Chat.Command.NoPermission", "&cYou don't have permission to run this command!");
@@ -479,23 +480,23 @@ public class ConfigLanguage extends ConfigBase {
 		abilities.put("Combo-Immobilize", "Freeze your enemies for a few seconds!");
 
 		for (CoreAbility ability : CoreAbility.getAbilities()) {
-			if (!(ability instanceof PassiveAbility) || ability.isHiddenAbility()) continue;
+			if (ability instanceof PassiveAbility || ability.isHiddenAbility()) continue;
 
 			String name = ability.getName();
 
 			if (ability instanceof ComboAbility) name = "Combo-" + name;
 
 			if (!abilities.containsKey(name)) {
-				defaults.put("Ability." + name, ability.getName() + " placeholder here");
+				defaults.put("Abilities." + name, ability.getName() + " placeholder here");
 			} else {
-				defaults.put("Ability." + name, abilities.get(name));
+				defaults.put("Abilities." + name, abilities.get(name));
 			}
 		}
 
 		for (Element customSupport : BendingGUI.INSTANCE.getSupportedElements()) {
 			ElementSupport support = BendingGUI.INSTANCE.getSupportedElement(customSupport);
 
-			defaults.put("Display.Main.Overview.Element." + support.getElement(), support.getLangOverviewName());
+			defaults.put("Display.Main.Overview.Element." + support.getElement().getName(), support.getLangOverviewName());
 
 			if (support instanceof ChooseSupport) {
 				defaults.put("Display.Choose." + support.getElement().getName() + ".Title", ((ChooseSupport) support).getLangChooseTitle());

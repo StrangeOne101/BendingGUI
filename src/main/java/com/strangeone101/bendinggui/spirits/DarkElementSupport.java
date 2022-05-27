@@ -4,7 +4,8 @@ import com.projectkorra.projectkorra.Element;
 import com.strangeone101.bendinggui.api.ChooseSupport;
 import com.strangeone101.bendinggui.api.ElementOrder;
 import com.strangeone101.bendinggui.api.ElementSupport;
-import me.numin.spirits.SpiritElement;
+
+import me.xnuminousx.spirits.elements.SpiritElement;
 import org.bukkit.Material;
 
 public class DarkElementSupport implements ElementSupport, ChooseSupport {
@@ -21,7 +22,7 @@ public class DarkElementSupport implements ElementSupport, ChooseSupport {
 
     @Override
     public String getLangChooseTitle() {
-        return "&9Choose &2&lDark Spirit";
+        return "&9Choose &3&lDark Spirit";
     }
 
     @Override

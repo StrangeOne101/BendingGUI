@@ -6,6 +6,7 @@ import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Util;
 import com.strangeone101.bendinggui.api.ChooseSupport;
 import com.strangeone101.bendinggui.api.ElementSupport;
+import com.strangeone101.bendinggui.menus.MenuSelectPresets;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +20,9 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ConfigStandard extends ConfigBase {
 

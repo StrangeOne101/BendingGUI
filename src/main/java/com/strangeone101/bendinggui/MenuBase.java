@@ -52,7 +52,7 @@ public class MenuBase implements InventoryHolder {
         	//stack = BendingGUI.getNMSManager().addGlow(item.getItemStack());
         	Util.addGlow(stack);
         }
-		    this.getInventory().setItem(index, stack);
+        this.getInventory().setItem(index, stack);
         items.put(index, item);
         item.setMenu(this);
         return true;

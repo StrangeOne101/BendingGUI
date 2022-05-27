@@ -9,9 +9,12 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.strangeone101.bendinggui.api.ElementOrder;
 import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigLanguage;
+import com.strangeone101.bendinggui.config.ConfigPresets;
 import com.strangeone101.bendinggui.config.ConfigStandard;
+import com.strangeone101.bendinggui.spirits.SpiritsSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -42,9 +45,6 @@ public class BendingGUI extends JavaPlugin
 	public static String versionInfo;
 
 	public static final String PK_VERSION = "1.9.3";
-
-	@Deprecated
-	public static List<Element> elementOrder;
 
 	public static NamespacedKey COMPASS;
 
@@ -139,49 +139,33 @@ public class BendingGUI extends JavaPlugin
 
 		//Descriptions.load();
 		//Descriptions.save();
+
+		new GuiCommand();
+
 		new ConfigStandard();
 		new ConfigLanguage();
-		loadElementOrder();
-		new GuiCommand();
+		new ConfigPresets();
+
+		new SpiritsSupport();
+
+		//Reload configs AFTER 1 tick since there may be PK plugins that load after BendingGUI and we need them to be loaded
+		Bukkit.getScheduler().runTaskLater(this, () -> {
+			ConfigStandard.getInstance().load();
+			ConfigLanguage.getInstance().load();
+			//loadElementOrder();
+			ElementOrder.sortOrder();
+		}, 1L);
 
 		log.log(Level.INFO, enabled ? "BendingGUI Fully Loaded!" : "BendingGUI loaded but not functional.");
 
 		loaded = true;
 	}
 
-	public void loadElementOrder()
-	{
-		elementOrder = new ArrayList<Element>();
-
-		elementOrder.add(Element.AIR);    elementOrder.add(Element.FLIGHT);    elementOrder.add(Element.SPIRITUAL);
-		if (Element.getAddonSubElements(Element.AIR).length > 0) elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.AIR)));
-		elementOrder.add(Element.EARTH);  elementOrder.add(Element.SAND);       elementOrder.add(Element.METAL);    elementOrder.add(Element.LAVA);
-		if (Element.getAddonSubElements(Element.EARTH).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.EARTH)));
-		elementOrder.add(Element.FIRE);
-		elementOrder.add(Element.LIGHTNING);
-		elementOrder.add(Element.COMBUSTION);
-		elementOrder.add(Element.BLUE_FIRE);
-		if (Element.getAddonSubElements(Element.FIRE).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.FIRE)));
-		elementOrder.add(Element.WATER);  elementOrder.add(Element.ICE);     elementOrder.add(Element.HEALING);  elementOrder.add(Element.PLANT);     elementOrder.add(Element.BLOOD);
-		if (Element.getAddonSubElements(Element.WATER).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.WATER)));
-		elementOrder.add(Element.CHI);
-		if (Element.getAddonSubElements(Element.CHI).length > 0)elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(Element.CHI)));
-
-		for (Element e : Element.getAddonElements())
-		{
-			if (e == null) continue;
-			elementOrder.add(e);
-			if (Element.getAddonSubElements(e).length > 0) elementOrder.addAll(Arrays.asList(Element.getAddonSubElements(e)));
-		}
-
-		elementOrder.add(Element.AVATAR);
-		//log.info("Debug: " + makeListFancy(elementOrder));
-	}
-
 	public void reload()
 	{
 		ConfigStandard.getInstance().load();
 		ConfigLanguage.getInstance().load();
+		ConfigPresets.getInstance().load();
 		log.log(Level.INFO, "BendingGUI Reloaded!");
 	}
 

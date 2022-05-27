@@ -1,11 +1,16 @@
 package com.strangeone101.bendinggui.command;
 
+import java.util.HashMap;
 import java.util.List;
 
+import com.projectkorra.projectkorra.Element;
+import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.strangeone101.bendinggui.LangBuilder;
+import com.strangeone101.bendinggui.config.ConfigPresets;
 import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -101,6 +106,41 @@ public class GuiCommand extends PKCommand {
 
         } else if (args.get(0).equalsIgnoreCase("help") || args.get(0).equalsIgnoreCase("h")) {
             sender.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Command.Usage").toString());
+        } else if (args.get(0).equalsIgnoreCase("debug")) {
+            if (!player.hasPermission("bendinggui.admin")) {
+                player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.NoEditPermission").toString());
+                return true;
+            }
+            if (args.size() < 3) {
+                player.sendMessage(ChatColor.RED + "/gui debug <lang/config/pconfig> [path]");
+                return true;
+            }
+
+            if (args.get(1).equalsIgnoreCase("lang")) {
+                String key = args.get(2);
+
+                LangBuilder builder = new LangBuilder(key).ability(CoreAbility.getAbility("FireBlast"))
+                        .time(13 * 1000).slot(4).element(Element.WATER).list("Apples", "Bananas", "a monkey")
+                        .page(1, 4).preset("firearena", new HashMap<>());
+                if (sender instanceof Player) builder = builder.player((OfflinePlayer) sender)
+                        .yourOrPlayer((OfflinePlayer) sender, (OfflinePlayer) sender);
+
+                sender.sendMessage(ChatColor.YELLOW + "Lang: '" + ChatColor.DARK_AQUA + builder.toString() + "'");
+            } else if (args.get(1).equalsIgnoreCase("config")) {
+                String key = args.get(2);
+
+                Object o = ConfigStandard.getInstance().get(key);
+                if (o instanceof String) o = "\"" + o + "\"";
+
+                sender.sendMessage(ChatColor.YELLOW + "Config: '" + ChatColor.DARK_AQUA + o.toString() + "'");
+            } else if (args.get(1).equalsIgnoreCase("pconfig")) {
+                String key = args.get(2);
+
+                Object o = ConfigPresets.getInstance().get(key);
+                if (o instanceof String) o = "\"" + o + "\"";
+
+                sender.sendMessage(ChatColor.YELLOW + "PresetConfig: '" + ChatColor.DARK_AQUA + o.toString() + "'");
+            }
         } else {
             Player playero = Bukkit.getPlayer(args.get(0));
 
