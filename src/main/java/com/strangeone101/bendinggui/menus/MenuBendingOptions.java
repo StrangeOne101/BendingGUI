@@ -471,7 +471,7 @@ public class MenuBendingOptions extends MenuBase
 				{
 					long cooldown = getChooseCooldown(bPlayer);
 					if (cooldown > 0) {
-						player.sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.ChangeCooldown").time(cooldown).toString());
+						player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Choose.ChangeCooldown").time(cooldown).toString());
 						closeMenu(player);
 						return;
 					}

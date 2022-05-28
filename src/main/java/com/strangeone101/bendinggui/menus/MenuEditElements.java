@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.projectkorra.projectkorra.event.PlayerChangeSubElementEvent;
+import com.strangeone101.bendinggui.BendingBoard;
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Util;
 import com.strangeone101.bendinggui.api.ChooseSupport;
@@ -194,6 +195,7 @@ public class MenuEditElements extends MenuBase
 
 					GeneralMethods.saveElements(p);
 					GeneralMethods.removeUnusableAbilities(p.getName());
+					BendingBoard.updateBoard((Player)player);
 
 					if (!playerwhoclicked.getName().equals(player.getName()))
 						playerwhoclicked.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Remove.Admin").player(player).element(element).toString());

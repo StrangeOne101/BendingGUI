@@ -219,6 +219,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Common.Page.Back.Title", "&eReturn to bending menu");
 		defaults.put("Display.Common.Page.Back.Lore", "&7Click to return to bending menu");
 
+		//Generic plugin errors
 		defaults.put("Display.Errors.NoAbilName", "&4Error: &cMove doesn't exist! Please contact StrangeOne101 about this!");
 		defaults.put("Display.Errors.SlotOutOfRange", "&cError: Slot binding out of range! Please contact StrangeOne101 about this!");
 		defaults.put("Display.Errors.FailedToOpen", "&cAn error occurred while trying to open the bending interface. Please report this to your admin or the plugin developer!");
@@ -227,7 +228,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Errors.CantEditNow", "&cYou cannot edit your binds right now!");
 		defaults.put("Display.Errors.Disabled", "&cThere is a problem with BendingGUI at the moment. Please contact your admin!");
 		defaults.put("Display.Errors.NoTouchy", "&cThe bending gui cannot be tampered with!");
-		defaults.put("Display.Errors.ChangeCooldown", "&cYou cannot change your element for another {time}!");
+
 		defaults.put("Display.Errors.DupePreset", "&cYou already have a preset named {preset}!");
 		defaults.put("Display.Errors.MaxPresets", "&cYou cannot create anymore than {max} presets!");
 		defaults.put("Display.Errors.NoBinds", "&cYou cannot create a preset without any binds!");
@@ -240,6 +241,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Chat.Choose.Rechoose.NoPermission", "&cYou don't have permission to change your element!");
 		defaults.put("Chat.Choose.NoPermissionElement", "&cYou don't have permission to choose this element!");
 		defaults.put("Chat.Choose.PermaRemoved", "&cYou cannot choose an element because your bending has been permanently removed!");
+		defaults.put("Chat.Choose.ChangeCooldown", "&cYou cannot change your element for another {time}!");
 		defaults.put("Chat.Choose.Admin.PermaRemoved", "&cThis player has had their bending permanently removed!");
 		defaults.put("Chat.Choose.Admin.NoPermission", "&cYou don't have permission to choose this player's bending!");
 		defaults.put("Chat.Board.Offline", "&aCan't toggle an offline player's bending board.");
@@ -262,11 +264,16 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Chat.Edit.NoPermission", "&cYou don't have permission to edit this player's bending!");
 		defaults.put("Chat.Edit.Admin.Offline", "&cYou can't edit an offline players bending right now!");
 		defaults.put("Chat.Presets.Bind", "&eYou have bound your {presetcolor}{preset} &epreset!");
+		defaults.put("Chat.Presets.BindFailed", "&eYou have bound your {presetcolor}{preset} &epreset!");
 		defaults.put("Chat.Presets.Delete", "&eYou deleted your {presetcolor}{preset} &epreset!");
 		defaults.put("Chat.Presets.Create.Prompt", "&ePlease enter the name for your new preset bellow, or type \"cancel\"!");
 		defaults.put("Chat.Presets.Create.CancelInput", "cancel");
 		defaults.put("Chat.Presets.Create.Success", "&aNew preset &e{presetcolor}{preset}&a created!");
 		defaults.put("Chat.Presets.Create.Timeout", "&cPreset creation canceled due to timeout/inactivity");
+		defaults.put("Chat.Presets.DupePreset", "&cYou already have a preset named {preset}!");
+		defaults.put("Chat.Presets.MaxPresets", "&cYou cannot create anymore than {max} presets!");
+		defaults.put("Chat.Presets.NoBinds", "&cYou cannot create a preset without any binds!");
+		defaults.put("Chat.Presets.InvalidPresetName", "&cInvalid preset name! It must have no spaces or special characters!");
 		defaults.put("Chat.Command.PlayerOnly", "&cSorry bud! Only players can run this command!");
 		defaults.put("Chat.Command.NoPermission", "&cYou don't have permission to run this command!");
 		defaults.put("Chat.Command.NoEditPermission", "&cYou don't have permission to edit other players bending!");

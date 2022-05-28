@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 
 import com.projectkorra.projectkorra.GeneralMethods;
 import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
+import com.projectkorra.projectkorra.event.PlayerBindChangeEvent;
 import com.projectkorra.projectkorra.object.Preset;
 import com.strangeone101.bendinggui.BendingBoard;
 import com.strangeone101.bendinggui.BendingGUI;
@@ -24,6 +25,7 @@ import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigPresets;
 import com.strangeone101.bendinggui.spirits.SpiritsSupport;
 import me.xnuminousx.spirits.elements.SpiritElement;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -151,7 +153,7 @@ public class MenuSelectPresets extends MenuBase
 			public void onClick(Player player) {
 				if (!deleteMode && !bound) {
 					if (bPlayer != null) {
-						bPlayer.setAbilities(abilities);
+						setAbilities(bPlayer, abilities);
 						BendingBoard.updateBoard((Player) thePlayer);
 						((Player) thePlayer).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Presets.Bind").preset(preset, abilities).toString());
 						update();
@@ -197,7 +199,7 @@ public class MenuSelectPresets extends MenuBase
 				if (!deleteMode && !bound) {
 					if (bPlayer != null) {
 
-						bPlayer.setAbilities(abilities);
+						setAbilities(bPlayer, abilities);
 						BendingBoard.updateBoard((Player) thePlayer);
 						player.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Presets.Bind").preset(preset.getName(), abilities).player(thePlayer).toString());
 						update();
@@ -308,13 +310,13 @@ public class MenuSelectPresets extends MenuBase
 			public void onClick(Player player) {
 				if (presets.size() >= max) {
 					closeMenu(player);
-					player.sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.MaxPresets").page(presets.size(), max).player(thePlayer).toString());
+					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.MaxPresets").page(presets.size(), max).player(thePlayer).toString());
 					return;
 				}
 
 				if (bPlayer.getAbilities().size() == 0) {
 					closeMenu(player);
-					player.sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.NoBinds").player(thePlayer).toString());
+					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.NoBinds").player(thePlayer).toString());
 					return;
 				}
 
@@ -327,13 +329,13 @@ public class MenuSelectPresets extends MenuBase
 
 					//Make sure no special characters are in it
 					if (chatMessage.matches(".*([ |&=?$!<>()\"':;,./`~#@\u00A7\\[\\]]).*")) {
-						player.sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.InvalidPresetName").preset(chatMessage, new HashMap<>()).player(thePlayer).toString());
+						player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.InvalidPresetName").preset(chatMessage, new HashMap<>()).player(thePlayer).toString());
 						return;
 					}
 
 					//Make sure they can't double up on preset names
 					if (Preset.presetExists((Player) thePlayer, chatMessage)) {
-						player.sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.DupePreset").preset(chatMessage, new HashMap<>()).player(thePlayer).toString());
+						player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.DupePreset").preset(chatMessage, new HashMap<>()).player(thePlayer).toString());
 						return;
 					}
 
@@ -400,7 +402,7 @@ public class MenuSelectPresets extends MenuBase
 		defaults.put("metal", metal);
 		defaults.put("avatar", avatar);
 		defaults.put("spirit", spirit);
-		defaults.put("global", global);
+		defaults.put("GLOBAL", global);
 
 		return defaults;
 	}
@@ -410,7 +412,7 @@ public class MenuSelectPresets extends MenuBase
 
 		List<Material> materials = keywords.get("global");
 
-		if (materials == null) materials = getKeyedDefaults().get("global");
+		if (materials == null) materials = getKeyedDefaults().get("GLOBAL");
 
 		for (String key : keywords.keySet()) {
 			if (name.toLowerCase(Locale.ROOT).contains(key.toLowerCase(Locale.ROOT))) {
@@ -423,6 +425,32 @@ public class MenuSelectPresets extends MenuBase
 		int pick = random.nextInt(materials.size());
 
 		return materials.get(pick);
+	}
+
+	protected static void setAbilities(BendingPlayer player, Map<Integer, String> abilities) {
+		for (int i = 1; i <= 9; i++) {
+			String abil = abilities.get(i);
+
+			if (abil != null && !abil.equals("")) {
+				CoreAbility coreAbil = CoreAbility.getAbility(abil);
+
+				if (coreAbil != null && player.canBind(coreAbil)) {
+					PlayerBindChangeEvent event = new PlayerBindChangeEvent(player.getPlayer(), abil, i, true, false);
+					Bukkit.getPluginManager().callEvent(event);
+
+					if (!event.isCancelled()) player.getAbilities().put(i, abil);
+
+					continue;
+				}
+			}
+			//If the checks above fail, remove the bind from here
+			PlayerBindChangeEvent event = new PlayerBindChangeEvent(player.getPlayer(), null, i, false, false);
+			Bukkit.getPluginManager().callEvent(event);
+
+			if (!event.isCancelled()) player.getAbilities().put(i, null);
+		}
+
+		player.setAbilities(player.getAbilities()); //Commit to DB
 	}
 
 	public static int getMenuSize(OfflinePlayer player) {

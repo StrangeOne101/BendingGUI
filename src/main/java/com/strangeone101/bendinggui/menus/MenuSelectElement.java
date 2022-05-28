@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.projectkorra.projectkorra.configuration.ConfigManager;
+import com.strangeone101.bendinggui.BendingBoard;
 import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Util;
@@ -115,6 +116,7 @@ public class MenuSelectElement extends MenuBase
 				}
 				
 				GeneralMethods.removeUnusableAbilities(bPlayer.getName());
+				BendingBoard.updateBoard(player);
 				
 				if (thePlayer instanceof Player)
 					((Player)thePlayer).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Choose.Success.Self").element(element).anOrA(element.getName()).toString());
