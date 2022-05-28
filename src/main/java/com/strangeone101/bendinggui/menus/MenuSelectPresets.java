@@ -115,7 +115,7 @@ public class MenuSelectPresets extends MenuBase
 		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer);
 
 		for (int i = 0; i < 9; i++) { //Turn the arraylist into a map
-			if (Preset.externalPresets.get(preset).size() - 1 <= i) {
+			if ((i + 1) <= Preset.externalPresets.get(preset).size()) {
 				String s = Preset.externalPresets.get(preset).get(i);
 
 				if (s != null && !s.equals("")) //Ignore blank slots

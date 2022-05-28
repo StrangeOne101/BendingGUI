@@ -41,8 +41,9 @@ public class GuiCommand extends PKCommand {
             sender.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.NoPermission").toString());
             return true;
         }
-        Player player = (Player) sender;
+
         if (args.size() == 0) {
+            Player player = (Player) sender;
             if (ConfigStandard.getInstance().doUseItem()) {
                 ItemStack stack = ConfigStandard.getInstance().getItem();
                 if (player.getInventory().contains(stack)) {
@@ -57,6 +58,11 @@ public class GuiCommand extends PKCommand {
 
             return true;
         } else if (args.get(0).equalsIgnoreCase("choose") || args.get(0).equalsIgnoreCase("c") || args.get(0).equalsIgnoreCase("ch")) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(new LangBuilder("Chat.Command.PlayerOnly").toString());
+                return false;
+            }
+            Player player = (Player) sender;
             if (args.size() == 2) {
                 if (player.hasPermission("bending.admin.choose")) {
                     Player playero = Bukkit.getPlayer(args.get(1));
@@ -71,10 +77,7 @@ public class GuiCommand extends PKCommand {
                 }
                 return true;
             }
-            if (!(sender instanceof Player)) {
-                sender.sendMessage(new LangBuilder("Chat.Command.PlayerOnly").toString());
-                return false;
-            }
+
             if (BendingPlayer.getBendingPlayer(player).getElements().isEmpty() && player.hasPermission("bending.command.rechoose")) {
                 MenuSelectElement menu = new MenuSelectElement(player);
                 menu.openMenu(player);
@@ -93,26 +96,26 @@ public class GuiCommand extends PKCommand {
                 return true;
             }
 
-            player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.NoPermission").toString());
+            sender.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.NoPermission").toString());
 
         } else if (args.get(0).equalsIgnoreCase("reload") || args.get(0).equalsIgnoreCase("r") || args.get(0).equalsIgnoreCase("rel")) {
             if (sender.hasPermission("bendinggui.reload")) {
                 BendingGUI.INSTANCE.reload();
-                player.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Command.Reload").toString());
+                sender.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Command.Reload").toString());
                 return true;
             }
 
-            player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.NoPermission").toString());
+            sender.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.NoPermission").toString());
 
         } else if (args.get(0).equalsIgnoreCase("help") || args.get(0).equalsIgnoreCase("h")) {
             sender.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Command.Usage").toString());
         } else if (args.get(0).equalsIgnoreCase("debug")) {
-            if (!player.hasPermission("bendinggui.admin")) {
-                player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.NoEditPermission").toString());
+            if (!sender.hasPermission("bendinggui.admin")) {
+                sender.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.NoEditPermission").toString());
                 return true;
             }
             if (args.size() < 3) {
-                player.sendMessage(ChatColor.RED + "/gui debug <lang/config/pconfig> [path]");
+                sender.sendMessage(ChatColor.RED + "/gui debug <lang/config/pconfig> [path]");
                 return true;
             }
 
@@ -142,21 +145,23 @@ public class GuiCommand extends PKCommand {
                 sender.sendMessage(ChatColor.YELLOW + "PresetConfig: '" + ChatColor.DARK_AQUA + o.toString() + "'");
             }
         } else {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(new LangBuilder("Chat.Command.PlayerOnly").toString());
+                return false;
+            }
+
             Player playero = Bukkit.getPlayer(args.get(0));
 
-            if (playero == null && player.hasPermission("bendinggui.admin")) {
+            if (playero == null && sender.hasPermission("bendinggui.admin")) {
                 sender.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.NoPlayer").toString());
                 return true;
-            } else if (playero != null && !player.hasPermission("bendinggui.admin")) {
-
-                player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.NoEditPermission").toString());
+            } else if (playero != null && !sender.hasPermission("bendinggui.admin")) {
+                sender.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.NoEditPermission").toString());
             } else if (playero == null) {
-
                 sender.sendMessage(ChatColor.RED + new LangBuilder("Chat.Command.Usage").toString());
             } else {
-
                 MenuBendingOptions menu = new MenuBendingOptions(playero);
-                menu.openMenu(player);
+                menu.openMenu((Player)sender);
             }
             return true;
 

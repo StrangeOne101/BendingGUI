@@ -14,12 +14,14 @@ import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigLanguage;
 import com.strangeone101.bendinggui.config.ConfigPresets;
 import com.strangeone101.bendinggui.config.ConfigStandard;
+import com.strangeone101.bendinggui.menus.MenuBendingOptions;
 import com.strangeone101.bendinggui.spirits.SpiritsSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.projectkorra.projectkorra.Element;
@@ -141,6 +143,14 @@ public class BendingGUI extends JavaPlugin
 		return "";
 	}
 
+	@Override
+	public void onDisable() {
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			if (p.getOpenInventory() != null && p.getOpenInventory().getTopInventory().getHolder() instanceof MenuBase) {
+				p.closeInventory();
+			}
+		}
+	}
 
 	public static ChatColor getColor(Element element)
 	{
