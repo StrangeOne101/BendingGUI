@@ -3,12 +3,14 @@ package com.strangeone101.bendinggui.menus;
 import java.util.Arrays;
 import java.util.List;
 
+import com.projectkorra.projectkorra.event.PlayerChangeSubElementEvent;
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Util;
 import com.strangeone101.bendinggui.api.ChooseSupport;
 import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigStandard;
 import com.strangeone101.bendinggui.spirits.SpiritsSupport;
+import me.xnuminousx.spirits.elements.SpiritElement;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -33,6 +35,7 @@ public class MenuEditElements extends MenuBase
 	protected MenuBase prev;
 	protected OfflinePlayer player;
 	protected Player openPlayer;
+	protected boolean dirty;
 	
 	public MenuEditElements(OfflinePlayer player, MenuBase previousMenu) 
 	{
@@ -146,29 +149,29 @@ public class MenuEditElements extends MenuBase
 							//((Player)player).sendMessage(ChatColor.YELLOW + "You are now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + " " + element.getType().getBender() + ChatColor.YELLOW + "!");
 
 						if (SpiritsSupport.isSpiritElement(element)) {
-							SpiritsSupport.giveElement(element, p);
+							SpiritsSupport.giveElement(element, p, playerwhoclicked, false);
 						} else {
+							Bukkit.getPluginManager().callEvent(new PlayerChangeElementEvent(playerwhoclicked, player.getPlayer(), element, Result.ADD));
 							p.addElement(element);
 						}
 						
 						for (SubElement sub : Element.getAllSubElements()) {
 							if (sub.getParentElement() == element && p.hasSubElementPermission(sub)) {
+								PlayerChangeSubElementEvent event = new PlayerChangeSubElementEvent(playerwhoclicked, player.getPlayer(), sub,
+										PlayerChangeSubElementEvent.Result.ADD);
+								Bukkit.getPluginManager().callEvent(event);
 								p.addSubElement(sub);
 							}
 						}
+
+						dirty = true;
 						
 						GeneralMethods.saveElements(p);
 						GeneralMethods.saveSubElements(p);
 						
-						if (player instanceof Player)
-						{
-							Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent((Player)player, (Player)player, element, Result.ADD));
-						}
-						
 						if (!playerwhoclicked.getName().equals(player.getName()))
 							playerwhoclicked.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Add.Admin").player(player).element(element).anOrA(element.getName()).toString());
-							//playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is now " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.getName().toLowerCase() + ChatColor.YELLOW + " " + element.getType().getBender() + "!");
-						
+
 						update();
 					}
 					else
@@ -177,28 +180,22 @@ public class MenuEditElements extends MenuBase
 						closeMenu(playerwhoclicked);
 					}
 				} else {
-					/*if (this.isShiftClicked) {
-						
-					}*/
-					
 					if (player instanceof Player)
 						((Player)player).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Remove.Self").element(element).toString());
-								//((Player)player).sendMessage(ChatColor.YELLOW + "Your " + c + element.getName().toLowerCase() + element.getType().getBending() + ChatColor.YELLOW + " was removed!");
 
 					if (SpiritsSupport.isSpiritElement(element)) {
-						SpiritsSupport.removeElement(element, p);
+						SpiritsSupport.removeElement(element, p, playerwhoclicked);
 					} else {
+						Bukkit.getPluginManager().callEvent(new PlayerChangeElementEvent((Player)player, (Player)player, element, Result.REMOVE));
 						p.getElements().remove(element);
 					}
 
+					dirty = true;
+
 					GeneralMethods.saveElements(p);
 					GeneralMethods.removeUnusableAbilities(p.getName());
-					if (player instanceof Player)
-					{
-						Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent((Player)player, (Player)player, element, Result.REMOVE));
-					}
+
 					if (!playerwhoclicked.getName().equals(player.getName()))
-						//playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is no longer " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + ChatColor.YELLOW + element.getName().toLowerCase() + element.getType().getBender() + "!");
 						playerwhoclicked.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Remove.Admin").player(player).element(element).toString());
 					update();
 				}
@@ -208,9 +205,7 @@ public class MenuEditElements extends MenuBase
 		};
 		boolean b = BendingPlayer.getBendingPlayer(player).hasElement(element);
 		String lore = new LangBuilder(key + ".Lore." + (b ? "Has" : "HasNot")).yourOrPlayer(player, openPlayer).anOrA(element.getName()).element(element).player(player).toString();
-		//String notBender = ChatColor.GRAY + "Click to make " + ChatColor.YELLOW + player.getName() + ChatColor.RESET + ChatColor.GRAY + " " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender!";
-		//String isBender = ChatColor.GRAY + "This player is already a " + c + element.toString() + ChatColor.RESET + ChatColor.GRAY + " bender! Click to remove this element!";
-		//item.setDescriptions(Arrays.asList((b ? isBender.split("\n") : notBender.split("\n"))));
+
 		item.setDescriptions(Util.lengthSplit(lore, 58));
 		if (BendingPlayer.getBendingPlayer(player).hasElement(element)) {
 			item.setEnchanted(true);
@@ -227,7 +222,9 @@ public class MenuEditElements extends MenuBase
 			{
 				if (prev != null)
 				{
-					switchMenu(player, prev);
+					//The overview player skull won't update with new elements naturally, so we make new menu instead
+					if (dirty && prev instanceof MenuBendingOptions) switchMenu(player, new MenuBendingOptions(((MenuBendingOptions) prev).thePlayer));
+					else switchMenu(player, prev);
 					return;
 				}
 				closeMenu(player);
@@ -252,6 +249,7 @@ public class MenuEditElements extends MenuBase
 	public void openMenu(Player player) 
 	{
 		this.openPlayer = player;
+		this.dirty = false;
 		update();
 		//this.title = new LangBuilder("Display.Edit.Title").yourOrPlayer(this.player, openPlayer).toString();
 		super.openMenu(player);

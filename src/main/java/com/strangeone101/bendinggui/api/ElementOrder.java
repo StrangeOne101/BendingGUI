@@ -46,6 +46,9 @@ public class ElementOrder {
 
     private static LinkedHashMap<Element, Integer> ORDER = new LinkedHashMap<>();
 
+    private static List<Element> PARENT_ELEMENTS = new ArrayList<>();
+    private static List<Element.SubElement> SUBELEMENTS = new ArrayList<>();
+
     public static void sortOrder() {
         ORDER.clear();
 
@@ -101,6 +104,9 @@ public class ElementOrder {
         }
 
         ORDER = sortByValue(ORDER);
+
+        PARENT_ELEMENTS = ORDER.keySet().stream().filter(e -> !(e instanceof Element.SubElement)).collect(Collectors.toUnmodifiableList());
+        SUBELEMENTS = ORDER.keySet().stream().filter(e -> (e instanceof Element.SubElement)).map(e -> (Element.SubElement)e).collect(Collectors.toUnmodifiableList());
     }
 
     public static int between(int a, int b) {
@@ -159,7 +165,27 @@ public class ElementOrder {
 
     }
 
+    /**
+     * Get all elements on the server, sorted by the element order
+     * @return The sorted elements
+     */
     public static Set<Element> getOrder() {
         return ORDER.keySet();
+    }
+
+    /**
+     * Get parent elements on the server, sorted by element order
+     * @return The sorted parent elements
+     */
+    public static List<Element> getParentElements() {
+        return PARENT_ELEMENTS;
+    }
+
+    /**
+     * Get subelements on the server, sorted by element order
+     * @return The sorted subelements
+     */
+    public static List<Element.SubElement> getSubelements() {
+        return SUBELEMENTS;
     }
 }

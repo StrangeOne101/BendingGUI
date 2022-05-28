@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import com.projectkorra.projectkorra.event.PlayerBindChangeEvent;
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.api.ElementOrder;
 import com.strangeone101.bendinggui.api.ElementSupport;
@@ -53,21 +54,25 @@ public class MenuBendingOptions extends MenuBase
 	protected Player openPlayer = null;
 	
 	protected boolean redirect = false;
-	protected boolean hasBeenToggled = false;
 	
 	protected boolean combos = false;
 
 	private final MenuBendingOptions instance = this;
 
 	protected boolean chooseUpdaterRunning = false;
-	protected BukkitRunnable chooseCooldownUpdate = new BukkitRunnable() {
+	protected Runnable chooseCooldownUpdate = new Runnable() {
 		@Override
 		public void run() {
 			BendingPlayer player = BendingPlayer.getBendingPlayer(thePlayer);
-			if (getChooseCooldown(player) > 0 && openPlayer != null && openPlayer.getOpenInventory() == instance.getInventory()) {
-				addMenuItem(getEditElements(), 3 * 9 + 4);
+			if (openPlayer != null && openPlayer.getOpenInventory().getTopInventory() == instance.getInventory()) {
+				int index = 3 * 9 + 4;
+				getInventory().setItem(index, null); //Can't add an item to a slot with an item in it
+				addMenuItem(getChangeEditElements(), index);
 
-				this.runTaskLater(BendingGUI.INSTANCE, 20L);
+				//The cooldown check is here so that way the menu item is changed after it hits 0. Or else it will forever stay at 0s
+				if (getChooseCooldown(player) > 0) {
+					Bukkit.getScheduler().runTaskLater(BendingGUI.INSTANCE, this, 20L);
+				}
 			}
 		}
 	};
@@ -80,13 +85,14 @@ public class MenuBendingOptions extends MenuBase
 		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
 		if (bPlayer != null && bPlayer.getElements().isEmpty())
 		{
-			redirect = true;
+			redirect = true; //Will open the Choose menu when openMenu() is called. We can't do it here since we don't know the viewer
 		}	
 	}
 
 	public MenuItem getItemForMove(OfflinePlayer player, final String move, final int index)
 	{
-		Element mainElement = CoreAbility.getAbility(move).getElement();
+		CoreAbility ability = CoreAbility.getAbility(move);
+		Element mainElement = ability.getElement();
 		Material mat = ConfigStandard.getInstance().getAbilityIconMaterial(mainElement);
 
 		if (mainElement instanceof SubElement) 
@@ -130,17 +136,18 @@ public class MenuBendingOptions extends MenuBase
 				}
 				else
 				{
-					bindMoveToSlot(player, move, slotIndex);
-					slotIndex = -1;
-					abilityIndex = null;
-					abilityIndexInt = -1;
+					if (bindMoveToSlot(player, move, slotIndex)) {
+						slotIndex = -1;
+						abilityIndex = null;
+						abilityIndexInt = -1;
+					}
 				}
 				update();
 				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
 		String desc = "";
-		String moveDesc = GRAY + LangBuilder.getAbilityDescription(CoreAbility.getAbility(move)).toString();
+		String moveDesc = GRAY + LangBuilder.getAbilityDescription(ability).toString();
 		List<String> l = Util.lengthSplit(moveDesc, ConfigStandard.getInstance().getAbilityTrim());
 		for (String s : l)
 		{
@@ -148,15 +155,15 @@ public class MenuBendingOptions extends MenuBase
 		}
 		if (move != null && this.mode == Mode.DELETE)
 		{
-			desc = desc + "\n\n" + new LangBuilder("Display.Main.Remove.AbilityLore").toString();
+			desc = desc + "\n\n" + new LangBuilder("Display.Main.Ability.Remove").ability(ability).toString();
 		}
 		else if (move != null && this.mode == Mode.INFO)
 		{
-			desc = desc + "\n\n" + new LangBuilder("Display.Main.Info.AbilityLore").toString();
+			desc = desc + "\n\n" + new LangBuilder("Display.Main.Ability.Info").ability(ability).toString();
 		}
 		else if (this.abilityIndex == move)
 		{
-			desc = desc + "\n\n" + new LangBuilder("Display.Main.Bind.AbilityLore").toString();
+			desc = desc + "\n\n" + new LangBuilder("Display.Main.Ability.Selected").ability(ability).toString();
 		}
 		item.setDescriptions(Arrays.asList(desc.split("\n")));
 		if (abilityIndex == move)
@@ -216,20 +223,20 @@ public class MenuBendingOptions extends MenuBase
 			}
 			else if (move != null && mode == Mode.DELETE)
 			{
-				desc = desc + "\n\n" + new LangBuilder("Display.Main.All.Lore.Remove").ability(CoreAbility.getAbility(move)).slot(index + 1);
+				desc = desc + "\n\n" + new LangBuilder("Display.Main.Slot.Remove").ability(CoreAbility.getAbility(move)).slot(index + 1);
 			}
 			else if (move != null && mode == Mode.INFO)
 			{
-				desc = desc + "\n\n" + new LangBuilder("Display.Main.All.Lore.Info").ability(CoreAbility.getAbility(move)).toString();
+				desc = desc + "\n\n" + new LangBuilder("Display.Main.Slot.Info").ability(CoreAbility.getAbility(move)).toString();
 			}
 			else if (this.slotIndex == index)
 			{
-				desc = desc + "\n\n" + new LangBuilder("Display.Main.All.Lore.Selected").slot(index + 1);
+				desc = desc + "\n\n" + new LangBuilder("Display.Main.Slot.Selected").slot(index + 1);
 			}
 		}
 		else
 		{
-			desc = desc + "\n\n" + new LangBuilder("Display.Main.All.Lore.Offline").player(thePlayer);
+			desc = desc + "\n\n" + new LangBuilder("Display.Main.Slot.Offline").player(thePlayer);
 		}
 		
 		MenuItem item = new MenuItem(ChatColor.YELLOW + itemname, mat) {
@@ -246,15 +253,19 @@ public class MenuBendingOptions extends MenuBase
 				{
 					if (mode == Mode.DELETE && move != null)
 					{
-						//BendingPlayer.getBendingPlayer(thePlayer.getName()).setAbility(index, null);
-						BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer.getName());
+						BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer);
 						HashMap<Integer, String> abilities = bPlayer.getAbilities();
-						abilities.remove(index + 1);
-						bPlayer.setAbilities(abilities);
-						GeneralMethods.saveAbility(bPlayer, index + 1, null);
-						//GeneralMethods.bindAbility(thePlayer, null, index);
-						player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Bind.Remove").ability(CoreAbility.getAbility(move)).slot(index + 1).toString());
-						update();
+						PlayerBindChangeEvent event = new PlayerBindChangeEvent((Player) thePlayer, abilities.get(index + 1), index + 1, false, false);
+						Bukkit.getPluginManager().callEvent(event);
+						if (!event.isCancelled()) {
+							abilities.remove(index + 1);
+							bPlayer.setAbilities(abilities);
+							GeneralMethods.saveAbility(bPlayer, index + 1, null);
+
+							//GeneralMethods.bindAbility(thePlayer, null, index);
+							player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Bind.Remove").ability(CoreAbility.getAbility(move)).slot(index + 1).toString());
+							update();
+						}
 						return;
 					}
 					else if (mode == Mode.INFO && move != null)
@@ -273,10 +284,11 @@ public class MenuBendingOptions extends MenuBase
 					}
 					else
 					{
-						bindMoveToSlot((Player) thePlayer, abilityIndex, index);
-						abilityIndex = null;
-						slotIndex = -1;
-						abilityIndexInt = -1;
+						if (bindMoveToSlot((Player) thePlayer, abilityIndex, index)) {
+							abilityIndex = null;
+							slotIndex = -1;
+							abilityIndexInt = -1;
+						}
 					}
 					update();
 					DynamicUpdater.updateMenu(thePlayer, getInstance());
@@ -304,13 +316,16 @@ public class MenuBendingOptions extends MenuBase
 			{
 				if (this.isShiftClicked())
 				{
-					BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer.getName());
-					HashMap<Integer, String> abilities = new HashMap<Integer, String>();
-					bPlayer.setAbilities(abilities);
+					BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer);
 					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Bind.RemoveAll").toString());
 					mode = mode == Mode.DELETE ? Mode.NONE : mode;
 					for (int i = 1; i <= 9; i++) {
-						GeneralMethods.saveAbility(bPlayer, i, null);
+						PlayerBindChangeEvent event = new PlayerBindChangeEvent((Player) thePlayer, bPlayer.getAbilities().get(i), i, false, false);
+						Bukkit.getPluginManager().callEvent(event);
+						if (!event.isCancelled()) {
+							bPlayer.getAbilities().remove(i);
+							GeneralMethods.saveAbility(bPlayer, i, null);
+						}
 					}
 				}
 				else
@@ -433,7 +448,7 @@ public class MenuBendingOptions extends MenuBase
 		return item;
 	}
 	
-	public MenuItem getEditElements()
+	public MenuItem getChangeEditElements()
 	{
 		final MenuBendingOptions instance = this;
 		final boolean edit = this.openPlayer.hasPermission("bending.admin.add");
@@ -452,35 +467,31 @@ public class MenuBendingOptions extends MenuBase
 					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Edit.Admin.NoPermission").toString());
 					closeMenu(player);
 				}
-				else if (!edit && player.hasPermission("bending.command.rechoose"))
+				else if (player.hasPermission("bending.command.rechoose"))
 				{
+					long cooldown = getChooseCooldown(bPlayer);
+					if (cooldown > 0) {
+						player.sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.ChangeCooldown").time(cooldown).toString());
+						closeMenu(player);
+						return;
+					}
 					switchMenu(player, new MenuSelectElement(thePlayer, instance));
 				}
 				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
-		if (edit)
-		{
+		if (edit) {
 			item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Edit.Lore").yourOrPlayer(thePlayer, openPlayer).toString());
-		}
-		else
-		{
-			if (thePlayer instanceof Player && ((Player) thePlayer).hasPermission("bending.choose.ignorecooldown") &&
-					BendingPlayer.getBendingPlayer(thePlayer).isOnCooldown("ChooseElement")) {
-				long time = getChooseCooldown(bPlayer);
+		} else {
+			long time = getChooseCooldown(bPlayer);
+			if (thePlayer instanceof Player && time > 0) {
 				item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Change.LoreTime").time(time).toString());
-			} else
+			} else {
 				item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Change.Lore").toString());
+			}
 		}
 		
 		return item;
-	}
-
-	private long getChooseCooldown(BendingPlayer player) {
-		if (player.isOnCooldown("ChooseElement")) {
-			return System.currentTimeMillis() - player.getCooldown("ChooseElement");
-		}
-		return 0L;
 	}
 	
 	public MenuItem getComboItem()
@@ -490,7 +501,8 @@ public class MenuBendingOptions extends MenuBase
 			public void onClick(Player player) 
 			{
 				combos = !combos;
-				movePage = combos ? DynamicUpdater.getComboPage(thePlayer) : DynamicUpdater.getPage(thePlayer);
+				if (mode == Mode.DELETE) mode = Mode.NONE;
+ 				movePage = combos ? DynamicUpdater.getComboPage(thePlayer) : DynamicUpdater.getPage(thePlayer);
 				update();
 			}
 		};
@@ -516,7 +528,8 @@ public class MenuBendingOptions extends MenuBase
 
 	public MenuItem getBendingToggle()
 	{
-		boolean isToggled = !BendingPlayer.getBendingPlayer(this.thePlayer).isToggled();
+		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer);
+		boolean isToggled = !bPlayer.isToggled();
 		Material mat = isToggled ? Material.LIME_WOOL : Material.RED_WOOL;
 		final OfflinePlayer p = this.thePlayer;
 		String key = "Display.Main.Toggle." + (isToggled ? "Off" : "On") + ".";
@@ -531,7 +544,7 @@ public class MenuBendingOptions extends MenuBase
 						player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Toggle.Admin.NoPermission").toString());
 						return;
 					}
-					BendingPlayer.getBendingPlayer(thePlayer).toggleBending();
+					bPlayer.toggleBending();
 
 					if (isToggled) {
 						player.sendMessage(ChatColor.GREEN + new LangBuilder("Chat.Toggle.Admin.On").player(thePlayer).plural(thePlayer.getName()).toString());
@@ -540,12 +553,6 @@ public class MenuBendingOptions extends MenuBase
 					}
 					return;
 				}
-
-
-				
-				hasBeenToggled = BendingPlayer.getBendingPlayer(p.getName()).isToggled();
-				
-				BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(p.getName());
 
 				if (isToggled) {
 					player.sendMessage(ChatColor.GREEN + new LangBuilder("Chat.Toggle.Player.On").player(thePlayer).plural(thePlayer.getName()).toString());
@@ -581,25 +588,45 @@ public class MenuBendingOptions extends MenuBase
 			}
 		};
 		
-		BendingPlayer p = BendingPlayer.getBendingPlayer(thePlayer.getName());
-		if ((thePlayer instanceof Player && ((Player)thePlayer).hasPermission("bending.avatar")) || p.hasElement(Element.AVATAR))
-		{
-
+		BendingPlayer p = BendingPlayer.getBendingPlayer(thePlayer);
+		if ((thePlayer instanceof Player && ((Player)thePlayer).hasPermission("bending.avatar")) || p.hasElement(Element.AVATAR)) {
 			item.addDescription(Element.AVATAR.getColor() + new LangBuilder(key + ".Lore.Avatar" + (thePlayer == openPlayer ?  "Self" : "")).player(thePlayer).plural(thePlayer.getName()).toString());
-			//item.addDescription(GRAY + (thePlayer.getName() != openPlayer.getName() ? "They" : "You") + " are currently a" + (b ? "n" : "") + ":");
 		}
-		/*else
-		{
-			boolean b = BendingPlayer.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.EARTH) || BendingPlayer.getBendingPlayer(this.thePlayer.getName()).hasElement(Element.AIR);
-			item.addDescription((thePlayer.getName() != openPlayer.getName() ? GRAY + "They" : ChatColor.GRAY + "You" ) + " are currently a" + (b ? "n" : "") + ":");
-		}*/
+
 		boolean b = p.hasElement(Element.EARTH) || p.hasElement(Element.AIR);
 		item.addDescription(GRAY + new LangBuilder(key + ".Lore.ElementPrefix").yourOrPlayer(thePlayer, openPlayer).anOrA(b ? "airOrEarth" : "").capitalizeFirst().toString());
 
 		//TODO Redo this bit and loop over all elements instead of doing it manually
 		//TODO Current bug: All spirit elements appear as elements the player has even when they don't have them
 
-		if (p.getElements().contains(Element.AIR)) 
+		for (Element element : ElementOrder.getParentElements()) {
+			if (element == Element.AVATAR) continue; //We won't show Avatar in the list (since we show it above)
+			if (!p.hasElement(element)) continue;
+
+			String s = ChatColor.DARK_GRAY + "- " + BendingGUI.getColor(element) + new LangBuilder("Display.Main.Overview.Element." + element.getName());
+
+			if (ConfigStandard.getInstance().doShowSubElements()) {
+				List<String> list = new ArrayList<>();
+
+				//Get all subs for this element
+				for (SubElement sub : ElementOrder.getSubelements()) {
+					if (sub.getParentElement() == element && p.hasSubElement(sub)) { //And if they have it
+						list.add(new LangBuilder("Display.Main.Overview.Element." + sub.getName()).toString());
+					}
+				}
+
+				if (list.size() > 0)
+					s = s + GRAY + " " + new LangBuilder("Display.Main.Overview.Lore.SubList").list(list.toArray(new String[0]));
+				List<String> l = Util.lengthSplit(s, ConfigStandard.getInstance().getOverviewTrim());
+				for (String s1 : l) {
+					item.addDescription(s1);
+				}
+			} else {
+				item.addDescription(s);
+			}
+		}
+
+		/*if (p.getElements().contains(Element.AIR))
 		{
 			String s = ChatColor.DARK_GRAY + "- " + ChatColor.GRAY + new LangBuilder("Display.Main.Overview.Element.Air");
 			if (ConfigStandard.getInstance().doShowSubElements())
@@ -724,7 +751,7 @@ public class MenuBendingOptions extends MenuBase
 		for (Element element : Element.getAddonElements()) {
 			String s = ChatColor.DARK_GRAY + "- " + new LangBuilder("Display.Main.Overview.Element." + element.getName()).toString();
 			item.addDescription(s);
-		}
+		}*/
 		if (!Util.getStaff(thePlayer.getUniqueId()).equals("")) {
 			item.addDescription(ChatColor.DARK_PURPLE + Util.getStaff(thePlayer.getUniqueId()));
 		}
@@ -757,10 +784,10 @@ public class MenuBendingOptions extends MenuBase
 			mainElement = ((SubElement)mainElement).getParentElement();
 		}
 		
-		final ChatColor c = mainElement == Element.AIR ? ChatColor.GRAY : (mainElement == Element.CHI ? ChatColor.GOLD : (mainElement == Element.EARTH ? ChatColor.GREEN : (mainElement == Element.FIRE ? ChatColor.RED : (mainElement == Element.WATER ?  ChatColor.BLUE : (mainElement == Element.AVATAR ? ChatColor.LIGHT_PURPLE : mainElement.getColor())))));
+		final ChatColor c = BendingGUI.getColor(mainElement);
 		CoreAbility coreAbility = CoreAbility.getAbility(move);
 
-		MenuItem item = new MenuItem(new LangBuilder("Display.Main.ComboAbility.Title").ability(CoreAbility.getAbility(move)).toString(), mat) {
+		MenuItem item = new MenuItem(c + new LangBuilder("Display.Main.ComboAbility.Title").ability(CoreAbility.getAbility(move)).toString(), mat) {
 
 			@Override
 			public void onClick(Player player) 
@@ -775,8 +802,8 @@ public class MenuBendingOptions extends MenuBase
 				
 
 				ChatColor color = coreAbility != null ? coreAbility.getElement().getColor() : null;
-				String usage = ConfigManager.languageConfig.get().getString("Commands.Help.Usage");
-				player.sendMessage(new LangBuilder("Chat.Combo.Help").ability(coreAbility).toString());
+				String usage = ConfigManager.languageConfig.get().getString("Commands.Help.Usage"); //PK Chat format for help
+				player.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Combo.Help").ability(coreAbility).toString());
 				player.sendMessage(color + ComboManager.getDescriptions().get(move));
 				player.sendMessage(ChatColor.GOLD + usage + ComboManager.getInstructions().get(move));
 				closeMenu(player);
@@ -814,26 +841,30 @@ public class MenuBendingOptions extends MenuBase
 		} catch (NullPointerException e) {return null;}
 	}
 	
-	/**Bind the move to the slot. Args: Move, slot. Slot should be an int from 0 to 8*/
-	public void bindMoveToSlot(Player player, String move, int slot)
+	/**
+	 * Bind the move to the slot. Args: Move, slot. Slot should be an int from 0 to 8
+	 * @return If the bind was successful
+	 * */
+	public boolean bindMoveToSlot(Player player, String move, int slot)
 	{
-		//BendingGUI.log.info("Player: " + player + ", Move: " + move + ", Slot: " + slot);
 		if (slot >= 9)
 		{
 			openPlayer.sendMessage(ChatColor.RED + new LangBuilder("Display.Errors.SlotOutOfRange").toString());
 			this.closeMenu(openPlayer);
-			return;
+			return false;
 		}
-		
-		BendingPlayer.getBendingPlayer(player.getName()).getAbilities().put(slot + 1, move);
-		GeneralMethods.saveAbility(BendingPlayer.getBendingPlayer(player.getName()), slot + 1, move);
-		//GeneralMethods.bindAbility(player, move, slot + 1);
-		Element e = CoreAbility.getAbility(move).getElement();
-		if (e instanceof SubElement) e = ((SubElement)e).getParentElement();
-		//ChatColor c = e == Element.AIR ? ChatColor.GRAY : (e == Element.CHI ? ChatColor.GOLD : (e == Element.EARTH ? ChatColor.GREEN : (e == Element.FIRE ? ChatColor.RED : (e == Element.WATER ? ChatColor.BLUE : ChatColor.LIGHT_PURPLE))));
-		player.sendMessage(new LangBuilder("Chat.Bind.Ability").ability(CoreAbility.getAbility(move)).slot(slot + 1).toString());
+
+		PlayerBindChangeEvent event = new PlayerBindChangeEvent(player, move, slot + 1, true, false);
+		Bukkit.getPluginManager().callEvent(event);
+		if (event.isCancelled()) return false;
+
+		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
+		bPlayer.getAbilities().put(slot + 1, move);
+		GeneralMethods.saveAbility(bPlayer, slot + 1, move);
+
+		player.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Bind.Ability").ability(CoreAbility.getAbility(move)).slot(slot + 1).toString());
 		BendingBoard.updateBoard(player);
-		//player.sendMessage(c + move.toString() + ChatColor.YELLOW + " bound to slot " + (slot + 1) + "!");
+		return true;
 	}
 	
 	
@@ -841,6 +872,7 @@ public class MenuBendingOptions extends MenuBase
 	public void update()
 	{
 		OfflinePlayer player = this.thePlayer;
+		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
 		if (combos && mode == Mode.INFO) mode = Mode.NONE;
 		
 		for (int i = 0; i < this.getInventory().getContents().length; i++)
@@ -857,12 +889,11 @@ public class MenuBendingOptions extends MenuBase
 		this.playerMoves.clear();
 		this.playerCombos.clear();
 		
-		if (BendingPlayer.getBendingPlayer(player).getElements() == null || BendingPlayer.getBendingPlayer(player).getElements().isEmpty()) //Somehow this needs to be here
-		{
+		if (bPlayer.getElements() == null || bPlayer.getElements().isEmpty()) { //Somehow this needs to be here
 			this.switchMenu(openPlayer, new MenuSelectElement(thePlayer));
 			return;
 		}
-		else if (!BendingPlayer.getBendingPlayer(player).isToggled() || this.hasBeenToggled)
+		else if (!bPlayer.isToggled())
 		{
 			for (int i = 0; i < 18; i++)
 			{
@@ -907,17 +938,14 @@ public class MenuBendingOptions extends MenuBase
 				{
 					List<String> abilities_ = abilities.get(element);
 					if (abilities_ == null || abilities_.isEmpty()) continue;
-					for (String ab : abilities_)
-					{
-						this.playerCombos.add(ab);
-					}
+					this.playerCombos.addAll(abilities_);
 				}
 			} else {
 				HashMap<Element, List<CoreAbility>> abilities = new HashMap<Element, List<CoreAbility>>();
 				
 				mainloop: for (CoreAbility ability : CoreAbility.getAbilities())
 				{
-					if ((player instanceof Player && BendingPlayer.getBendingPlayer(player).canBind(ability)) || ((!(player instanceof Player)) && !this.playerMoves.contains(ability.getName())))
+					if ((player instanceof Player && bPlayer.canBind(ability)) || ((!(player instanceof Player)) && !this.playerMoves.contains(ability.getName())))
 					{
 						//this.playerMoves.add(move);
 						if (ability.isHiddenAbility()) continue;
@@ -1029,11 +1057,12 @@ public class MenuBendingOptions extends MenuBase
 		if (this.openPlayer != null)
 		{
 			//If they can modify bending, give them the edit elements page
-			if (this.openPlayer.hasPermission("bending.command.add") || this.openPlayer.hasPermission("bending.command.remove") || this.openPlayer.hasPermission("bending.command.rechoose"))
+			if (this.openPlayer.hasPermission("bending.command.rechoose") || this.openPlayer.hasPermission("bending.command.add")
+					|| this.openPlayer.hasPermission("bending.command.remove"))
 			{
-				this.addMenuItem(this.getEditElements(), 3 * 9 + 4);
-				if (!chooseUpdaterRunning) {
-					this.chooseCooldownUpdate.runTaskLater(BendingGUI.INSTANCE, 20L);
+				this.addMenuItem(this.getChangeEditElements(), 3 * 9 + 4);
+				if (!chooseUpdaterRunning && !canChangeInstantly(openPlayer)) {
+					Bukkit.getScheduler().runTaskLater(BendingGUI.INSTANCE, this.chooseCooldownUpdate, 20L);
 					chooseUpdaterRunning = true;
 				}
 				addedRechooseThing = true;
@@ -1123,7 +1152,6 @@ public class MenuBendingOptions extends MenuBase
 	{
 		this.abilityIndex = menu.abilityIndex;
 		this.abilityIndexInt = menu.abilityIndexInt;
-		this.hasBeenToggled = menu.hasBeenToggled;
 		this.mode = menu.mode;
 		this.movePage = menu.movePage;
 		this.combos = menu.combos;
@@ -1170,5 +1198,16 @@ public class MenuBendingOptions extends MenuBase
 			}
 		}
 		return true;
+	}
+
+	public static boolean canChangeInstantly(Player player) {
+		return player.hasPermission("bending.choose.ignorecooldown") || player.hasPermission("bending.admin.choose");
+	}
+
+	public static long getChooseCooldown(BendingPlayer player) {
+		if (player.isOnCooldown("ChooseElement") && !canChangeInstantly(player.getPlayer())) {
+			return player.getCooldown("ChooseElement") - System.currentTimeMillis();
+		}
+		return 0L;
 	}
 }

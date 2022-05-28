@@ -196,6 +196,7 @@ public class MenuSelectPresets extends MenuBase
 			public void onClick(Player player) {
 				if (!deleteMode && !bound) {
 					if (bPlayer != null) {
+
 						bPlayer.setAbilities(abilities);
 						BendingBoard.updateBoard((Player) thePlayer);
 						player.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Presets.Bind").preset(preset.getName(), abilities).player(thePlayer).toString());
@@ -260,13 +261,13 @@ public class MenuSelectPresets extends MenuBase
 
 		if (move == null || move.equals("null"))
 		{
-			itemname = ChatColor.RED + new LangBuilder("Display.Presets.Slot.Empty.Title").slot(index + 1).toString();
-			desc = ChatColor.GRAY + new LangBuilder("Display.Presets.Slot.Empty.Lore").slot(index + 1).toString();
+			itemname = ChatColor.RED + new LangBuilder("Display.Presets.Slot.Empty.Title").slot(index).toString();
+			desc = ChatColor.GRAY + new LangBuilder("Display.Presets.Slot.Empty.Lore").slot(index).toString();
 		}
 		else
 		{
-			itemname = ChatColor.YELLOW + new LangBuilder("Display.Presets.Slot.Full.Title").slot(index + 1).ability(CoreAbility.getAbility(move)).toString();
-			desc = ChatColor.GRAY + new LangBuilder("Display.Presets.Slot.Full.Lore").slot(index + 1).ability(CoreAbility.getAbility(move)).toString();
+			itemname = ChatColor.YELLOW + new LangBuilder("Display.Presets.Slot.Full.Title").slot(index).ability(CoreAbility.getAbility(move)).toString();
+			desc = ChatColor.GRAY + new LangBuilder("Display.Presets.Slot.Full.Lore").slot(index).ability(CoreAbility.getAbility(move)).toString();
 		}
 
 		MenuItem item = new Blank(ChatColor.YELLOW + itemname, mat);

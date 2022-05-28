@@ -99,11 +99,14 @@ public class Util {
 		List<String> l = new ArrayList<String>();
 		while (m.find())
 		{
+			String prefix = "\u00A7" + lastColor;
 			String string = m.group(1);
+			if (l.size() == 0 && string.charAt(0) == '\u00A7') prefix = ""; //Don't bother adding a pointless color code
+
+			l.add(prefix + string);
 			if (string.contains("\u00A7")) {
 				lastColor = string.charAt(string.lastIndexOf('\u00A7') + 1);
 			}
-			l.add("\u00A7" + lastColor + string);
 		}
 		return l;
 	}

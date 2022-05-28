@@ -204,10 +204,13 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Main.Slot.Disabled.Toggled", "&cBending is disabled!");
 		defaults.put("Display.Main.Slot.Disabled.ToggledLore", "&7Enable bending to use again!");
 
-		defaults.put("Display.Main.All.Lore.Info", "&e&lCLICK FOR MORE INFO!\\n&r&7Click to display more information about this move!");
-		defaults.put("Display.Main.All.Lore.Remove", "&c&lCLICK TO REMOVE!\\n&r&7Click to remove {ability} from this slot!");
-		defaults.put("Display.Main.All.Lore.Selected", "&a&lCURRENTLY SELECTED!\\n&r&7Click a move to bind to this slot!");
-		defaults.put("Display.Main.All.Lore.Offline", "&c&lCANNOT MODIFY BENDING OF OFFLINE PLAYERS!\\n&r&7You can't modify the bending of players that are offline!");
+		defaults.put("Display.Main.Slot.Info", "&e&lCLICK FOR MORE INFO!\\n&r&7Click to display more information about this move!");
+		defaults.put("Display.Main.Slot.Remove", "&c&lCLICK TO REMOVE!\\n&r&7Click to remove {ability} from this slot!");
+		defaults.put("Display.Main.Slot.Selected", "&a&lCURRENTLY SELECTED!\\n&r&7Click a move to bind to this slot!");
+		defaults.put("Display.Main.Slot.Offline", "&c&lCANNOT MODIFY BENDING OF OFFLINE PLAYERS!\\n&r&7You can't modify the bending of players that are offline!");
+		defaults.put("Display.Main.Ability.Selected", "&a&lCURRENTLY SELECTED\\n&r&7Click a slot to bind to this move to!");
+		defaults.put("Display.Main.Ability.Remove", "&c&lTOGGLE THE REMOVAL TOOL BEFORE\\n&c&lREBINDING!\\n&r&7You must turn off the unbind tool before you\\n&7can rebind moves again");
+		defaults.put("Display.Main.Ability.Info", "&e&lCLICK FOR MORE INFO!\\n&r&7Click to display more information about this move!");
 
 		defaults.put("Display.Common.Page.Next.Title", "&eNext Page &7(&e{current}&7/&e{max}&7)");
 		defaults.put("Display.Common.Page.Next.Lore", "&7Click to go to the next page of moves");

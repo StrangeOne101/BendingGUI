@@ -97,49 +97,6 @@ public class BendingGUI extends JavaPlugin
 			}
 		}
 
-		/**Loop through all combos and record elements for later use.*/
-		/*Collection<ComboAbilityInfo> combos = ComboManager.getComboAbilities().values();
-		for (ComboAbilityInfo combo : combos) 
-		{
-			Element elementmain = null;
-			Element elementsub = null;
-			Element elementFinal = Element.AVATAR;
-			for (AbilityInformation abilityinfo : combo.getAbilities())
-			{
-				Element abilityelement = CoreAbility.getAbility(abilityinfo.getAbilityName()).getElement();
-				SubElement sub = null;
-				if (abilityelement instanceof SubElement)
-				{
-					sub = (SubElement) abilityelement;
-					abilityelement = sub.getParentElement();
-				}
-				
-				if (abilityelement == null) 
-				{
-					abilityelement = Element.AVATAR;
-				}
-
-
-				if (elementmain == null) elementmain = abilityelement;
-				else if (elementmain != abilityelement) 
-				{
-					elementFinal = Element.AVATAR; 
-					break;
-				}
-				else if (sub != null) 
-				{
-					elementsub = sub;
-				}
-			}
-			
-			if (elementFinal == null) elementFinal = elementmain;
-			MenuCombos.comboElements.put(combo.getName(), elementFinal);
-		}*/
-
-
-		//Descriptions.load();
-		//Descriptions.save();
-
 		new GuiCommand();
 
 		new ConfigStandard();
@@ -183,7 +140,6 @@ public class BendingGUI extends JavaPlugin
 		}
 		return "";
 	}
-
 
 
 	public static ChatColor getColor(Element element)

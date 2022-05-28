@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Util;
@@ -75,38 +76,15 @@ public class MenuSelectElement extends MenuBase
 		}
 	}
 	
-	/*private class ChooseElementItem extends MenuItem
-	{
-		protected Element type;
-		
-		public ChooseElementItem(String itemName, MaterialData item, Element bending)
-		{
-			super(itemName, item);
-			this.type = bending;
-		}
-		
-		@Override
-		public void onClick(Player player) 
-		{
-			
-			MenuConfirm confirm = new MenuConfirm();
-			
-			getMenu().switchMenu(player, new MenuElementConfirm(type));
-			//this.getItemStack().addEnchantment(Enchantment.SILK_TOUCH, 0);
-			//this.addDescription(ChatColor.GREEN + "" + ChatColor.BOLD + "SELECTED!");
-		}
-	};*/
-	
 	public MenuItem getChooseElement(final Element element)
 	{
+		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer);
 		Material mat = ConfigStandard.getInstance().getChooseIconMaterial(element);
 		ChatColor c1 = ChatColor.YELLOW;
-		final boolean b1 = thePlayer == openPlayer;
 		if (element == Element.AIR) {c1 = ChatColor.WHITE;}
 		else if (element == Element.EARTH) {c1 = ChatColor.GREEN;}
 		else if (element == Element.FIRE) {c1 = ChatColor.RED;}
 		else if (element == Element.WATER) {c1 = ChatColor.BLUE;}
-		final ChatColor c3 = c1;
 		final MenuSelectElement instance = this;
 		final MenuConfirm confirm = new MenuConfirm(this, new RunnablePlayer() {
 			@Override
@@ -118,20 +96,22 @@ public class MenuSelectElement extends MenuBase
 					player.closeInventory();
 					return;
 				}
-				
-				BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(thePlayer);
 
 				if (SpiritsSupport.isSpiritElement(element)) {
-					bPlayer.getElements().clear();
-					SpiritsSupport.giveElement(element, bPlayer);
+					SpiritsSupport.giveElement(element, bPlayer, player, true);
 				} else {
 					bPlayer.setElement(element);
+					Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent(player, (Player)thePlayer, element, Result.CHOOSE));
 				}
 				
 				for (SubElement sub : Element.getAllSubElements()) {
 					if (sub.getParentElement() == element && bPlayer.hasSubElementPermission(sub)) {
 						bPlayer.addSubElement(sub);
 					}
+				}
+
+				if (!MenuBendingOptions.canChangeInstantly((Player)thePlayer)) {
+					bPlayer.addCooldown("ChooseElement", ConfigManager.defaultConfig.get().getLong("Properties.ChooseCooldown"), true);
 				}
 				
 				GeneralMethods.removeUnusableAbilities(bPlayer.getName());
@@ -141,11 +121,6 @@ public class MenuSelectElement extends MenuBase
 				
 				GeneralMethods.saveElements(bPlayer);
 				GeneralMethods.saveSubElements(bPlayer);
-				
-				if (thePlayer instanceof Player)
-				{
-					Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent((Player)thePlayer, (Player)thePlayer, element, Result.CHOOSE));
-				}
 				
 				player.closeInventory();
 			}
@@ -178,7 +153,7 @@ public class MenuSelectElement extends MenuBase
 				}
 				else
 				{
-					if (BendingPlayer.getBendingPlayer(thePlayer) != null && !BendingPlayer.getBendingPlayer(thePlayer).getElements().isEmpty() && !openPlayer.hasPermission("bending.command.rechoose"))
+					if (bPlayer != null && !bPlayer.getElements().isEmpty() && !openPlayer.hasPermission("bending.command.rechoose"))
 					{
 						openPlayer.sendMessage(ChatColor.RED + new LangBuilder("Chat.Choose.Rechoose.NoPermission").toString());
 						closeMenu(openPlayer);
@@ -193,19 +168,6 @@ public class MenuSelectElement extends MenuBase
 
 		return item;
 	}
-	
-	/*protected List<String> getDesc(String line)
-	{
-		int maxLenght = ConfigStandard.getInstance().getElementTrim();
-		Pattern p = Pattern.compile("\\G\\s*(.{1,"+maxLenght+"})(?=\\s|$)", Pattern.DOTALL);
-		Matcher m = p.matcher(line);
-		List<String> l = new ArrayList<String>();
-		while (m.find())
-		{
-			l.add(ChatColor.GRAY + m.group(1));
-		}
-		return l;
-	}*/
 
 	public void openMenu(Player player) 
 	{
