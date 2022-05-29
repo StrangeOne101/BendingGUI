@@ -42,14 +42,9 @@ public class MenuBase implements InventoryHolder {
         if (slot != null && slot.getType() != Material.AIR) {
             return false;
         }
-        //getInventory().setItem(index, item.getItemStack());
-        /*net.minecraft.server.v1_8_R3.ItemStack stack = CraftItemStack.asNMSCopy(item.getItemStack());
-		NBTTagCompound tag = item.getNBTData();
-		stack.setTag(tag);*/
+
         ItemStack stack = item.getItemStack();
-        if (item.isEnchanted)
-        {
-        	//stack = BendingGUI.getNMSManager().addGlow(item.getItemStack());
+        if (item.isEnchanted) {
         	Util.addGlow(stack);
         }
         this.getInventory().setItem(index, stack);
@@ -78,7 +73,6 @@ public class MenuBase implements InventoryHolder {
             return false;
         }
         getInventory().clear(index);
-        //items.remove(index).removeFromMenu(this);
         return true;
     }
     

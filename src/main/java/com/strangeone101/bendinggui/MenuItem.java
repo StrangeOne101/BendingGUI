@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -56,13 +57,14 @@ public abstract class MenuItem{
         ItemMeta meta = slot.getItemMeta();
         meta.setLore(lore);
         meta.setDisplayName(getText());
+		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); //So weapons don't show damage, etc. Kinda pointless for UIs
+		meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS); //So effects show on water bottles
 		if (meta instanceof PotionMeta) {
 			((PotionMeta) meta).setBasePotionData(new PotionData(PotionType.WATER));
 		}
         slot.setItemMeta(meta);
-        //net.minecraft.server.v1_8_R3.ItemStack stack1 = CraftItemStack.asNMSCopy(slot);
-        //stack1.setTag(this.getNBTData());
-        return slot;//CraftItemStack.asCraftMirror(stack1);
+
+        return slot;
 	}
 
 	/***DO NOT USE PLAYER VARIABLE IF USING MenuBendingOptions! Use the class' player variable instead! This causes

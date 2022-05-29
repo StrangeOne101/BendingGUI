@@ -156,6 +156,7 @@ public class MenuSelectPresets extends MenuBase
 					if (bPlayer != null) {
 						if (!setAbilities(bPlayer, abilities)) {
 							((Player) thePlayer).sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.CantBind").preset(preset, abilities).toString());
+							BendingBoard.updateBoard((Player) thePlayer); //Fix a bug where the board clears even when the bind fails
 							return;
 						}
 						BendingBoard.updateBoard((Player) thePlayer);
@@ -205,6 +206,7 @@ public class MenuSelectPresets extends MenuBase
 
 						if (!setAbilities(bPlayer, abilities)) {
 							player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.CantBind").preset(preset.getName(), abilities).player(thePlayer).toString());
+							BendingBoard.updateBoard((Player) thePlayer); //Fix a bug where the board clears even when the bind fails
 							return;
 						}
 						BendingBoard.updateBoard((Player) thePlayer);
