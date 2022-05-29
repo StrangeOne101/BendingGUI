@@ -11,7 +11,6 @@ import com.strangeone101.bendinggui.api.ChooseSupport;
 import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigStandard;
 import com.strangeone101.bendinggui.spirits.SpiritsSupport;
-import me.xnuminousx.spirits.elements.SpiritElement;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -34,7 +33,7 @@ import com.strangeone101.bendinggui.RunnablePlayer;
 public class MenuEditElements extends MenuBase 
 {
 	protected MenuBase prev;
-	protected OfflinePlayer player;
+	protected OfflinePlayer thePlayer;
 	protected Player openPlayer;
 	protected boolean dirty;
 	
@@ -42,7 +41,7 @@ public class MenuEditElements extends MenuBase
 	{
 		super(new LangBuilder("Display.Edit.Title").yourOrPlayer(player, player).toString(), 3);
 		this.prev = previousMenu;
-		this.player = player;
+		this.thePlayer = player;
 	}
 
 	/**Called to update menu*/
@@ -50,7 +49,7 @@ public class MenuEditElements extends MenuBase
 	{
 		this.getInventory().clear();
 		
-		BendingPlayer p = BendingPlayer.getBendingPlayer(player);
+		BendingPlayer p = BendingPlayer.getBendingPlayer(thePlayer);
 		List<Element> list = Arrays.asList(new Element[] {Element.FIRE, Element.WATER, Element.CHI, Element.EARTH, Element.AIR});
 		
 		for (int i = 0; i < list.size(); i++) {
@@ -69,7 +68,7 @@ public class MenuEditElements extends MenuBase
 	
 	public MenuItem getRemoveAllItem()
 	{
-		final OfflinePlayer p = this.player;
+		final OfflinePlayer p = this.thePlayer;
 		final MenuConfirm confirm = new MenuConfirm(this, new RunnablePlayer() {
 
 			@Override
@@ -86,15 +85,15 @@ public class MenuEditElements extends MenuBase
 				GeneralMethods.saveSubElements(bPlayer);
 				GeneralMethods.removeUnusableAbilities(p.getName());
 				if (p instanceof Player) {
-					Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent(player1, (Player)player, null, Result.REMOVE));
+					Bukkit.getServer().getPluginManager().callEvent(new PlayerChangeElementEvent(player1, (Player) thePlayer, null, Result.REMOVE));
 
 					if (player1 != p){
 						//playerwhoclicked.sendMessage(ChatColor.YELLOW + player.getName() + " is no longer " + (element == Element.AIR || element == Element.EARTH ? "an " : "a ") + c + ChatColor.YELLOW + element.getName().toLowerCase() + element.getType().getBender() + "!");
-						((Player)p).sendMessage(ChatColor.RED + new LangBuilder("Chat.Edit.RemoveAll.Self").player(player).toString());
+						((Player)p).sendMessage(ChatColor.RED + new LangBuilder("Chat.Edit.RemoveAll.Self").player(thePlayer).toString());
 					}
 				}
 
-				player1.sendMessage(ChatColor.RED + new LangBuilder("Chat.Edit.RemoveAll.Admin").player(player).plural(player.getName()).toString());
+				player1.sendMessage(ChatColor.RED + new LangBuilder("Chat.Edit.RemoveAll.Admin").player(thePlayer).plural(thePlayer.getName()).toString());
 
 				DynamicUpdater.setPage(p.getPlayer(), 0);
 				switchMenu(player1, prev);
@@ -121,7 +120,7 @@ public class MenuEditElements extends MenuBase
 				switchMenu(player, confirm);
 			}
 		};
-		item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Edit.RemoveAll.Lore").yourOrPlayer(player, openPlayer).plural(player.getName()).player(player).toString());
+		item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Edit.RemoveAll.Lore").yourOrPlayer(thePlayer, openPlayer).plural(thePlayer.getName()).player(thePlayer).toString());
 		return item;
 	}
 	
@@ -133,7 +132,7 @@ public class MenuEditElements extends MenuBase
 	public MenuItem getBendingItem(final Element element)
 	{
 		MenuItem item;
-		final OfflinePlayer player = this.player;
+		final OfflinePlayer player = this.thePlayer;
 		final ChatColor c = BendingGUI.getColor(element);
 		String key = "Display.Edit.Element";
 		item = new MenuItem( c + new LangBuilder(key + ".Title").element(element).toString(), this.getElementData(element)) {
@@ -171,7 +170,7 @@ public class MenuEditElements extends MenuBase
 						GeneralMethods.saveSubElements(p);
 						
 						if (!playerwhoclicked.getName().equals(player.getName()))
-							playerwhoclicked.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Add.Admin").player(player).element(element).anOrA(element.getName()).toString());
+							playerwhoclicked.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Add.Admin").player(player).plural(player.getName()).element(element).anOrA(element.getName()).toString());
 
 						update();
 					}
@@ -182,7 +181,7 @@ public class MenuEditElements extends MenuBase
 					}
 				} else {
 					if (player instanceof Player)
-						((Player)player).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Remove.Self").element(element).toString());
+						((Player)player).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Remove.Self").element(element).anOrA(element.getName()).toString());
 
 					if (SpiritsSupport.isSpiritElement(element)) {
 						SpiritsSupport.removeElement(element, p, playerwhoclicked);
@@ -198,7 +197,7 @@ public class MenuEditElements extends MenuBase
 					BendingBoard.updateBoard((Player)player);
 
 					if (!playerwhoclicked.getName().equals(player.getName()))
-						playerwhoclicked.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Remove.Admin").player(player).element(element).toString());
+						playerwhoclicked.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Edit.Remove.Admin").player(player).element(element).anOrA(element.getName()).plural(player.getName()).toString());
 					update();
 				}
 	
@@ -252,8 +251,8 @@ public class MenuEditElements extends MenuBase
 	{
 		this.openPlayer = player;
 		this.dirty = false;
+		this.title = new LangBuilder("Display.Edit.Title").player(this.thePlayer).yourOrPlayer(this.thePlayer, openPlayer).toString();
 		update();
-		//this.title = new LangBuilder("Display.Edit.Title").yourOrPlayer(this.player, openPlayer).toString();
 		super.openMenu(player);
 	}
 }

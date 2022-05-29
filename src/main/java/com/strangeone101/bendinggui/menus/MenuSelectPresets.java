@@ -41,6 +41,7 @@ import com.strangeone101.bendinggui.MenuItem;
 public class MenuSelectPresets extends MenuBase
 {
 	public OfflinePlayer thePlayer;
+	public Player openPlayer;
 
 	protected List<Preset> presets;
 	protected Set<String> globalPresets = new HashSet<>();
@@ -153,7 +154,10 @@ public class MenuSelectPresets extends MenuBase
 			public void onClick(Player player) {
 				if (!deleteMode && !bound) {
 					if (bPlayer != null) {
-						setAbilities(bPlayer, abilities);
+						if (!setAbilities(bPlayer, abilities)) {
+							((Player) thePlayer).sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.CantBind").preset(preset, abilities).toString());
+							return;
+						}
 						BendingBoard.updateBoard((Player) thePlayer);
 						((Player) thePlayer).sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Presets.Bind").preset(preset, abilities).toString());
 						update();
@@ -199,7 +203,10 @@ public class MenuSelectPresets extends MenuBase
 				if (!deleteMode && !bound) {
 					if (bPlayer != null) {
 
-						setAbilities(bPlayer, abilities);
+						if (!setAbilities(bPlayer, abilities)) {
+							player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.CantBind").preset(preset.getName(), abilities).player(thePlayer).toString());
+							return;
+						}
 						BendingBoard.updateBoard((Player) thePlayer);
 						player.sendMessage(ChatColor.YELLOW + new LangBuilder("Chat.Presets.Bind").preset(preset.getName(), abilities).player(thePlayer).toString());
 						update();
@@ -279,8 +286,8 @@ public class MenuSelectPresets extends MenuBase
 
 	public MenuItem getRemoveToggle() {
 		String onOff = deleteMode ? "On" : "Off";
-		String name = new LangBuilder("Display.Presets.Delete." + onOff + ".Title").toString();
-		List<String> lore = List.of(new LangBuilder("Display.Presets.Delete." + onOff + ".Lore").toString().split("\n"));
+		String name = new LangBuilder("Display.Presets.Delete." + onOff + ".Title").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString();
+		List<String> lore = List.of(new LangBuilder("Display.Presets.Delete." + onOff + ".Lore").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString().split("\n"));
 
 		MenuItem item = new MenuItem(ChatColor.RED + name, Material.BARRIER) {
 			@Override
@@ -300,8 +307,8 @@ public class MenuSelectPresets extends MenuBase
 
 		String createOrMax = presets.size() >= max ? "Max" : "Create";
 
-		String name = ChatColor.YELLOW + new LangBuilder("Display.Presets." + createOrMax + ".Title").toString();
-		List<String> lore = List.of((ChatColor.GRAY + new LangBuilder("Display.Presets." + createOrMax + ".Lore").toString()).split("\n"));
+		String name = ChatColor.YELLOW + new LangBuilder("Display.Presets." + createOrMax + ".Title").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString();
+		List<String> lore = List.of((ChatColor.GRAY + new LangBuilder("Display.Presets." + createOrMax + ".Lore").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString()).split("\n"));
 
 		MenuSelectPresets instance = this;
 
@@ -310,13 +317,13 @@ public class MenuSelectPresets extends MenuBase
 			public void onClick(Player player) {
 				if (presets.size() >= max) {
 					closeMenu(player);
-					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.MaxPresets").page(presets.size(), max).player(thePlayer).toString());
+					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.MaxPresets").page(presets.size(), max).yourOrPlayer(thePlayer, openPlayer).player(thePlayer).toString());
 					return;
 				}
 
 				if (bPlayer.getAbilities().size() == 0) {
 					closeMenu(player);
-					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.NoBinds").player(thePlayer).toString());
+					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.NoBinds").yourOrPlayer(thePlayer, openPlayer).player(thePlayer).toString());
 					return;
 				}
 
@@ -335,7 +342,8 @@ public class MenuSelectPresets extends MenuBase
 
 					//Make sure they can't double up on preset names
 					if (Preset.presetExists((Player) thePlayer, chatMessage)) {
-						player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.DupePreset").preset(chatMessage, new HashMap<>()).player(thePlayer).toString());
+						player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.DupePreset").yourOrPlayer(thePlayer, openPlayer)
+								.player(thePlayer).preset(chatMessage, new HashMap<>()).player(thePlayer).toString());
 						return;
 					}
 
@@ -359,9 +367,9 @@ public class MenuSelectPresets extends MenuBase
 					switchMenu(player, confirm);
 				};
 
-				player.sendMessage(ChatColor.GREEN + new LangBuilder("Chat.Presets.Create.Prompt").player(thePlayer).toString());
+				player.sendMessage(ChatColor.GREEN + new LangBuilder("Chat.Presets.Create.Prompt").yourOrPlayer(thePlayer, openPlayer).player(thePlayer).toString());
 				Listener.chatListen(player, consumer, 30 * 1000, () -> {
-					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.Create.Timeout").player(thePlayer).toString());
+					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Presets.Create.Timeout").yourOrPlayer(thePlayer, openPlayer).player(thePlayer).toString());
 				});
 				closeMenu(player); //Make them see the chat message so they can enter something in chat
 			}
@@ -373,7 +381,16 @@ public class MenuSelectPresets extends MenuBase
 	}
 
 	public MenuItem getEmptyPresetThing() {
-		return new Blank(ChatColor.YELLOW + new LangBuilder("Display.Presets.Empty.Title").toString(), Material.GRAY_DYE);
+		MenuItem item = new Blank(ChatColor.YELLOW + new LangBuilder("Display.Presets.Empty.Title").toString(), Material.GRAY_DYE);
+		item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Presets.Empty.Lore").toString());
+		return item;
+	}
+
+	@Override
+	public void openMenu(Player player) {
+		super.openMenu(player);
+
+		this.openPlayer = player;
 	}
 
 	public static Map<String, List<Material>> getKeyedDefaults() {
@@ -427,7 +444,9 @@ public class MenuSelectPresets extends MenuBase
 		return materials.get(pick);
 	}
 
-	protected static void setAbilities(BendingPlayer player, Map<Integer, String> abilities) {
+	protected static boolean setAbilities(BendingPlayer player, Map<Integer, String> abilities) {
+		HashMap<Integer, String> newAbilities = new HashMap<>();
+		boolean set = false;
 		for (int i = 1; i <= 9; i++) {
 			String abil = abilities.get(i);
 
@@ -438,7 +457,10 @@ public class MenuSelectPresets extends MenuBase
 					PlayerBindChangeEvent event = new PlayerBindChangeEvent(player.getPlayer(), abil, i, true, false);
 					Bukkit.getPluginManager().callEvent(event);
 
-					if (!event.isCancelled()) player.getAbilities().put(i, abil);
+					if (!event.isCancelled()) {
+						newAbilities.put(i, abil);
+						set = true;
+					}
 
 					continue;
 				}
@@ -447,10 +469,13 @@ public class MenuSelectPresets extends MenuBase
 			PlayerBindChangeEvent event = new PlayerBindChangeEvent(player.getPlayer(), null, i, false, false);
 			Bukkit.getPluginManager().callEvent(event);
 
-			if (!event.isCancelled()) player.getAbilities().put(i, null);
+			if (!event.isCancelled()) newAbilities.put(i, null);
 		}
 
-		player.setAbilities(player.getAbilities()); //Commit to DB
+		if (!set) return false;
+
+		player.setAbilities(newAbilities);
+		return true;
 	}
 
 	public static int getMenuSize(OfflinePlayer player) {

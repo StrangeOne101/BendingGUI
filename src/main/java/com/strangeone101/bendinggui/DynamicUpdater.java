@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import com.strangeone101.bendinggui.menus.MenuBendingOptions;
+import org.bukkit.event.inventory.InventoryType;
 
 public class DynamicUpdater 
 {
@@ -43,8 +44,8 @@ public class DynamicUpdater
 				players.get(player.getUniqueId()).remove(id);
 				continue;
 			}
-			if (Bukkit.getPlayer(id).getOpenInventory() == null || Bukkit.getPlayer(id).getOpenInventory().getTopInventory() == null || !(Bukkit.getPlayer(id).getOpenInventory().getTopInventory() instanceof MenuBendingOptions))
-			{
+			if (Bukkit.getPlayer(id).getOpenInventory().getType() == InventoryType.PLAYER ||
+					!(Bukkit.getPlayer(id).getOpenInventory().getTopInventory() instanceof MenuBendingOptions)) {
 				players.get(player.getUniqueId()).remove(id);
 				continue;
 			}

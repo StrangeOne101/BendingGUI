@@ -77,7 +77,7 @@ public class ConfigPresets extends ConfigBase {
 
 		for (String keyword : config.getConfigurationSection("PresetKeywords").getKeys(false)) {
 			String materials = config.getString("PresetKeywords." + keyword);
-			getKeywords().put(keyword, stringToList(materials));
+			getKeywords().put(keyword.toLowerCase(Locale.ROOT), stringToList(materials));
 		}
 
 		for (String globalPreset : config.getConfigurationSection("GlobalPresetIcons").getKeys(false)) {

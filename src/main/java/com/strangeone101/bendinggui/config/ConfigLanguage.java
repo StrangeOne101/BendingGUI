@@ -36,6 +36,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Generic.Yourself", "yourself");
 		defaults.put("Generic.You", "you");
 		defaults.put("Generic.Your", "your");
+		defaults.put("Generic.Their", "their");
 		defaults.put("Generic.NoElementBending", " element");
 		defaults.put("Generic.A", "a");
 		defaults.put("Generic.An", "an");
@@ -107,10 +108,10 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Presets.Global.DeleteLore", "&cYou can't delete a global preset!");
 		defaults.put("Display.Presets.Global.BoundLore", "&aCurrently bound");
 		defaults.put("Display.Presets.Create.Title", "&eCreate a new preset");
-		defaults.put("Display.Presets.Create.Lore", "&7Make a new preset based on your current binds");
+		defaults.put("Display.Presets.Create.Lore", "&7Make a new preset based on {their|your} current binds");
 		defaults.put("Display.Presets.Create.Confirm.Title", "Create preset '{preset}'?");
 		defaults.put("Display.Presets.Create.Confirm.Yes.Title", "&a&lYES");
-		defaults.put("Display.Presets.Create.Confirm.Yes.Lore", "&7This will create a new preset using your current binds");
+		defaults.put("Display.Presets.Create.Confirm.Yes.Lore", "&7This will create a new preset using {their|your} current binds");
 		defaults.put("Display.Presets.Create.Confirm.No.Title", "&c&lNO");
 		defaults.put("Display.Presets.Create.Confirm.No.Lore", "&7Return to the preset menu");
 		defaults.put("Display.Presets.Delete.On.Title", "&cDelete a preset &7(&eOn&7)");
@@ -122,7 +123,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Presets.Delete.Confirm.Yes.Lore", "&7This will delete the preset forever! (A very long time!)");
 		defaults.put("Display.Presets.Delete.Confirm.No.Title", "&c&lNO");
 		defaults.put("Display.Presets.Delete.Confirm.No.Lore", "&7Return to the preset menu");
-		defaults.put("Display.Presets.Empty.Title", "&7(No Presets :( )");
+		defaults.put("Display.Presets.Empty.Title", "&7No Presets :(");
 		defaults.put("Display.Presets.Empty.Lore", "&8You don't have any presets. Want to make some?");
 		defaults.put("Display.Presets.Max.Title", "&eCreate Preset");
 		defaults.put("Display.Presets.Max.Lore", "&7You cannot create anymore presets! You must\\n&7delete an existing one before another one\\n&7can be created");
@@ -149,8 +150,8 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Main.Remove.AbilityLore", "&c&lTOGGLE THE REMOVAL TOOL BEFORE\\nREBINDING!\\n&r&7You must turn off the unbind tool before you\\ncan rebind moves again");
 		defaults.put("Display.Main.Remove.On.Title", "&cRemoval Tool &7(On)");
 		defaults.put("Display.Main.Remove.Off.Title", "&cRemoval Tool &7(Off)");
-		defaults.put("Display.Main.Remove.On.Lore", "&7Allows you to remove bound moves to your slots.\\n&7Click to turn off again\\n&7SHIFT click to remove all your bound moves");
-		defaults.put("Display.Main.Remove.Off.Lore", "&7Allows you to remove bound moves to your slots.\\n&7Click to turn on\\n&7SHIFT click to remove all your bound moves");
+		defaults.put("Display.Main.Remove.On.Lore", "&7Allows you to remove bound moves to {their|your} slots.\\n&7Click to turn off again\\n&7SHIFT click to remove all your bound moves");
+		defaults.put("Display.Main.Remove.Off.Lore", "&7Allows you to remove bound moves to {their|your} slots.\\n&7Click to turn on\\n&7SHIFT click to remove all your bound moves");
 		defaults.put("Display.Main.Bind.AbilityLore", "&a&lCURRENTLY SELECTED\\n&r&7Click a slot to bind to this move to!");
 		defaults.put("Display.Main.Edit.Title", "&eAdd/Remove Elements");
 		defaults.put("Display.Main.Edit.Lore", "&7Edit the elements {player|you} can bend");
@@ -161,12 +162,12 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Main.Combos.Title", "&eView Combos");
 		defaults.put("Display.Main.Combos.Lore", "&7View the available combos");
 		defaults.put("Display.Main.Presets.Title", "&eView Presets");
-		defaults.put("Display.Main.Presets.Lore", "&7View, bind or create presets for your binds");
+		defaults.put("Display.Main.Presets.Lore", "&7View, bind or create presets for {their|your} binds");
 		defaults.put("Display.Main.ComboAbility.Title", "{abilitycolor}{ability} (Combo)");
 		defaults.put("Display.Main.Toggle.On.Title", "&cDisable Bending");
 		defaults.put("Display.Main.Toggle.Off.Title", "&aEnable Bending");
-		defaults.put("Display.Main.Toggle.On.Lore", "&7Click to disable your bending");
-		defaults.put("Display.Main.Toggle.Off.Lore", "&7Click to re-enable your bending");
+		defaults.put("Display.Main.Toggle.On.Lore", "&7Click to disable {their|your} bending");
+		defaults.put("Display.Main.Toggle.Off.Lore", "&7Click to re-enable {their|your} bending");
 		defaults.put("Display.Main.Board.On.Title", "&aToggle BendingBoard &7(ACTIVE)");
 		defaults.put("Display.Main.Board.Off.Title", "&cToggle BendingBoard &7(INACTIVE)");
 		defaults.put("Display.Main.Board.On.Lore", "&7Click to toggle the bending board");
@@ -194,6 +195,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Main.Overview.Element.BlueFire", "use Blue Fire");
 		defaults.put("Display.Main.Overview.Element.Blood", "Bloodbend");
 		defaults.put("Display.Main.Overview.Element.Plant", "Plantbend");
+		defaults.put("Display.Main.Overview.Element.Ice", "");
 		defaults.put("Display.Main.Overview.Element.Healing", "Heal");
 
 		defaults.put("Display.Main.Slot.Full.Title", "{abilitycolor}Slot {slot} &7({abilitycolor}{ability}&7)");
@@ -217,7 +219,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Common.Page.Previous.Title", "&ePrevious Page &7(&e{current}&7/&e{max}&7)");
 		defaults.put("Display.Common.Page.Previous.Lore", "&7Click to go to the previous page of moves");
 		defaults.put("Display.Common.Page.Back.Title", "&eReturn to bending menu");
-		defaults.put("Display.Common.Page.Back.Lore", "&7Click to return to bending menu");
+		defaults.put("Display.Common.Page.Back.Lore", "&7Click to return to the bending menu");
 
 		//Generic plugin errors
 		defaults.put("Display.Errors.NoAbilName", "&4Error: &cMove doesn't exist! Please contact StrangeOne101 about this!");
@@ -248,7 +250,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Chat.Toggle.Admin.NoPermission", "&cYou don't have permission to toggle this player's bending!");
 		defaults.put("Chat.Toggle.Admin.On", "&aYou toggled {player}'{s} bending on!");
 		defaults.put("Chat.Toggle.Admin.Off", "&cYou toggled {player}'{s} bending off!");
-		defaults.put("Chat.Toggle.Player.On", "&aYou have turned your bending back on.");
+		defaults.put("Chat.Toggle.Player.On", "&aYour bending has been toggled back on.");
 		defaults.put("Chat.Toggle.Player.Off", "&cYour bending has been toggled off. You will not be able to use most abilities until you toggle it back.");
 		defaults.put("Chat.Toggle.NoPermission", "&cYou don't have permission to toggle your bending bending!");
 		defaults.put("Chat.Combo.Help", "{abilitycolor}{ability} (Combo) -");
@@ -265,8 +267,8 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Chat.Edit.Admin.Offline", "&cYou can't edit an offline players bending right now!");
 		defaults.put("Chat.Presets.Bind", "&eYou have bound your {presetcolor}{preset} &epreset!");
 		defaults.put("Chat.Presets.BindFailed", "&eYou have bound your {presetcolor}{preset} &epreset!");
-		defaults.put("Chat.Presets.Delete", "&eYou deleted your {presetcolor}{preset} &epreset!");
-		defaults.put("Chat.Presets.Create.Prompt", "&ePlease enter the name for your new preset bellow, or type \"cancel\"!");
+		defaults.put("Chat.Presets.Delete", "&eYou deleted {player|your} {presetcolor}{preset} &epreset!");
+		defaults.put("Chat.Presets.Create.Prompt", "&ePlease enter the name for {player|your} new preset bellow, or type \"cancel\"!");
 		defaults.put("Chat.Presets.Create.CancelInput", "cancel");
 		defaults.put("Chat.Presets.Create.Success", "&aNew preset &e{presetcolor}{preset}&a created!");
 		defaults.put("Chat.Presets.Create.Timeout", "&cPreset creation canceled due to timeout/inactivity");
@@ -274,6 +276,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Chat.Presets.MaxPresets", "&cYou cannot create anymore than {max} presets!");
 		defaults.put("Chat.Presets.NoBinds", "&cYou cannot create a preset without any binds!");
 		defaults.put("Chat.Presets.InvalidPresetName", "&cInvalid preset name! It must have no spaces or special characters!");
+		defaults.put("Chat.Presets.CantBind", "&cCannot bind a preset filled with abilities you cannot use! Did you change element?");
 		defaults.put("Chat.Command.PlayerOnly", "&cSorry bud! Only players can run this command!");
 		defaults.put("Chat.Command.NoPermission", "&cYou don't have permission to run this command!");
 		defaults.put("Chat.Command.NoEditPermission", "&cYou don't have permission to edit other players bending!");

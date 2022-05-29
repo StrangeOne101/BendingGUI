@@ -85,12 +85,14 @@ public class LangBuilder {
             this.value = value.replace("{player|your}", new LangBuilder("Generic.Your").toString())
                     .replace("{player|yourself}", new LangBuilder("Generic.Yourself").toString())
                     .replace("{player|you}", new LangBuilder("Generic.You").toString())
-                    .replace("{they|you}", new LangBuilder("Generic.You").toString());
+                    .replace("{they|you}", new LangBuilder("Generic.You").toString())
+                    .replace("{their|your}", new LangBuilder("Generic.Your").toString());
         } else {
             this.value = value.replace("{player|your}", target.getName() + "'" + (target.getName().endsWith("s") ? "" : "s"))
                     .replace("{player|yourself}", target.getName())
                     .replace("{player|you}", target.getName())
-                    .replace("{they|you}", new LangBuilder("Generic.They").toString());;
+                    .replace("{they|you}", new LangBuilder("Generic.They").toString())
+                    .replace("{their|your}", new LangBuilder("Generic.Their").toString());
         }
 
         return this;

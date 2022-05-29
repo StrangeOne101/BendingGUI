@@ -13,12 +13,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class SpiritsSupport {
 
     public SpiritsSupport() {
-        if (isEnabled()) {
+        if (isEnabled() && checkSpiritClasspath()) {
             API.registerElementSupport(new SpiritElementSupport());
             API.registerElementSupport(new LightElementSupport());
             API.registerElementSupport(new DarkElementSupport());
@@ -27,14 +29,31 @@ public class SpiritsSupport {
         }
     }
 
+    /**
+     * Is the Spirits plugin enabled?
+     * @return True if it is enabled
+     */
     public static boolean isEnabled() {
         return Bukkit.getPluginManager().isPluginEnabled("Spirits");
     }
 
+    /**
+     * Is the given element LIGHT_SPIRIT, DARK_SPIRIT or SPIRIT?
+     * @param element The element
+     * @return True if true
+     */
     public static boolean isSpiritElement(Element element) {
         return isEnabled() && (element == SpiritElement.SPIRIT || element == SpiritElement.LIGHT_SPIRIT || element == SpiritElement.DARK_SPIRIT);
     }
 
+    /**
+     * Gives the light/dark spirit element, as well as the neutral spirit element if the player
+     * does not already have it
+     * @param lightOrDark The light or dark element to remove
+     * @param player The player to remove on
+     * @param sender The player that caused this change
+     * @param choose Whether this is for choosing an element or adding
+     */
     public static void giveElement(Element lightOrDark, BendingPlayer player, Player sender, boolean choose) {
         if (choose) {
             player.getElements().clear();
@@ -53,6 +72,13 @@ public class SpiritsSupport {
         Bukkit.getPluginManager().callEvent(event);
     }
 
+    /**
+     * Removes the light/dark spirit element, as well as the neutral spirit element if the player
+     * does not have any other spirit elements
+     * @param lightOrDark The light or dark element to remove
+     * @param player The player to remove on
+     * @param sender The player that caused this change
+     */
     public static void removeElement(Element lightOrDark, BendingPlayer player, Player sender) {
         PlayerChangeElementEvent event = new PlayerChangeElementEvent(sender, player.getPlayer(), lightOrDark, PlayerChangeElementEvent.Result.REMOVE);
         Bukkit.getPluginManager().callEvent(event);
@@ -67,6 +93,26 @@ public class SpiritsSupport {
             Bukkit.getPluginManager().callEvent(event);
         }
         player.getElements().remove(SpiritElement.SPIRIT);
+    }
+
+    /**
+     * Checks if the player is the avatar. This is a hotfix so players with both
+     * a spirit element and a light/dark spirit element don't appear as the avatar
+     * because they "have more than one element"
+     * @param player The player to check
+     * @return True if they are the avatar
+     */
+    public static boolean isAvatar(BendingPlayer player) {
+        if (player.getPlayer().hasPermission("bending.avatar")) return true;
+        if (player.getElements().size() > 1) {
+            if (isEnabled()) {
+                List<Element> clonedElements = new ArrayList<>(player.getElements());
+                clonedElements.remove(SpiritElement.SPIRIT);
+                return clonedElements.size() > 1;
+            }
+            return true;
+        }
+        return false;
     }
 
     private static void iHateSpirits() {
@@ -126,6 +172,21 @@ public class SpiritsSupport {
         permission.setDescription(description);
         Bukkit.getPluginManager().addPermission(permission);
         return permission;
+    }
+
+    private static boolean checkSpiritClasspath() {
+        try {
+            Class.forName("me.xnuminousx.spirits.elements.SpiritElement");
+            return true;
+        } catch (ClassNotFoundException e) {
+            try {
+                Class.forName("me.numin.spirits.SpiritElement");
+                BendingGUI.log.severe("Wrong Spirits version! You are using the one from GitHub, which has a different classpath!");
+                BendingGUI.log.severe("You MUST be using Spirits BETA-1.0.13! 1.0.14 or higher WILL NOT WORK!");
+                e.printStackTrace();
+            } catch (ClassNotFoundException ignored) {}
+        }
+        return false;
     }
 
 }
