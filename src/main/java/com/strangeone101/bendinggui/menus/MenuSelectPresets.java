@@ -405,7 +405,7 @@ public class MenuSelectPresets extends MenuBase
 		List<Material> earth = List.of(Material.GRASS_BLOCK, Material.GRANITE, Material.STONE, Material.GREEN_TERRACOTTA);
 		List<Material> air = List.of(Material.FEATHER, Material.STICK, Material.STRING, Material.QUARTZ_BLOCK, Material.GLASS, Material.WHITE_WOOL);
 		List<Material> chi = List.of(Material.ARROW, Material.LEATHER_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.IRON_LEGGINGS, Material.FLINT);
-		List<Material> metal = List.of(Material.IRON_INGOT, Material.IRON_BLOCK, Material.RAW_IRON, Material.IRON_PICKAXE, Material.IRON_CHESTPLATE);
+		List<Material> metal = List.of(Material.IRON_INGOT, Material.IRON_BLOCK, Material.IRON_PICKAXE, Material.IRON_CHESTPLATE);
 		List<Material> global = List.of(Material.IRON_SWORD, Material.DIAMOND_SWORD, Material.BOW, Material.SHIELD, Material.SPECTRAL_ARROW);
 		List<Material> avatar = List.of(Material.PURPLE_DYE, Material.END_CRYSTAL, Material.NETHER_STAR, Material.BEACON, Material.PURPLE_TERRACOTTA);
 		List<Material> spirit = List.of(Material.PURPLE_DYE, Material.BLUE_WOOL, Material.TUBE_CORAL_BLOCK, Material.LAPIS_LAZULI, Material.ENDER_PEARL);
