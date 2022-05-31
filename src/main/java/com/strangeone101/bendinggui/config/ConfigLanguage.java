@@ -199,7 +199,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Main.Overview.Element.Healing", "Heal");
 
 		defaults.put("Display.Main.Slot.Full.Title", "{abilitycolor}Slot {slot} &7({abilitycolor}{ability}&7)");
-		defaults.put("Display.Main.Slot.Full.Lore", "&7Currently bound: {abilitycolor}{ability}\\n\\n&7To bind a new move, click a move then click\\n&7the slot you want to bind it to.");
+		defaults.put("Display.Main.Slot.Full.Lore", "&7Currently bound: {abilitycolor}&l{ability}\\n\\n&7To bind a new move, click a move then click\\n&7the slot you want to bind it to.");
 		defaults.put("Display.Main.Slot.Empty.Title", "&cSlot {slot} &7(Empty)");
 		defaults.put("Display.Main.Slot.Empty.Lore", "&7Nothing is currently bound to this slot!\\n\\n&7Click a move and click a slot to bind!");
 		defaults.put("Display.Main.Slot.Disabled.Multi", "&c&lYOU CANNOT EDIT YOUR BINDS RIGHT NOW!\\n&r&7You are using a multi-ability move and must stop\\n&7using it before you can bind again!");

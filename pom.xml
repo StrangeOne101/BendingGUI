@@ -6,13 +6,13 @@
 
     <groupId>com.strangeone101</groupId>
     <artifactId>bendinggui</artifactId>
-    <version>1.4.2</version>
+    <version>1.4.3</version>
     <packaging>jar</packaging>
 
     <name>BendingGUI</name>
 
     <properties>
-        <java.version>16</java.version>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <projectkorra.version>1.9.3</projectkorra.version>
     </properties>

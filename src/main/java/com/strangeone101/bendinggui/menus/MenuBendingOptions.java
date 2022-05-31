@@ -598,9 +598,6 @@ public class MenuBendingOptions extends MenuBase
 		boolean b = p.hasElement(Element.EARTH) || p.hasElement(Element.AIR);
 		item.addDescription(GRAY + new LangBuilder(key + ".Lore.ElementPrefix").yourOrPlayer(thePlayer, openPlayer).anOrA(b ? "airOrEarth" : "").capitalizeFirst().toString());
 
-		//TODO Redo this bit and loop over all elements instead of doing it manually
-		//TODO Current bug: All spirit elements appear as elements the player has even when they don't have them
-
 		for (Element element : ElementOrder.getParentElements()) {
 			if (element == Element.AVATAR) continue; //We won't show Avatar in the list (since we show it above)
 			if (!p.hasElement(element)) continue;
