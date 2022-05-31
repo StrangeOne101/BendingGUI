@@ -3,14 +3,13 @@ package com.strangeone101.bendinggui.spirits;
 import com.projectkorra.projectkorra.Element;
 import com.strangeone101.bendinggui.api.ElementOrder;
 import com.strangeone101.bendinggui.api.ElementSupport;
-import me.xnuminousx.spirits.elements.SpiritElement;
 import org.bukkit.Material;
 
 public class SpiritElementSupport implements ElementSupport {
 
     @Override
     public Element getElement() {
-        return SpiritElement.SPIRIT;
+        return SpiritsSupport.SPIRIT;
     }
 
     @Override

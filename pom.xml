@@ -6,7 +6,7 @@
 
     <groupId>com.strangeone101</groupId>
     <artifactId>bendinggui</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.2</version>
     <packaging>jar</packaging>
 
     <name>BendingGUI</name>
@@ -88,6 +88,12 @@
             <groupId>me.xnuminousx</groupId>
             <artifactId>spirits</artifactId>
             <version>BETA-1.0.13</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.numin</groupId>
+            <artifactId>spirits</artifactId>
+            <version>1.1a</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

@@ -10,21 +10,19 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import com.projectkorra.projectkorra.GeneralMethods;
-import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import com.projectkorra.projectkorra.event.PlayerBindChangeEvent;
 import com.projectkorra.projectkorra.object.Preset;
 import com.strangeone101.bendinggui.BendingBoard;
 import com.strangeone101.bendinggui.BendingGUI;
-import com.strangeone101.bendinggui.DynamicUpdater;
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Listener;
 import com.strangeone101.bendinggui.RunnablePlayer;
 import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigPresets;
 import com.strangeone101.bendinggui.spirits.SpiritsSupport;
-import me.xnuminousx.spirits.elements.SpiritElement;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -43,12 +41,14 @@ public class MenuSelectPresets extends MenuBase
 	public OfflinePlayer thePlayer;
 	public Player openPlayer;
 
-	protected List<Preset> presets;
-	protected Set<String> globalPresets = new HashSet<>();
+	public List<Preset> presets;
+	public Set<String> globalPresets = new HashSet<>();
 
-	protected boolean deleteMode = false;
+	public boolean deleteMode = false;
 
-	protected MenuBase previousMenu;
+	public MenuBase previousMenu;
+
+	public static Map<Integer, Function<MenuSelectPresets, MenuItem>> CUSTOM_ICONS = new HashMap<>();
 
 	public MenuSelectPresets(OfflinePlayer player, MenuBase previousMenu)
 	{
@@ -111,6 +111,13 @@ public class MenuSelectPresets extends MenuBase
 
 		this.addMenuItem(getCreatePreset(), getInventory().getSize() - 5);
 		this.addMenuItem(getRemoveToggle(), getInventory().getSize() - 1);
+
+		//Add custom items to the menu
+		for (int index : CUSTOM_ICONS.keySet()) {
+			if (this.getMenuItem(index) != null) this.removeMenuItem(index);
+
+			this.addMenuItem(CUSTOM_ICONS.get(index).apply(this), index);
+		}
 	}
 
 	public MenuItem getGlobalPreset(String preset) {
@@ -522,7 +529,7 @@ public class MenuSelectPresets extends MenuBase
 				if (!SpiritsSupport.isSpiritElement(e)) spiritTest = false;
 			}
 
-			if (spiritTest) return SpiritElement.SPIRIT;
+			if (spiritTest) return SpiritsSupport.SPIRIT;
 
 			return Element.AVATAR;
 		}

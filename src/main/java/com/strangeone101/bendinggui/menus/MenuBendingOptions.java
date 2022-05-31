@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import com.projectkorra.projectkorra.event.PlayerBindChangeEvent;
 import com.strangeone101.bendinggui.LangBuilder;
@@ -41,26 +43,26 @@ import com.strangeone101.bendinggui.Util;
 public class MenuBendingOptions extends MenuBase
 {
 	/**Had to move to Strings to be compatible with ProjectKorra. That's how moves are handled now.*/
-	private List<String> playerMoves = new ArrayList<String>();
-	private List<String> playerCombos = new ArrayList<String>();
-	int movePage = 0;
-	
-	private String abilityIndex = null; //What ability is currently selected
-	private int abilityIndexInt = -1;      //Used only for glow
-	private int slotIndex = -1;
-	
-	protected Mode mode = Mode.NONE;
-	
-	protected OfflinePlayer thePlayer;
-	protected Player openPlayer = null;
-	
-	protected boolean redirect = false;
-	
-	protected boolean combos = false;
+	public List<String> playerMoves = new ArrayList<String>();
+	public List<String> playerCombos = new ArrayList<String>();
+	public int movePage = 0;
+
+	public String abilityIndex = null; //What ability is currently selected
+	public int abilityIndexInt = -1;   //Used only for glow
+	public int slotIndex = -1;
+
+	public Mode mode = Mode.NONE;
+
+	public OfflinePlayer thePlayer;
+	public Player openPlayer = null;
+
+	public boolean redirect = false;
+
+	public boolean combos = false;
 
 	private final MenuBendingOptions instance = this;
 
-	protected boolean chooseUpdaterRunning = false;
+	public boolean chooseUpdaterRunning = false;
 	protected Runnable chooseCooldownUpdate = new Runnable() {
 		@Override
 		public void run() {
@@ -77,6 +79,8 @@ public class MenuBendingOptions extends MenuBase
 			}
 		}
 	};
+
+	public static Map<Integer, Function<MenuBendingOptions, MenuItem>> CUSTOM_ICONS = new HashMap<>();
 	
 	
 	public MenuBendingOptions(OfflinePlayer player) 
@@ -958,6 +962,13 @@ public class MenuBendingOptions extends MenuBase
 		}
 
 		this.addMenuItem(getPresetItem(), 2, 3);
+
+		//Add custom items to the menu
+		for (int index : CUSTOM_ICONS.keySet()) {
+			if (this.getMenuItem(index) != null) this.removeMenuItem(index);
+
+			this.addMenuItem(CUSTOM_ICONS.get(index).apply(this), index);
+		}
 		
 	}
 	

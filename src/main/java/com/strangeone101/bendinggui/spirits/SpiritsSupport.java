@@ -15,9 +15,12 @@ import org.bukkit.permissions.Permission;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class SpiritsSupport {
+
+    public static Element SPIRIT;
+    public static Element LIGHT_SPIRIT;
+    public static Element DARK_SPIRIT;
 
     public SpiritsSupport() {
         if (isEnabled() && checkSpiritClasspath()) {
@@ -43,7 +46,7 @@ public class SpiritsSupport {
      * @return True if true
      */
     public static boolean isSpiritElement(Element element) {
-        return isEnabled() && (element == SpiritElement.SPIRIT || element == SpiritElement.LIGHT_SPIRIT || element == SpiritElement.DARK_SPIRIT);
+        return isEnabled() && (element == SPIRIT || element == LIGHT_SPIRIT || element == DARK_SPIRIT);
     }
 
     /**
@@ -59,9 +62,9 @@ public class SpiritsSupport {
             player.getElements().clear();
         }
 
-        if (!player.hasElement(SpiritElement.SPIRIT)) {
-            player.addElement(SpiritElement.SPIRIT);
-            PlayerChangeElementEvent event = new PlayerChangeElementEvent(sender, player.getPlayer(), SpiritElement.SPIRIT,
+        if (!player.hasElement(SPIRIT)) {
+            player.addElement(SPIRIT);
+            PlayerChangeElementEvent event = new PlayerChangeElementEvent(sender, player.getPlayer(), SPIRIT,
                     choose ? PlayerChangeElementEvent.Result.CHOOSE : PlayerChangeElementEvent.Result.ADD);
             Bukkit.getPluginManager().callEvent(event);
         }
@@ -81,18 +84,17 @@ public class SpiritsSupport {
      */
     public static void removeElement(Element lightOrDark, BendingPlayer player, Player sender) {
         PlayerChangeElementEvent event = new PlayerChangeElementEvent(sender, player.getPlayer(), lightOrDark, PlayerChangeElementEvent.Result.REMOVE);
-        Bukkit.getPluginManager().callEvent(event);
         player.getElements().remove(lightOrDark);
+        Bukkit.getPluginManager().callEvent(event);
 
         for (Element element : player.getElements()) {
-            if (isSpiritElement(element) && element != SpiritElement.SPIRIT) return;
+            if (isSpiritElement(element) && element != SPIRIT) return;
         }
 
-        if (player.getElements().contains(SpiritElement.SPIRIT)) {
+        if (player.getElements().remove(SPIRIT)) {
             event = new PlayerChangeElementEvent(sender, player.getPlayer(), lightOrDark, PlayerChangeElementEvent.Result.REMOVE);
             Bukkit.getPluginManager().callEvent(event);
         }
-        player.getElements().remove(SpiritElement.SPIRIT);
     }
 
     /**
@@ -107,7 +109,10 @@ public class SpiritsSupport {
         if (player.getElements().size() > 1) {
             if (isEnabled()) {
                 List<Element> clonedElements = new ArrayList<>(player.getElements());
-                clonedElements.remove(SpiritElement.SPIRIT);
+                clonedElements.remove(SPIRIT);
+
+                if (clonedElements.size() == 2 && player.hasElement(LIGHT_SPIRIT) && player.hasElement(DARK_SPIRIT)) return false;
+
                 return clonedElements.size() > 1;
             }
             return true;
@@ -123,7 +128,7 @@ public class SpiritsSupport {
 
             Permission light = defineDefaultPerm("bending.lightspirit", "Allows the player to become a light spirit");
             Permission dark = defineDefaultPerm("bending.darkspirit", "Allows the player to become a dark spirit");
-            Permission neutral = defineDefaultPerm("bending.spirit", "Allows the player to become a spirit");
+            Permission neutral = defineDefaultPerm("bending.neutralspirit", "Allows the player to become a spirit");
 
             Permission lightPassive = defineDefaultPerm("bending.lightspirit.passive", "Allows the player to use light spirit passives");
             Permission darkPassive = defineDefaultPerm("bending.darkspirit.passive", "Allows the player to use light dark spirit passives");
@@ -149,17 +154,17 @@ public class SpiritsSupport {
                 if (isSpiritElement(coreAbility.getElement())) {
                     Permission perm = defineDefaultPerm("bending.ability." + coreAbility.getName(), "Allows the player to use " + coreAbility.getName());
                     if (coreAbility instanceof PassiveAbility) {
-                        if (coreAbility.getElement() == SpiritElement.SPIRIT) perm.addParent(neutralPassive, true);
-                        else if (coreAbility.getElement() == SpiritElement.LIGHT_SPIRIT) perm.addParent(lightPassive, true);
-                        else if (coreAbility.getElement() == SpiritElement.DARK_SPIRIT) perm.addParent(darkPassive, true);
+                        if (coreAbility.getElement() == SPIRIT) perm.addParent(neutralPassive, true);
+                        else if (coreAbility.getElement() == LIGHT_SPIRIT) perm.addParent(lightPassive, true);
+                        else if (coreAbility.getElement() == DARK_SPIRIT) perm.addParent(darkPassive, true);
                     } else if (coreAbility instanceof ComboAbility) {
-                        if (coreAbility.getElement() == SpiritElement.SPIRIT) perm.addParent(neutralCombo, true);
-                        else if (coreAbility.getElement() == SpiritElement.LIGHT_SPIRIT) perm.addParent(lightCombo, true);
-                        else if (coreAbility.getElement() == SpiritElement.DARK_SPIRIT) perm.addParent(darkCombo, true);
+                        if (coreAbility.getElement() == SPIRIT) perm.addParent(neutralCombo, true);
+                        else if (coreAbility.getElement() == LIGHT_SPIRIT) perm.addParent(lightCombo, true);
+                        else if (coreAbility.getElement() == DARK_SPIRIT) perm.addParent(darkCombo, true);
                     } else {
-                        if (coreAbility.getElement() == SpiritElement.SPIRIT) perm.addParent(neutral, true);
-                        else if (coreAbility.getElement() == SpiritElement.LIGHT_SPIRIT) perm.addParent(light, true);
-                        else if (coreAbility.getElement() == SpiritElement.DARK_SPIRIT) perm.addParent(dark, true);
+                        if (coreAbility.getElement() == SPIRIT) perm.addParent(neutral, true);
+                        else if (coreAbility.getElement() == LIGHT_SPIRIT) perm.addParent(light, true);
+                        else if (coreAbility.getElement() == DARK_SPIRIT) perm.addParent(dark, true);
                     }
                 }
             }
@@ -177,14 +182,25 @@ public class SpiritsSupport {
     private static boolean checkSpiritClasspath() {
         try {
             Class.forName("me.xnuminousx.spirits.elements.SpiritElement");
+            SPIRIT = SpiritElement.SPIRIT;
+            LIGHT_SPIRIT = SpiritElement.LIGHT_SPIRIT;
+            DARK_SPIRIT = SpiritElement.DARK_SPIRIT;
             return true;
         } catch (ClassNotFoundException e) {
             try {
-                Class.forName("me.numin.spirits.SpiritElement");
-                BendingGUI.log.severe("Wrong Spirits version! You are using the one from GitHub, which has a different classpath!");
-                BendingGUI.log.severe("You MUST be using Spirits BETA-1.0.13! 1.0.14 or higher WILL NOT WORK!");
-                e.printStackTrace();
-            } catch (ClassNotFoundException ignored) {}
+                Class.forName("me.numin.spirits.utilities.SpiritElement");
+                SPIRIT = me.numin.spirits.utilities.SpiritElement.SPIRIT;
+                LIGHT_SPIRIT = me.numin.spirits.utilities.SpiritElement.LIGHT_SPIRIT;
+                DARK_SPIRIT = me.numin.spirits.utilities.SpiritElement.DARK_SPIRIT;
+            } catch (ClassNotFoundException e1) {
+                try {
+                    Class.forName("me.numin.spirits.SpiritElement");
+                    BendingGUI.log.severe("Wrong Spirits version! You are using the one from GitHub, which has a different classpath!");
+                    BendingGUI.log.severe("You MUST be using Spirits BETA-1.0.13! 1.0.14 or higher WILL NOT WORK!");
+                    e1.printStackTrace();
+                } catch (ClassNotFoundException ignored) {}
+            }
+
         }
         return false;
     }

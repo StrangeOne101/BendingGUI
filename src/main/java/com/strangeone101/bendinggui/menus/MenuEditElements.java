@@ -1,7 +1,10 @@
 package com.strangeone101.bendinggui.menus;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import com.projectkorra.projectkorra.event.PlayerChangeSubElementEvent;
 import com.strangeone101.bendinggui.BendingBoard;
@@ -32,10 +35,12 @@ import com.strangeone101.bendinggui.RunnablePlayer;
 
 public class MenuEditElements extends MenuBase 
 {
-	protected MenuBase prev;
-	protected OfflinePlayer thePlayer;
-	protected Player openPlayer;
-	protected boolean dirty;
+	public MenuBase prev;
+	public OfflinePlayer thePlayer;
+	public Player openPlayer;
+	public boolean dirty;
+
+	public static Map<Integer, Function<MenuEditElements, MenuItem>> CUSTOM_ICONS = new HashMap<>();
 	
 	public MenuEditElements(OfflinePlayer player, MenuBase previousMenu) 
 	{
@@ -63,6 +68,13 @@ public class MenuEditElements extends MenuBase
 			if (support instanceof ChooseSupport) {
 				this.addMenuItem(this.getBendingItem(support.getElement()), ((ChooseSupport) support).getChooseMenuIndex());
 			}
+		}
+
+		//Add custom items to the menu
+		for (int index : CUSTOM_ICONS.keySet()) {
+			if (this.getMenuItem(index) != null) this.removeMenuItem(index);
+
+			this.addMenuItem(CUSTOM_ICONS.get(index).apply(this), index);
 		}
 	}
 	
@@ -151,16 +163,17 @@ public class MenuEditElements extends MenuBase
 						if (SpiritsSupport.isSpiritElement(element)) {
 							SpiritsSupport.giveElement(element, p, playerwhoclicked, false);
 						} else {
-							Bukkit.getPluginManager().callEvent(new PlayerChangeElementEvent(playerwhoclicked, player.getPlayer(), element, Result.ADD));
 							p.addElement(element);
+							Bukkit.getPluginManager().callEvent(new PlayerChangeElementEvent(playerwhoclicked, player.getPlayer(), element, Result.ADD));
 						}
 						
 						for (SubElement sub : Element.getAllSubElements()) {
 							if (sub.getParentElement() == element && p.hasSubElementPermission(sub)) {
 								PlayerChangeSubElementEvent event = new PlayerChangeSubElementEvent(playerwhoclicked, player.getPlayer(), sub,
 										PlayerChangeSubElementEvent.Result.ADD);
-								Bukkit.getPluginManager().callEvent(event);
 								p.addSubElement(sub);
+								Bukkit.getPluginManager().callEvent(event);
+
 							}
 						}
 
@@ -186,8 +199,8 @@ public class MenuEditElements extends MenuBase
 					if (SpiritsSupport.isSpiritElement(element)) {
 						SpiritsSupport.removeElement(element, p, playerwhoclicked);
 					} else {
-						Bukkit.getPluginManager().callEvent(new PlayerChangeElementEvent((Player)player, (Player)player, element, Result.REMOVE));
 						p.getElements().remove(element);
+						Bukkit.getPluginManager().callEvent(new PlayerChangeElementEvent((Player)player, (Player)player, element, Result.REMOVE));
 					}
 
 					dirty = true;

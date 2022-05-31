@@ -5,7 +5,6 @@ import com.strangeone101.bendinggui.api.ChooseSupport;
 import com.strangeone101.bendinggui.api.ElementOrder;
 import com.strangeone101.bendinggui.api.ElementSupport;
 
-import me.xnuminousx.spirits.elements.SpiritElement;
 import org.bukkit.Material;
 
 public class DarkElementSupport implements ElementSupport, ChooseSupport {
@@ -17,7 +16,7 @@ public class DarkElementSupport implements ElementSupport, ChooseSupport {
 
     @Override
     public Element getElement() {
-        return SpiritElement.DARK_SPIRIT;
+        return SpiritsSupport.DARK_SPIRIT;
     }
 
     @Override

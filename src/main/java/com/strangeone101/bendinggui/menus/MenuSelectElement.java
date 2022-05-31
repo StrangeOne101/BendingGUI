@@ -1,9 +1,9 @@
 package com.strangeone101.bendinggui.menus;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Map;
+import java.util.function.Function;
 
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.strangeone101.bendinggui.BendingBoard;
@@ -35,7 +35,9 @@ public class MenuSelectElement extends MenuBase
 	public OfflinePlayer thePlayer;
 	public MenuBase menu_ = null;
 	public Player openPlayer;
-	
+
+	public static Map<Integer, Function<MenuSelectElement, MenuItem>> CUSTOM_ICONS = new HashMap<>();
+
 	public MenuSelectElement(OfflinePlayer player) 
 	{
 		super(new LangBuilder("Display.Choose.Title").toString(), 3);
@@ -74,6 +76,13 @@ public class MenuSelectElement extends MenuBase
 			if (support instanceof ChooseSupport) {
 				this.addMenuItem(this.getChooseElement(support.getElement()), ((ChooseSupport) support).getChooseMenuIndex());
 			}
+		}
+
+		//Add custom items to the menu
+		for (int index : CUSTOM_ICONS.keySet()) {
+			if (this.getMenuItem(index) != null) this.removeMenuItem(index);
+
+			this.addMenuItem(CUSTOM_ICONS.get(index).apply(this), index);
 		}
 	}
 	

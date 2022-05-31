@@ -3,7 +3,10 @@ package com.strangeone101.bendinggui.menus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.api.ElementOrder;
@@ -30,9 +33,11 @@ public class MenuPlayers extends MenuBase
 	public MenuBendingOptions prev;
 	public static Collection<? extends OfflinePlayer> players = Bukkit.getOnlinePlayers();
 	public int page = 0;
-	protected Player openPlayer;
-	protected boolean showOffinePlayers;
-	
+	public Player openPlayer;
+	public boolean showOffinePlayers;
+
+	public static Map<Integer, Function<MenuPlayers, MenuItem>> CUSTOM_ICONS = new HashMap<>();
+
 	public MenuPlayers(MenuBendingOptions prevmenu) 
 	{
 		super(new LangBuilder("Display.Players.Title").toString(), getSize());
@@ -90,6 +95,13 @@ public class MenuPlayers extends MenuBase
 				meta.setOwner(player.getName());
 				this.getInventory().getItem(i1).setItemMeta(meta);
 			}
+		}
+
+		//Add custom items to the menu
+		for (int index : CUSTOM_ICONS.keySet()) {
+			if (this.getMenuItem(index) != null) this.removeMenuItem(index);
+
+			this.addMenuItem(CUSTOM_ICONS.get(index).apply(this), index);
 		}
 	}
 

@@ -38,6 +38,9 @@ public class MenuBase implements InventoryHolder {
 
     /**Adds an item to the menu at the specified index.*/
     public boolean addMenuItem(MenuItem item, int index) {
+        if (index < 0) { //So negative slots go in reverse order
+            index = getInventory().getSize() - index;
+        }
         ItemStack slot = getInventory().getItem(index);
         if (slot != null && slot.getType() != Material.AIR) {
             return false;

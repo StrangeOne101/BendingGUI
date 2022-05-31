@@ -2,11 +2,11 @@ package com.strangeone101.bendinggui.api;
 
 import com.projectkorra.projectkorra.Element;
 import com.strangeone101.bendinggui.spirits.SpiritsSupport;
-import me.xnuminousx.spirits.elements.SpiritElement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,6 +45,7 @@ public class ElementOrder {
     public static final int AVATAR = 1000;
 
     private static LinkedHashMap<Element, Integer> ORDER = new LinkedHashMap<>();
+    private static HashMap<Element, Integer> CUSTOM_ORDER = new HashMap<>();
 
     private static List<Element> PARENT_ELEMENTS = new ArrayList<>();
     private static List<Element.SubElement> SUBELEMENTS = new ArrayList<>();
@@ -83,15 +84,15 @@ public class ElementOrder {
 
         //Add Spirit Elements
         if (SpiritsSupport.isEnabled()) {
-            ORDER.put(SpiritElement.SPIRIT, SPIRIT);
-            ORDER.put(SpiritElement.LIGHT_SPIRIT, SPIRIT_LIGHT);
-            ORDER.put(SpiritElement.DARK_SPIRIT, SPIRIT_DARK);
+            ORDER.put(SpiritsSupport.SPIRIT, SPIRIT);
+            ORDER.put(SpiritsSupport.LIGHT_SPIRIT, SPIRIT_LIGHT);
+            ORDER.put(SpiritsSupport.DARK_SPIRIT, SPIRIT_DARK);
 
-            customElements.remove(SpiritElement.SPIRIT);
-            customElements.remove(SpiritElement.LIGHT_SPIRIT);
-            customElements.remove(SpiritElement.DARK_SPIRIT);
+            customElements.remove(SpiritsSupport.SPIRIT);
+            customElements.remove(SpiritsSupport.LIGHT_SPIRIT);
+            customElements.remove(SpiritsSupport.DARK_SPIRIT);
 
-            lastBehind = SpiritElement.DARK_SPIRIT;
+            lastBehind = SpiritsSupport.DARK_SPIRIT;
         }
 
 
@@ -101,6 +102,10 @@ public class ElementOrder {
             for (Element.SubElement customElementSub : Element.getSubElements(customElement)) {
                 ORDER.put(customElementSub, behind(lastBehind, customElement));
             }
+        }
+
+        for (Element customOrder : CUSTOM_ORDER.keySet()) {
+            ORDER.put(customOrder, CUSTOM_ORDER.get(customOrder));
         }
 
         ORDER = sortByValue(ORDER);
@@ -163,6 +168,10 @@ public class ElementOrder {
         list.sort(Map.Entry.comparingByValue());
         return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
 
+    }
+
+    public static void setCustomElementOrder(Element element, int placementOrder) {
+        CUSTOM_ORDER.put(element, placementOrder);
     }
 
     /**
