@@ -192,6 +192,7 @@ public class SpiritsSupport {
                 SPIRIT = me.numin.spirits.utilities.SpiritElement.SPIRIT;
                 LIGHT_SPIRIT = me.numin.spirits.utilities.SpiritElement.LIGHT_SPIRIT;
                 DARK_SPIRIT = me.numin.spirits.utilities.SpiritElement.DARK_SPIRIT;
+                return true;
             } catch (ClassNotFoundException e1) {
                 try {
                     Class.forName("me.numin.spirits.SpiritElement");
