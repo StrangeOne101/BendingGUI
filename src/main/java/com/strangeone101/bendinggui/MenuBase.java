@@ -76,6 +76,7 @@ public class MenuBase implements InventoryHolder {
             return false;
         }
         getInventory().clear(index);
+        items.remove(index);
         return true;
     }
     

@@ -8,7 +8,6 @@ import com.projectkorra.projectkorra.ability.PassiveAbility;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent;
 import com.strangeone101.bendinggui.API;
 import com.strangeone101.bendinggui.BendingGUI;
-import me.xnuminousx.spirits.elements.SpiritElement;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -182,16 +181,16 @@ public class SpiritsSupport {
     private static boolean checkSpiritClasspath() {
         try {
             Class.forName("me.xnuminousx.spirits.elements.SpiritElement");
-            SPIRIT = SpiritElement.SPIRIT;
-            LIGHT_SPIRIT = SpiritElement.LIGHT_SPIRIT;
-            DARK_SPIRIT = SpiritElement.DARK_SPIRIT;
+            SPIRIT = Element.getElement("Spirit");
+            LIGHT_SPIRIT = Element.getElement("LightSpirit");
+            DARK_SPIRIT = Element.getElement("DarkSpirit");
             return true;
         } catch (ClassNotFoundException e) {
             try {
                 Class.forName("me.numin.spirits.utilities.SpiritElement");
-                SPIRIT = me.numin.spirits.utilities.SpiritElement.SPIRIT;
-                LIGHT_SPIRIT = me.numin.spirits.utilities.SpiritElement.LIGHT_SPIRIT;
-                DARK_SPIRIT = me.numin.spirits.utilities.SpiritElement.DARK_SPIRIT;
+                SPIRIT = Element.getElement("Spirit");
+                LIGHT_SPIRIT = Element.getElement("LightSpirit");
+                DARK_SPIRIT = Element.getElement("DarkSpirit");
                 return true;
             } catch (ClassNotFoundException e1) {
                 try {
