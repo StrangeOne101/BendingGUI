@@ -6,7 +6,7 @@
 
     <groupId>com.strangeone101</groupId>
     <artifactId>bendinggui</artifactId>
-    <version>1.4.3</version>
+    <version>1.4.4</version>
     <packaging>jar</packaging>
 
     <name>BendingGUI</name>

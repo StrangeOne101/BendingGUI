@@ -124,8 +124,11 @@ public class ElementOrder {
                 int max = 0;
 
                 for (Element.SubElement sub : Element.getSubElements(behind)) {
-                    int temp = ORDER.get(sub);
-                    if (temp > max) max = temp;
+                    if (ORDER.containsValue(sub)) {
+                        int temp = ORDER.get(sub);
+                        if (temp > max) max = temp;
+                    }
+
                 }
 
                 return max + 10;
