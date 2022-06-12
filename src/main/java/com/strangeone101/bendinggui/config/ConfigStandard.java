@@ -37,7 +37,6 @@ public class ConfigStandard extends ConfigBase {
 	private boolean glow;
 
 	private boolean adminAlerts;
-	private boolean quickSnoop;
 	private boolean useItem;
 
 	private boolean destroyOnDeath;
@@ -94,17 +93,14 @@ public class ConfigStandard extends ConfigBase {
 		defaults.put("DisplayIcons.Chi", Material.STICK);
 
 		defaults.put("Admin.Alerts", true);
-		defaults.put("Admin.QuickSnoop", true);
 
-		defaults.put("Icon.Material", Material.COMPASS);
-		defaults.put("Icon.Glow", false);
-		defaults.put("Icon.Destroy.OnDeath", true);
-		defaults.put("Icon.Destroy.OnThrow", false);
-		defaults.put("Icon.Destroy.OnStoreInChests", false);
-		defaults.put("Icon.Destroy.OnStore", true);
-
-
-		defaults.put("UseItem", true);
+		defaults.put("Item.Material", Material.COMPASS);
+		defaults.put("Item.Glow", false);
+		defaults.put("Item.Destroy.OnDeath", true);
+		defaults.put("Item.Destroy.OnThrow", false);
+		defaults.put("Item.Destroy.OnStoreInChests", false);
+		defaults.put("Item.Destroy.OnStore", true);
+		defaults.put("Item.Enabled", true);
 
 		defaults.put("Display.ShowSubElementsOnPlayer", false);
 		defaults.put("Display.AbilityDescriptionTrim", 45);
@@ -120,6 +116,22 @@ public class ConfigStandard extends ConfigBase {
 
 			if (support instanceof ChooseSupport) {
 				defaults.put("DisplayIcons." + support.getElement().getName(), ((ChooseSupport) support).getChooseMaterial());
+			}
+		}
+
+		for (Element customElement : Element.getAddonElements()) {
+			if (!defaults.containsKey("AbilityIcons.Element." + customElement.getName())) {
+				defaults.put("AbilityIcons.Element." + customElement.getName(), Material.STONE);
+			}
+		}
+
+		for (Element.SubElement customSub : Element.getAddonSubElements()) {
+			if (!defaults.containsKey("AbilityIcons.SubElement." + customSub.getName())) {
+				String mat = Material.GRANITE.name();
+				if (defaults.containsKey("AbilityIcons.Element." + customSub.getParentElement().getName())) {
+					mat = defaults.get("AbilityIcons.Element." + customSub.getParentElement().getName()).toString();
+				}
+				defaults.put("AbilityIcons.SubElement." + customSub.getName(), mat);
 			}
 		}
 
@@ -154,17 +166,17 @@ public class ConfigStandard extends ConfigBase {
 		}
 
 		adminAlerts = getBoolean("Admin.Alerts");
-		useItem = getBoolean("UseItem");
+		useItem = getBoolean("Item.Enabled");
 
-		item = getMaterial("Icon.Material");
+		item = getMaterial("Item.Material");
 		if (item == null) item = Material.COMPASS;
 
-		glow = getBoolean("Icon.Glow");
+		glow = getBoolean("Item.Glow");
 
-		destroyOnDeath = getBoolean("Icon.Destroy.OnDeath");
-		destroyOnThrow = getBoolean("Icon.Destroy.OnThrow");
-		destroyOnStoreChests = getBoolean("Icon.Destroy.OnStoreInChests");
-		destroyOnStore = getBoolean("Icon.Destroy.OnStore");
+		destroyOnDeath = getBoolean("Item.Destroy.OnDeath");
+		destroyOnThrow = getBoolean("Item.Destroy.OnThrow");
+		destroyOnStoreChests = getBoolean("Item.Destroy.OnStoreInChests");
+		destroyOnStore = getBoolean("Item.Destroy.OnStore");
 
 		showSubElements = getBoolean("Display.ShowSubElementsOnPlayer");
 		abilityTrim = getInteger("Display.AbilityDescriptionTrim");

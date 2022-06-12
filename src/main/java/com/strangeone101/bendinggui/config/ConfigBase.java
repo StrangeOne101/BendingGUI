@@ -97,7 +97,7 @@ public abstract class ConfigBase {
 		config.set(key, object);
 	}
 	
-	protected void addDefault(String key, Object object) {
+	public void addDefault(String key, Object object) {
 		config.addDefault(key, object);
 		try {
 			config.save(file);

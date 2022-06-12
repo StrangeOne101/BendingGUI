@@ -12,6 +12,7 @@ import com.projectkorra.projectkorra.ability.PassiveAbility;
 import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.api.ChooseSupport;
 import com.strangeone101.bendinggui.api.ElementSupport;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigLanguage extends ConfigBase {
@@ -515,7 +516,19 @@ public class ConfigLanguage extends ConfigBase {
 				defaults.put("Display.Choose." + support.getElement().getName() + ".Title", ((ChooseSupport) support).getLangChooseTitle());
 				defaults.put("Display.Choose." + support.getElement().getName() + ".Lore", ((ChooseSupport) support).getLangChooseLore());
 			}
+		}
 
+		for (Element customElement : Element.getAddonElements()) {
+			if (!defaults.containsKey("Display.Main.Overview.Element." + customElement.getName())) {
+				String color = customElement.getColor().toString().replace('\u00A7', '&');
+				defaults.put("Display.Main.Overview.Element." + customElement.getName(), color + customElement.getName() + customElement.getType().getBender());
+			}
+		}
+
+		for (Element.SubElement customSub : Element.getAddonSubElements()) {
+			if (!defaults.containsKey("Display.Main.Overview.Element." + customSub.getName())) {
+				defaults.put("Display.Main.Overview.Element." + customSub.getName(), customSub.getName() + customSub.getType().getBend());
+			}
 		}
 		
 		return defaults;

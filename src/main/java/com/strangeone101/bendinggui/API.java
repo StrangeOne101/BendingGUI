@@ -23,6 +23,11 @@ public class API {
      * @param elementSupport The element support to add
      */
     public static void registerElementSupport(ElementSupport elementSupport) {
+        if (elementSupport.getElement() instanceof Element.SubElement) {
+            BendingGUI.log.warning("BendingGUI already supports custom subelements. Registering a sub with custom element " +
+                    "support may have unintended consequences");
+        }
+
         BendingGUI.SUPPORTED_ELEMENTS.remove(elementSupport.getElement());
 
         BendingGUI.SUPPORTED_ELEMENTS.put(elementSupport.getElement(), elementSupport);
