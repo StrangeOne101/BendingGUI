@@ -253,7 +253,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Chat.Toggle.Admin.Off", "&cYou toggled {player}'{s} bending off!");
 		defaults.put("Chat.Toggle.Player.On", "&aYour bending has been toggled back on.");
 		defaults.put("Chat.Toggle.Player.Off", "&cYour bending has been toggled off. You will not be able to use most abilities until you toggle it back.");
-		defaults.put("Chat.Toggle.NoPermission", "&cYou don't have permission to toggle your bending bending!");
+		defaults.put("Chat.Toggle.NoPermission", "&cYou don't have permission to toggle your bending!");
 		defaults.put("Chat.Combo.Help", "{abilitycolor}{ability} (Combo) -");
 		defaults.put("Chat.Bind.Ability", "{abilitycolor}{ability} &ebound to slot {slot}!");
 		defaults.put("Chat.Bind.Remove", "&cRemoved {abilitycolor}{ability}&c from slot {slot}!");
@@ -296,7 +296,7 @@ public class ConfigLanguage extends ConfigBase {
 		
 		Map<String, String> abilities = new HashMap<>();
 
-		abilities.put("AirBlast", "Releases a blast of air that pushing all mobs and items");
+		abilities.put("AirBlast", "Releases a blast of air that pushes all mobs and items");
 		abilities.put("AirBubble", "Allows the user to keep a bubble of air around them while traveling underwater");
 		abilities.put("AcrobatStance", "Makes the users faster and stronger but uses more energy in the process");
 		abilities.put("AirBurst", "Creates a powerful gust of air that can blow away your enemies");
@@ -475,7 +475,7 @@ public class ConfigLanguage extends ConfigBase {
 		abilities.put("Combo-SwiftStream", "Pull all enemies along with you as you fly!");
 		
 		abilities.put("Combo-Crevice", "Creates a crevice in the ground that can swallow players!");
-		abilities.put("Combo-MagmaBlast", "Fire balls of magma at your enemies!");
+		abilities.put("Combo-MagmaBlast", "Throw balls of magma at your enemies!");
 		abilities.put("Combo-EarthDome", "Surround yourself (or others) in earth for protection");
 		abilities.put("Combo-EarthPillars", "Send players flying into the air by raising the earth bellow them suddenly");
 

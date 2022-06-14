@@ -1,0 +1,483 @@
+# This is a translated language file from English to Ukrainian, translated via
+# Google Translate. I don't speak Ukrainian, so this is the most I can do to
+# help with existing translations. I hope it makes translating everything faster
+
+# If you do translate this further, I would be greatful if you sent me your
+# proper translation so I can feature it here!
+
+# The original english text will be displayed as a comment on the right so you
+# can easily decide if the translation is correct or not
+
+Chat:
+  Edit:
+    Remove:
+      Self: '&eВаша пожежна {elementcolor}{element} була видалена!' #'&eYour {elementcolor}{element}{bending}&e has been removed!'
+      Admin: '&e{player} - це вже не {elementcolor}{element} маг!' #'&e{player} is no longer {a} {elementcolor}{element}{bender}&e!'
+    Add:
+      Self: '&eТепер ти {elementcolor}{element}{bender}&e!!' #'&eYou are now {a} {elementcolor}{element}{bender}&e!'
+      Admin: '&e{player} тепер {element} маг!' #'&e{player} is now {a} {elementcolor}{element}{bender}&e!'
+    RemoveAll:
+      Admin: '&cЕлементи {player} були видалені!' #'&c{player}''{s} elements have been removed!'
+      Self: '&cВаші елементи були видалені!Вам потрібно буде вибрати новий елемент, щоб знову зігнути!' #'&cYour elements have been removed! You will need to choose a new element to bend again!'
+    Admin:
+      Offline: '&cЗараз ви не можете редагувати магію офлайн -гравців!' #'&cYou can''t edit an offline players bending right now!'
+    NoPermission: '&cУ вас немає дозволу редагувати магію цього гравця!' #'&cYou don''t have permission to edit this player''s bending!'
+  Command:
+    GiveItem: '&aКлацніть правою кнопкою миші компас, щоб налаштувати згинання!' #'&aRight click the compass to configure your bending!'
+    NoPlayer: '&cПомилка під час пошуку гравця!' #'&cError while finding player!'
+    AlreadyChosen: '&cВи вже вибрали елемент!' #'&cYou have already chosen an element!'
+    VersionWarning: '&cПідтримка цієї версії ProjectKorra не гарантується.' #'&cSupport for this version of ProjectKorra is not guaranteed.'
+    Usage: '&eВикористання командування IS /gui або /gui <version/reload> або /gui [Player]' #'&eCommand usage is /gui or /gui <choose/version/reload> or /gui [player]'
+    Version: '&eBendinggui - це версія {version}, для версії ProjectKorra {pkversion}' #'&eBendingGUI is version {version}, for ProjectKorra version {pkversion}'
+    PlayerOnly: '&cВибачте!Тільки гравці можуть запустити цю команду!' #'&cSorry bud! Only players can run this command!'
+    NoEditPermission: '&cВи не маєте дозволу редагувати згинання інших гравців!' #'&cYou don''t have permission to edit other players bending!'
+    Reload: '&eBendingGUI перезавантажився!' #'&eBendingGUI Reloaded!'
+    NoPermission: '&cВи не маєте дозволу запускати цю команду!' #'&cYou don''t have permission to run this command!'
+  Presets:
+    CantBind: '&cНеможливо прив’язати попередньо встановлене здібностями, якими ви не можете використовувати!Ви змінили магічний тип?' #'&cCannot bind a preset filled with abilities you cannot use! Did you change element?'
+    Create:
+      Timeout: '&cПостановка створення скасовано через тайм -аут/бездіяльність' #'&cPreset creation canceled due to timeout/inactivity'
+      Success: '&aСтворено новий пресет {presetcolor}{preset}&a!' #'&aNew preset &e{presetcolor}{preset}&a created!'
+      Prompt: '&eБудь ласка, введіть назву нового попереднього нижче або введіть "скасувати"!' #'&ePlease enter the name for {player|your} new preset bellow, or type "cancel"!'
+      CancelInput: 'скасувати' #'cancel
+    MaxPresets: '&cВи не можете створити більше {max} пресетів!' #'&cYou cannot create anymore than {max} presets!'
+    DupePreset: '&cУ вас вже є попередньо встановлений {preset}!' #'&cYou already have a preset named {preset}!'
+    InvalidPresetName: '&cНедійсне попередньо встановлене ім''я!У нього не повинно бути не пробілів, ні спеціальних персонажів!' #'&cInvalid preset name! It must have no spaces or special characters!'
+    BindFailed: '&eВи зв''язали свій {presetcolor}{preset} &eпопередньо встановлено!' #'&eYou have bound your {presetcolor}{preset} &epreset!'
+    Delete: '&eВи видалили попередньо встановлений {presetcolor}{preset}&e!' #'&eYou deleted {player|your} {presetcolor}{preset} &epreset!'
+    Bind: '&eВи зв''язали свій {presetcolor}{preset} &eпопередньо встановлено!' #'&eYou have bound your {presetcolor}{preset} &epreset!'
+    NoBinds: '&cВи не можете створити попередньо встановлений без будь -яких пов''язаних здібностей!' #'&cYou cannot create a preset without any binds!'
+  Toggle:
+    Admin:
+      NoPermission: '&cУ вас немає дозволу перемикати магію цього гравця!' #'&cYou don''t have permission to toggle this player''s bending!'
+      'Off': '&cВи вимкнули магію {player}!' #'&cYou toggled {player}''{s} bending off!'
+      'On': '&aВи увімкнули магію {player}!' #'&aYou toggled {player}''{s} bending on!'
+    Player:
+      'On': '&aВаша магія повернулася назад.' #'&aYour bending has been toggled back on.'
+      'Off': '&cВаша магія вимкнена.Ви не зможете використовувати більшість здібностей, поки не повернете його назад.' #'&cYour bending has been toggled off. You will not be able to use most abilities until you toggle it back.'
+    NoPermission: '&cУ вас немає дозволу перемикати свою магію!' #'&cYou don''t have permission to toggle your bending bending!'
+  Choose:
+    Admin:
+      NoPermission: '&cУ вас немає дозволу вибирати магію цього гравця!' #'&cYou don''t have permission to choose this player''s bending!'
+      PermaRemoved: '&cЦей гравець мав свої магічні здібності назавжди видалені!' #'&cThis player has had their bending permanently removed!'
+    ChooseNow: '&aТи ще не маг!Будь ласка, виберіть тип магії!' #'&aYou aren''t a bender yet! Please choose an element!'
+    CantChoose: '&cВи повинні бути зробленими для зміни своєї магії!' #'&cYou must have an element to modify your bending!'
+    PermaRemoved: '&cВи не можете вибрати магічний тип, оскільки ваша магія була назавжди видалена!' #'&cYou cannot choose an element because your bending has been permanently removed!'
+    ChangeCooldown: '&cВи не можете змінити свою магію на інший {час}!' #'&cYou cannot change your element for another {time}!'
+    Rechoose:
+      NoPermission: '&cУ вас немає дозволу змінити свою магію!' #'&cYou don''t have permission to change your element!'
+    NoPermissionElement: '&cВи не маєте дозволу на вибір цього типу магії!' #'&cYou don''t have permission to choose this element!'
+    Success:
+      Admin: '&e{player} тепер {element} маг!' #'&e{player} is now {a} {element}{bender}&e!'
+      Self: '&eТепер ти {elementcolor}{element}{bender}&e!' #'&eYou are now {a} {elementcolor}{element}{bender}&e!'
+  Board:
+    Offline: '&aНе вдається перемикати магічну бічну панель офлайн -гравця.' #'&aCan''t toggle an offline player''s bending board.'
+  Bind:
+    Ability: '{abilitycolor}{ability} &eпов''язаний з слотом {slot}!' #'{abilitycolor}{ability} &ebound to slot {slot}!'
+    RemoveAll: '&cВилучив усі пов''язані здібності з слотів!' #'&cRemoved all bound moves from slots!'
+    Remove: '&cВилучив {abilitycolor}{ability} &cз слота {slot}!' #'&cRemoved {abilitycolor}{ability}&c from slot {slot}!'
+  Combo:
+    Help: '{abilitycolor}{ability} (Комбо) -' #'{abilitycolor}{ability} (Combo) -'
+Abilities:
+  IceWall: 'Створює крижану стіну перед користувачем' #'Creates a wall of ice in front of the user
+  Discharge: 'Створює потужний болт електроенергії, щоб обсмажувати цілі' #'Creates a powerful bolt of electricity to fry your targets
+  Possess: 'Стрибнути всередину тіла іншого, щоб володіти і завдати їм шкоди' #'Jump inside the body of another to possess and harm them
+  WaterSpout: 'Дозволяє користувачеві стояти на носику води' #'Allows the user to stand on a spout of water
+  FirePunch: 'Дозволяє користувачеві пошкодити та підпалити ворогу лише одним ударом' #'Allows the user to damage and set fire to their enemy with just one punch
+  SpiritBeam: 'Випускає потужний вибух як дух аватара.Користувач повинен бути в Avatarstate, щоб використовувати цей хід.' #'Releases a powerful blast as the spirit of the avatar. The user must be in the AvatarState to use this move.
+  LavaFlux: 'Створює хвилю лави, яку можна кинути на ціль' #'Creates a wave of lava that can be hurled towards a target
+  MetalClips: 'Дозволяє користувачеві стріляти з шматочків металу на цілі та захоплювати їх' #'Allows the user to fire slices of metal at a target and capture them
+  LavaThrow: 'Дозволяє користувачеві кинути хвилі лави в ціль' #'Allows the user to hurl waves of lava at a target
+  FireBreath: 'Дозволяє користувачеві дихати потужним вогнем' #'Allows the user to breathe a powerful breath of fire
+  AirSwipe: 'Вивільняє більш широкий порив повітря, підштовхування мафії та предметів' #'Releases a wider gust of air, pushing mobs and items
+  AirBlade: 'Створює потужне лезо повітря, яке пошкоджує мафії та гравців' #'Creates a powerful blade of air that damages mobs and players
+  Combo-Maelstrom: 'Всмоктуйте всіх і все в глибокому вир!' #'Suck everyone and everything up in a deep whirlpool!
+  Combo-FireWheel: 'Покиньте обертання вогню до своїх ворогів!' #'Hurl a spinning wheel of fire towards your enemies!
+  EarthBlast: 'Вибухає шматок землі, куди б користувач не хотів, щоб він пішов' #'Blasts a chunk of earth wherever the user wants it to go
+  Combo-Twister: 'Створіть твістер, щоб смоктати і підірвати своїх опонентів!' #'Create a twister to suck up and blow away your opponents!
+  Shelter: 'Створіть безпечний притулок для вас або іншого гравця' #'Create a safe haven for you or another player for a while
+  OctopusForm: 'Створює восьминога води навколо користувача' #'Creates a octopus of water around the user
+  Bloodbending: 'Дозволяє користувачеві маніпулювати іншими гравцями та мафіонами з їх вигином' #'Allows the user to manipulate other players and mobs with their bending
+  AirScooter: 'Дозволяє користувачеві їздити на кулі повітря, щоб швидко масштабувати місцевість' #'Allows the user to ride a ball of air to scale across terrain fast
+  RapidPunch: 'Дозволяє користувачеві швидше атакувати, завдаючи більшої шкоди' #'Allows the user to attack faster while dealing more damage
+  Combo-Immobilize: 'Заморожуйте ворогів на кілька секунд!' #'Freeze your enemies for a few seconds!
+  BloodPuppet: 'Дозволяє маніпулювати мафіонам та гравцям завдати їм шкоди один одному' #'Allows the manipulation of mobs and players to make them damage each other
+  MagnetShield: 'Відштовхує всі металеві предмети, що кидаються на користувача' #'Repels all metal objects hurling towards the user
+  Smokescreen: 'Вивільняє дим та жалюйте всіх поблизу гравців' #'Releases smoke and blinds all nearby players
+  HighJump: 'Змушує користувача стрибати високо в повітрі' #'Makes the user jump high in the air
+  FireShield: 'Дозволяє користувачеві створити перед собою щит вогню' #'Allows the user to create a shield of fire in front of them
+  Lightning: 'Дозволяє користувачеві випустити удар блискавки' #'Allows the user to release a strike of lightning
+  Combo-FireKick: 'Створіть з ніг невелику вогневу дугу!' #'Create a small arc of fire from your feet!
+  MetalHook: 'Дозволяє бендеру використовувати металогінд для гачка або винесення на поверхню і витягнути себе' #'Allows the bender to use metalbending to hook or grapple onto a surface and pull themselves in
+  WarriorStance: 'Робить атака користувача більш потужними, але також робить користувача більш вразливим' #'Makes the user's attacks more powerful but also makes the user more vulnerable
+  PhaseChange: 'Дозволяє користувачеві заморозити та розплавляти воду' #'Allows the user to freeze and melt water
+  Tremorsense: 'Дозволяє користувачеві бачити поблизу аерококети (печери)' #'Allows the user to see nearby airpockets (caves)
+  Combo-WaterFlow: 'Створіть величезний торрент води, який може змітати ваших ворогів!' #'Create a huge torrent of water that can sweep away your enemies!
+  Paralyze: 'Дозволяє користувачеві паралізувати інших вигинів та блокувати їх згинання' #'Allows the user to paralyze other benders and block their bending
+  Agility: 'Крик з лівою клацанням або парить з підкраданням!' #'Dash with left click or soar with sneak!
+  DaggerThrow: 'Дозволяє користувачеві стрілки Rapidfire до цілі' #'Allows the user to rapidfire arrows towards a target
+  Extraction: 'Дозволяє користувачеві витягувати метали безпосередньо з руди' #'Allows the user to extract metals directly from the ore
+  EarthSurf: 'Дозволяє користувачеві їздити на Землі швидко масштабувати місцевість' #'Allows the user to ride on earth to scale the terrain fast
+  Drain: 'Наповніть усі пляшки у своєму інвентарі з води в рослинах навколо вас!' #'Fill up all bottles in your inventory from the water in plants around you!
+  ElementSphere: 'Створює сферу всіх елементів навколо користувача, що дозволяє їм використовувати всі чотири відразу' #'Creates a sphere of all the elements around the user, allowing them to use all four at once
+  Shackle: 'Захопіть нападника в поле темної енергії, поки ви підете' #'Trap your attacker in a field of dark energy while you get away
+  IceBlast: 'Вибухає шматок льоду до вашої цілі' #'Blasts a chunk of ice towards your target
+  Suffocate: 'Вигинає повітря прямо з легенів іншого гравця' #'Bends the air right out of another player''s lungs
+  AirSpout: 'Дозволяє користувачеві ходити на носику повітря' #'Allows the user to walk on a spout of air
+  WallRun: 'Клацніть швидко, щоб запустити стіни' #'Click rapidly to run up walls
+  EarthKick: 'Дозволяє користувачеві бити землю і кидати шматки на свого опонента' #'Allows the user to kick the earth and hurl chunks at their opponent
+  IceClaws: 'Створює лід на руці, який може пошкодити і уповільнити вашу ціль' #'Creates ice on your hand that can damage and slow your target
+  Catapult: 'Дозволяє користувачеві катапультувати себе через повітря, запустившись із Землі' #'Allows the user to catapult themselves through the air by launching themselves up from the earth
+  Flight: 'Дозволяє користувачеві вільно літати в небі' #'Allows the user to fly freely in the sky
+  Combo-FireSpin: 'Створіть навколо себе величезне вогневе кільце, яке завдає шкоди та величезний відбив!' #'Create a huge ring of fire around you that does damage and huge knockback!
+  Illumination: 'Дозволяє користувачеві бачити, тримаючи полум''я' #'Allows the bender to see by holding a flame
+  EarthGrab: 'Дозволяє користувачеві вловлювати інших мафіонів та гравців на землі' #'Allows the user to trap other mobs and players in earth
+  WaterManipulation: 'Дозволяє користувачеві стріляти з води в ціль' #'Allows the user to fire water at a target
+  Strike: 'Покладайтеся на свою ціль і кусайте їх.Це змусить вас миттєво з’явитися над цією' #'Rush up to your target and bite them. This will make you appear above the target instantly
+  Meditate: 'Дозволяє користувачеві стати сильнішими протягом коротких періодів часу після медитації' #'Allows the user to become stronger for short periods of time after meditating
+  HealingWaters: 'Дозволяє користувачеві зцілити водою' #'Allows the user to heal with water
+  Combo-JetBlaze: 'Запаліть це, коли ви запускаєте свій потужний Firejet!' #'Blaze it up as you launch from your powerful FireJet!
+  AirBreath: 'Випускає потужне подих повітря, яке відбиває вашу ціль' #'Releases a powerful breath of air that knocks back your target
+  HeatControl: 'Дозволяє користувачеві випускати вогонь, а не спалювати' #'Allows the user to put out fire and not burn
+  SandBlast: 'Вибухає пісок до ворога, тимчасово осліплюючи їх' #'Blasts sand towards an enemy, temporarily blinding them
+  Combo-SwiftStream: 'Потягніть з собою всіх ворогів, коли ви летите!' #'Pull all enemies along with you as you fly!
+  Combo-AirSweep: 'Створіть широкий струм повітря, який може змітати ворогів з ніг!' #'Create a sweeping current of air that can sweep enemies off their feet!
+  Torrent: 'Створює кільце води навколо користувача, яке можна використовувати для заморожування цілей або відштовхування їх' #'Creates a ring of water around the user which can be used to freeze targets or push them away
+  FireBall: 'Створює вогневу кулю, яку можна кинути на користувача' #'Creates a fireball that can be cast towards a user
+  Combustion: 'Створює пожежний снаряд своїм розумом користувача' #'Creates a fire-like projectile with their the user's mind
+  Combo-IceBullet: 'Зробіть купол льоду, і це може стріляти з льодових осколків!' #'Make a dome of ice and that can shoot shards of ice!
+  Alleviate: 'Зціліть себе чи інших, очистивши всі негативні наслідки та надаючи регенту та нічне бачення' #'Heal yourself or others by clearing all negative effects and giving regen and night vision
+  Shockwave: 'Випускає потужну ударну хвилю Землі, яка посилає цілі' #'Releases a powerful shockwave of earth that sends targets flying
+  Surge: 'Створює хвилю або щит води та льоду' #'Creates a wave or a shield of water and ice
+  AirBurst: 'Створює потужний порив повітря, який може підірвати ваших ворогів' #'Creates a powerful gust of air that can blow away your enemies
+  AirSuction: 'Тягне всіх монстрів та предметів до користувача' #'Pulls all monsters and items towards the the user
+  Tornado: 'Створює торнадо повітря, який не зможе поступати іншим користувачам' #'Creates a tornado of air that will misplace other users
+  LavaFlow: 'Перетворює Землю в басейн або лаву або створює кільце лави навколо користувача' #'Turns earth into a pool or lava or creates a ring of lava around the user
+  Combo-Infest: 'Позначте землю хаотичною енергією, яка вмикає монстрів і завдає шкоди всьому іншому' #'Mark the ground with chaotic energy that buffs monsters and harms everything else
+  Intoxicate: 'Жертвуйте своїм здоров’ям, щоб прокинути свою ціль надзвичайно токсичною енергією' #'Sacrifice your health to imbue your target with extremely toxic energy
+  RaiseEarth: 'Створює стіни або колони Землі перед користувачем' #'Creates walls or columns of earth in front of the user
+  Backstab: 'Вдарить користувача в спину, щоб заблокувати їх CHI та завдати великої шкоди' #'Hit the user in their back to block their chi and deal a lot of damage
+  EarthLine: 'Створює лінію зростаючої землі, яка завдає шкоди всім монстрам та гравцям, яких вона потрапляє' #'Creates a line of risen earth that inflicts damage on all monsters and players that it hits
+  Fissure: 'Створює лінію лави, яка може проковтнути монстрів' #'Creates a line of lava that can swallow up monsters'
+  Blaze: 'Випускає потужне вогневе кільце навколо вас' #'Releases a powerful ring of fire around you
+  CactusBlast: 'Боріться в пустелі, кидаючи кактус!' #'Fight in the desert by throwing cactus!
+  MetalFragments: 'Дозволяє Бендеру стріляти з фрагментів металу до цілі' #'Allows the bender to shoot fragments of metal towards a target
+  AcrobatStance: 'Робить користувачів швидшими та сильнішими, але використовує більше енергії в процесі' #'Makes the users faster and stronger but uses more energy in the process
+  AvatarState: 'Користувачі в стані Аватара набагато потужніші, ніж звичайні вигини.Їх згинальна потужність сильно множиться, і вони завдають набагато менше шкоди від атак.' #'Users in the Avatar State are much more powerful than normal benders. Their bending power is multiplied heavily and they take far less damage from attacks.
+  Combo-AirSlam: 'Виймайте ворога в повітрі, а потім відштовхуйте їх!' #'Kick your enemy up in the air then kick them away!'
+  Combo-Crevice: 'Creates a crevice in the ground that can swallow players!' #'Creates a crevice in the ground that can swallow players!'
+  EarthPillar: 'Витягує стовп землі в будь -якому напрямку, який ви виглядаєте' #'Pulls a pillar of earth out in whatever direction you look'
+  EarthShard: 'Дозволяє користувачеві вибирати кілька шматочків Землі та кинути їх до своєї цілі' #'Allows the user to pickup multiple chunks of earth and hurl them towards their target
+  Combo-AirStream: 'Створює струм повітря, який може керувати гравцем на деякий час' #'Creates a current of air that can be controlled by the player for a while
+  MudSurge: 'Кидає грязь до цілі' #'Hurls mud towards a target
+  EarthSmash: 'Дозволяє користувачеві захопити величезну частину Землі та кинути її' #'Allows the user to grab a huge chunk of earth and throw it
+  Combo-EarthDome: 'Оточіть себе (або інших) у Землі для захисту' #'Surround yourself (or others) in earth for protection
+  FireBurst: 'Підпалює все навколо вас' #'Sets fire to everything around you
+  WakeFishing: 'Дозволяє користувачеві використовувати водяне водне місце для риболовлі' #'Allows the user to use waterbending to fish
+  Collapse: 'Руйнується або тягне землю' #'Collapses or pulls down the earth
+  EarthArmor: 'Використовує Землю як броню на короткий проміжок часу' #'Uses earth as armor for short periods of time
+  AirShield: 'Захистіть себе від усього, використовуючи повітря' #'Shield yourself from everything using air' 
+  WallOfFire: 'Створює вогневу стіну, яка блокує всі вхідні снаряди та монстри' #'Creates wall of fire that blocks all incoming projectiles and monsters'
+  FireComet: 'Заряджайте силу цілої комети, щоб кинути до своїх ворогів' #'Charge up the power of an entire comet to throw towards your enemies' 
+  Combo-IceWave: 'Заморожуйте свою Waterspoutwave, щоб пошкодити ворогів, яких ви потрапили!' #'Freeze your WaterWave to damage enemies that you hit!' 
+  Vanish: 'Зникати в тонкому повітрі і знову з’явитися на відстані ' #'Vanish into thin air and reappear a distance away'
+  Orb: 'Розмістіть кулю позитивної енергії, яка завдає шкоди все, що її перетинає' #'Place an orb of positive energy that harms anything that crosses it' 
+  FireBlast: 'Вибухає вогневу кулю до вашого ворога' #'Blasts a ball of fire towards your enemy
+  EarthTunnel: 'Дозволяє користувачеві тунель через землю' #'Allows the user to tunnel through the earth
+  LavaDisc: 'Розточує земний блок на диск лави, який можна кинути' #'Melts a block of earth into a disk of lava that can be thrown' 
+  LightningBurst: 'Дозволяє користувачеві заряджати блискавку та звільнити її у всіх напрямках одночасно' #'Allows the user to charge lightning and release it in all directions at once' 
+  Combo-WaterGimbal: 'Контролюйте відразу два потоки води!' #'Control two torrents of water at once!
+  Combo-JetBlast: 'Запустіть бум як свій запуск із потужним Firejet!' #'Launch with a boom as your launch with a powerful FireJet!
+  AirPunch: 'Дозволяє користувачеві швидко пробитися з вибухом повітря' #'Allows the user to punch in rapid succession with blasts of air
+  FireJet: 'Дозволяє користувачеві літати на короткі відстані з вогнем' #'Allows the user to fly for short distances with fire
+  AirGlide: 'Дозволяє користувачеві безпечно ковзати, а не падати' #'Allows the user to glide down safely instead of falling
+  AirBlast: 'Вивільняє повітря, який підштовхує всіх монстрів та предметів' #'Releases a blast of air that pushing all monsters and items
+  QuickStrike: 'Дозволяє користувачеві швидко атакувати з можливістю Chiblock ціль' #'Allows the user to attack quickly with a chance to chi block the target'
+  Combo-MagmaBlast: 'Киньте кульки магми на своїх ворогів!' #'Fire balls of magma at your enemies!'
+  Combo-EarthPillars: 'Відправити гравців, які летять у повітря, піднявши землю, раптово ними нижче' #'Send players flying into the air by raising the earth bellow them suddenlyy' 
+  SonicBlast: 'Створює вухо-обертальний звуковий вибух, який завдає високої шкоди іншим монстром та гравцям' #'Creates an ear-piecing sonicblast that does high damage to other monsters and players
+  WaterArms: 'Дозволяє користувачеві використовувати воду для створення зброї з великою кількістю здібностей' #'Allows the user to use water to create arms with lots of different abilities
+  FrostBreath: 'Дозволяє користувачеві заморозити подих, пошкоджуючи та уповільнюючи цілі' #'Allows the user to freeze their breath, damaging and slowing their targets
+  SwiftKick: 'Пошкоджує ціль з великим шансом блокувати їх чи, якщо користувач знаходиться в повітрі' #'Damages the target with a high chance of blocking their chi, if the user is in the air
+  IceSpike: 'Тягне шип льоду внизу вашого ворога' #'Pulls a spike of ice up from bellow your enemy
+  WaterBubble: 'Дозволяє користувачеві подорожувати під водою з бульбашкою повітря навколо них' #'Allows the user to travel underwater with a bubble of air around them
+  MetalShred: 'Дозволяє користувачеві подрібнити металеву стіну, щоб отримати доступ через неї' #'Allows the user to shred a metal wall to gain access through it
+  Combo-Phase: 'Дематеріалізуйте себе, щоб мати можливість провести будь -яку стіну' #'Dematerialize yourself to be able to phase through any kind of walll' 
+  BloodRip: 'Вирвати кров з живих істот з кровопролиттям' #'Rip the blood out of living things with bloodbending
+  FireShots: 'Дозволяє користувачеві кинути кілька та коротких вогневих кульок до цілі' #'Allows the user to cast multiple and short fireballs towards a target
+  Combo-Rejuvenate: 'Позначте землю позитивною енергією, яка лікує інших, але пошкоджує темні духи' #'Mark the ground with positive energy that heals others but damages dark spirits
+Display:
+  Presets:
+    Preset:
+      Title: '&c{presetcolor}{preset}' #'&c{presetcolor}{preset}'
+      BindLore: '&e&lКлацніть, щоб прив’язати це попередньо встановлено!' #'&e&lClick to bind this preset!'
+      Empty: '&8(Порожній)' #'&8(Empty)'
+      BoundLore: '&a&lВ даний час' #'&a&lCurrently bound'
+      DeleteLore: '&c&lКлацніть, щоб видалити цей попередньо встановлений!' #'&c&lClick to delete this preset!'
+      Lore: '&e> {slot1}\n&e> {slot2}\n&e> {slot3}\n&e> {slot4}\n&e> {slot5}\n&e> {slot6}\n&e> {slot7}\n&e> {slot8}\n&e> {slot9}' #'&e> {slot1}\n&e> {slot2}\n&e> {slot3}\n&e> {slot4}\n&e> {slot5}\n&e> {slot6}\n&e> {slot7}\n&e> {slot8}\n&e> {slot9}'
+    Slot:
+      Empty:
+        Title: '&cСлот {slot} (порожній)' #'&cSlot {slot} &7(Empty)'
+        Lore: '&7Наразі нічого не пов''язане з цим слотом!' #'&7Nothing is currently bound to this slot!'
+      Full:
+        Title: '{abilitycolor}Слот {slot} &7({abilitycolor}{ability}&7)' #'{abilitycolor}Slot {slot} &7({abilitycolor}{ability}&7)'
+        Lore: '&7В даний час: {abilitycolor}{ability}' #'&7Currently bound: {abilitycolor}{ability}'
+    Delete:
+      Confirm:
+        'Yes':
+          Title: '&a&lТАК' #'&a&lYES'
+          Lore: '&7Це видаляє попередньо встановлений назавжди!(Дуже довго!)' #'&7This will delete the preset forever! (A very long time!)'
+        'No':
+          Lore: '&7Поверніться до встановленого меню' #'&7Return to the preset menu'
+          Title: '&c&lНІ' #'&c&lNO'
+        Title: 'Видалити попередньо встановлене "{preset}"?' #'Delete preset ''{preset}''?'
+      'On':
+        Title: '&cВидалити попередньо встановлений &7(&eна&7)' #'&cDelete a preset &7(&eOn&7)'
+        Lore: '&7Видаліть існуючий попередній заданий назавжди\n\n&c&lКлацніть на попередньо встановлене, щоб видалити' #'&7Delete an existing preset forever\n\n&c&lCLICK A PRESET TO DELETE'
+      'Off':
+        Title: '&cВидалити попередньо встановлений &7(Не вистачати)' #'&cDelete a preset &7(Off)'
+        Lore: '&7DВидаліть існуючий попередній заданий назавжди\n\n&eКлацніть на це, а потім натисніть на попередньо встановлення, щоб видалити його' #'&7Delete an existing preset forever\n\n&eClick this and then click a preset to delete it'
+    Title: 'Позначений селектор' #'Preset Selector
+    Create:
+      Confirm:
+        'Yes':
+          Lore: '&7Це створить новий пресет, використовуючи поточні прив’язки' #'&7This will create a new preset using {their|your} current binds'
+          Title: '&a&lТАК' #'&a&lYES'
+        Title: 'Створити попередньо встановлений "{preset}"?' #'Create preset ''{preset}''?'
+        'No':
+          Lore: '&7Поверніться до встановленого меню' #'&7Return to the preset menu'
+          Title: '&c&lНІ' #'&c&lNO'
+      Lore: '&7Зробіть нове попередньо встановлене на основі поточних зв''язків' #'&7Make a new preset based on {their|your} current binds'
+      Title: '&eСтворіть новий попередньо встановлений' #'&eCreate a new preset'
+    Empty:
+      Lore: '&8У вас немає пресетів.Хочете зробити щось?' #'&8You don''t have any presets. Want to make some?'
+      Title: '&7Немає пресетів :(' #'&7No Presets :('
+    Global:
+      DeleteLore: '&cВи не можете видалити глобальний попередній встановлений!' #'&cYou can''t delete a global preset!'
+      BindLore: '&e&lКлацніть, щоб прив’язати це попередньо встановлено!' #'&e&lClick to bind this preset!'
+      BoundLore: '&aВ даний час' #'&aCurrently bound'
+      Lore: '&7Це попередньо встановлено сервером\n\n&e> {slot1}\n&e> {slot2}\n&e> {slot3}\n&e> {slot4}\n&e> {slot5}\n&e> {slot6}\n&e> {slot7}\n&e> {slot8}\n&e {slot9}' #'&7This is a preset defined by the server\n\n&e> {slot1}\n&e> {slot2}\n&e> {slot3}\n&e> {slot4}\n&e> {slot5}\n&e> {slot6}\n&e> {slot7}\n&e> {slot8}\n&e {slot9}'
+      Empty: '&8(Порожній)' #'&8(Empty)'
+      Title: '&9Сервер створений пресетів: &c{presetcolor}{preset}' #'&9Server Preset: &c{presetcolor}{preset}' 
+    Max:
+      Lore: '&7Ви більше не можете створювати пресети! Ви\n&7повинні видалити існуючий, перш ніж можна\n&7створити інший' #'&7You cannot create anymore presets! You must\n&7delete an existing one before another one\n&7can be created'
+      Title: '&eСтворити попередньо встановлений' #'&eCreate Preset'
+  Choose:
+    LightSpirit:
+      Lore: '&7Світлий дух - це дух, багатий енергією, яка ідеально врівноважена.Оскільки вони є чистою енергією, вони здатні взаємодіяти зі світом по -різному для інших істот' #'&7A Light Spirit is a spirit rich in energy that is perfectly balanced. Because they are a being pure of energy, they are able to interact with the world differently to other beings'
+      Title: '&bВиберіть &3&lлегкий дух' #'&bChoose &3&lLIGHT SPIRIT'
+    DarkSpirit:
+      Title: '&9Виберіть &3&lТемний Дух' #'&9Choose &3&lDARK SPIRIT'
+      Lore: '&7Темний дух - це дух, корумпований темною і хаотичною енергією.Оскільки вони є чистою енергією, вони здатні взаємодіяти зі світом по -різному для інших істот' #'&7A Dark Spirit is a spirit corrupted by dark and chaotic energy. Because they are a being pure of energy, they are able to interact with the world differently to other beings'
+    Earth:
+      Title: '&aВиберіть &2&lЗемлю' #'&aChoose &2&l{ELEMENT}'
+      Lore: '&7Земляні можуть маніпулювати майже будь -яким природним із землі.Земляні вигини не беруть пошкодження падіння під час посадки на блоки, вони можуть зігнути, а деякі кваліфіковані вигині можуть навіть згинати пісок, метал або лаву!' #'&7Earthbenders can manipulate almost anything natrual from the earth. Earthebenders take no fall damage while landing on blocks they can bend and some skilled benders can even bend sand, metal or lava!'
+    Water:
+      Title: '&9Виберіть &1&lводу' #'&9Choose &1&l{ELEMENT}'
+      Lore: '&7Вотербіндери можуть маніпулювати будь -чим водою в них, включаючи лід, рослини і, звичайно, воду.Вони можуть замерзнути і відлизати лід за бажанням, а також можуть надзвичайно швидко плавати у воді.' #'&7Waterbenders can manipulate anything with water in them, including ice, plants and of course, water. They can freeze and thaw ice at will, and can also swim extremely fast in water.'
+    PermRemoved:
+      Admin: 'Цей гравець назавжди згинався!' #'This player has had their bending permanently removed!
+      Self: 'Ви не можете вибрати елемент, тому що ваша магічна здатність назавжди вилучена!' #'You cannot choose an element because your bending has been permanently removed!'
+    Confirm:
+      'No':
+        Title: '&c&lНІ' #'&c&lNO'
+        Lore: '&7Поверніться до попереднього меню' #'&7Return to the previous menu'
+      'Yes':
+        Title: '&a&lТАК' #'&a&lYES'
+        Lore: '&7Ви впевнені, що хочете вибрати {elementcolor}{element}&7? Це неможливо змінити!' #'&7Are you sure you want to choose {elementcolor}{element}&7? This cannot be changed!'
+      Title: 'Вибирати {element}?' #'Choose {element}?'
+    Fire:
+      Title: '&cВиберіть &4&lвогонь' #'&cChoose &4&l{ELEMENT}'
+      Lore: '&7Firebenders може створити вогонь з голими кулаками.Вони більш схильні до пожежних пошкоджень, а в деяких випадках є повністю вогнем.Деякі кваліфіковані пожежники можуть навіть створити блискавку, роблячи їх дуже небезпечними.' #'&7Firebenders can create fire with their bare fists. They are more prone to fire based damage and in some cases are completely fire resistant. Some skilled firebenders can even create lightning, making them very dangerous.'
+    NoPerm: 'У вас немає дозволу на вибір цього елемента!' #'You don''t have permission to choose this element!'
+    Chi:
+      Lore: '&7Chiblocking не суттєво елемент, але це форма мистецтва, яка робить користувача швидшим і спритнішим, ніж інші вигини.Чіблокри можуть паралізувати інших вигинів, відводити їх згинання і можуть боротися надзвичайно добре.' #'&7Chiblocking isn''t stricly an element but it is a form of art that makes the user faster and more agile than other benders. Chiblockers can paralyze other benders, take their bending away and can fight extremely well.'
+      Title: '&eВиберіть &6&lChiblocker' #'&eChoose &6&lCHIBLOCKER'
+    Air:
+      Title: '&fВиберіть &7&lповітря' #'&fChoose &7&l{ELEMENT}'
+      Lore: '&7Айрбендери можуть маніпулювати повітрям за бажанням, роблячи їх надзвичайно швидкими та спритними та мати потужний зв’язок із духами.Вони також можуть стрибати вище, бігати швидше, і вони не завдають пошкоджень падіння, коли потрапляють у землю.' #'&7Airbenders can manipulate air at will, making them extremely fast and agile and have a powerful connection with spirits. They can also jump higher, run faster and they take no fall damage when they hit the ground.'
+    Title: 'Будь ласка, виберіть елемент!' #'Please select an element!'
+  Players:
+    ToggleOffline:
+      'On':
+        Title: '&cПоказати офлайн гравців' #'&cShow Offline Players'
+        Lore: '&7Клацніть, щоб показати офлайн -гравців' #'&7Click to show offline players'
+      'Off':
+        Title: '&cПриховати офлайн -гравці' #'&cHide Offline Players'
+        Lore: '&7Клацніть, щоб приховати офлайн -гравці' #'&7Click to hide offline players'
+    You: '&e{player} &8(ти)' #'&e{player} &8(You)'
+    Back:
+      Title: '&eПовернутися до меню згинання' #'&eReturn to bending menu'
+      Lore: '&7Клацніть, щоб повернутися до меню згинання' #'&7Click to return to bending menu'
+    Offline: '&7{player}' #'&7{player}'
+    Admin:
+      ChooseClick: '&c&lКлацніть, щоб вибрати їх згинання' #'&c&lCLICK TO CHOOSE THEIR BENDING'
+      Click: '&c&lКлацніть, щоб переглянути згинання' #'&c&lCLICK TO VIEW BENDING'
+    Title: 'Згинання інших гравців' #'Other Player's Bending'
+    Online: '&e{player}' #'&e{player}'
+    NonBender: '&7(звичайна людина)' #'&7(Non-bender)'
+  Main:
+    ComboAbility:
+      Title: '{abilitycolor}{ability} (Комбо)' #'{abilitycolor}{ability} (Combo)'
+    Slot:
+      Disabled:
+        Toggled: '&cМагія відключена!' #'&cBending is disabled!'
+        Multi: '&c&lВи не можете редагувати свою магію прямо зараз!\n&r&7Ви використовуєте мультиеалітет і повинні припинити\n&r&7його використання, перш ніж зможете зв’язати іншу здатність!' #'&c&lYOU CANNOT EDIT YOUR BINDS RIGHT NOW!\n&r&7You are using a multi-ability move and must stop\n&7using it before you can bind again!'
+        ToggledLore: '&7Увімкніть магію використовувати знову!' #'&7Enable bending to use again!'
+      Empty:
+        Lore: '&7Наразі нічого не пов''язане з цим слотом!\n\n&7Клацніть на хід і натисніть на слот, щоб зв’язати!' #'&7Nothing is currently bound to this slot!\n\n&7Click a move and click a slot to bind!'
+        Title: '&cГніздо {slot} &7(Порожній)' #'&cSlot {slot} &7(Empty)'
+      Full:
+        Lore: '&7В даний час: {abilitycolor}{ability}\n\n&7Щоб прив’язати нову здатність, натисніть кнопку Переміщення,\n&7а потім натисніть на слот, до якого потрібно прив’язати його.' #'&7Currently bound: {abilitycolor}{ability}\n\n&7To bind a new move, click a move then click\n&7the slot you want to bind it to.'
+        Title: '{abilitycolor}Гніздо {slot} &7({abilitycolor}{ability}&7)' #'{abilitycolor}Slot {slot} &7({abilitycolor}{ability}&7)'
+      Selected: '&a&lВ даний час вибрано!\n&r&7Клацніть на магічну здатність зв’язатися з цим слотом!' #'&a&lCURRENTLY SELECTED!\n&r&7Click a move to bind to this slot!'
+      Offline: '&c&lНе вдається змінити магію офлайн -гравців!\n&r&7Ви не можете змінити магію гравців, які знаходяться в режимі офлайн!' #'&c&lCANNOT MODIFY BENDING OF OFFLINE PLAYERS!\n&r&7You can''t modify the bending of players that are offline!'
+      Info: '&e&lКлацніть для отримання додаткової інформації!\n&r&7Клацніть, щоб відобразити більше інформації про цю магічну здатність!' #'&e&lCLICK FOR MORE INFO!\n&r&7Click to display more information about this move!'
+      Remove: '&c&lКлацніть, щоб видалити!\n&r&7Клацніть, щоб видалити {ability} з цього слота!' #'&c&lCLICK TO REMOVE!\n&r&7Click to remove {ability} from this slot!'
+    Overview:
+      Lore:
+        Who: '&e&lКлацніть, щоб переглянути магію інших гравців' #'&e&lClick to view other players bending'
+        SubList: '(Може використовувати {list})' #'(Can {list})
+        AvatarSelf: '&5Ви - аватар!' #'&5You are the avatar!'
+        Avatar: '&5Вони - аватар!' #'&5They are the avatar!'
+        AdminWho: '&e&lКлацніть, щоб переглянути та редагувати магію інших гравців' #'&e&lClick to view and edit other \n&e&lplayers bending'
+        ElementPrefix: '&7На даний момент {they|you}:' #'&7{they|you} are currently {a}:'
+      Element:
+        DarkSpirit: '&9Темний дух' #'&9Dark Spirit'
+        LightSpirit: '&bЛегкий дух' #'&bLight Spirit'
+        Spirit: '&3Дух' #'&3Spirit'
+        Combustion: 'Спалювання' #'Combust'
+        Air: '&7Чарівник повітря' #'&7Airbender'
+        Metal: 'Металева магія' #'Metalbend'
+        Ice: '' #''
+        Healing: 'Загоєння' #'Heal'
+        Blood: 'Магія крові' #'Bloodbend'
+        Earth: '&aЗемляний фокусник' #'&aEarthbender'
+        Lava: 'Лава магія' #'Lavabend'
+        Sand: 'Пісочна магія' #'Sandbend'
+        Chi: '&6Чіблок' #'&6Chiblocker'
+        Water: '&9Водний фокусник' #'&9Waterbender'
+        Flight: 'Виліт' #'Fly'
+        BlueFire: 'Синій вогонь' #'use Blue Fire'
+        SpiritualProjection: 'Магія проекції душі' #'Spiritually Project'
+        Fire: '&cПожежник' #'&cFirebender'
+        Plant: 'Магія рослин' #'Plantbend'
+        Lightning: 'Блискавка' #'use Lightning'
+      Title:
+        Others: '&eМагія {player}' #'&e{player}''{s} Bending'
+        Self: '&eВаша магія' #'&eYour Bending'
+    Remove:
+      'Off':
+        Lore: '&7Дозволяє видалити пов''язані рухи до слотів.\n&7Клацніть, щоб увімкнути\n&7Клацніть Клацніть, щоб видалити всі ваші пов''язані здібності' #'&7Allows you to remove bound moves to {their|your} slots.\n&7Click to turn on\n&7SHIFT click to remove all your bound moves'
+        Title: '&cІнструмент видалення &7(Не вистачати)' #'&cRemoval Tool &7(Off)'
+      'On':
+        Lore: '&7Дозволяє видалити пов''язані рухи до слотів.\n&7Клацніть, щоб знову вимкнути\n&7Клацніть Клацніть, щоб видалити всі ваші пов''язані здібності' #'&7Allows you to remove bound moves to {their|your} slots.\n&7Click to turn off again\n&7SHIFT click to remove all your bound moves'
+        Title: '&cІнструмент видалення &7(На)' #'&cRemoval Tool &7(On)'
+      AbilityLore: '&c&lПеремикайте інструмент для видалення перед відновленням!\n&r&7Ви повинні вимкнути інструмент UNIFIN' #'&c&lTOGGLE THE REMOVAL TOOL BEFORE\nREBINDING!\n&r&7You must turn off the unbind tool before you\ncan rebind moves again'
+    Presets:
+      Title: '&eПереглянути пресети' #'&eView Presets'
+      Lore: '&7Переглянути, прив''язувати або створити попередні встановлення для зв''язків' #'&7View, bind or create presets for {their|your} binds'
+    Toggle:
+      'Off':
+        Lore: '&7Клацніть, щоб повторно зберігати магію' #'&7Click to re-enable {their|your} bending'
+        Title: '&aУвімкнути магію' #'&aEnable Bending'
+      'On':
+        Title: '&cВимкнути магію' #'&cDisable Bending'
+        Lore: '&7Клацніть, щоб відключити магію' #'&7Click to disable {their|your} bending'
+    Board:
+      'On':
+        Lore: '&7Клацніть, щоб перемикати магічну бічну панель' #'&7Click to toggle the bending board'
+        Title: '&aПеремикайте магічну бічну панель &7(Активний)' #'&aToggle BendingBoard &7(ACTIVE)'
+      'Off':
+        Lore: '&7Клацніть, щоб перемикати магічну бічну панель' #'&7Click to toggle the bending board'
+        Title: '&cПеремикайте магічну бічну панель &7(Неактивний)' #'&cToggle BendingBoard &7(INACTIVE)'
+    Ability:
+      Remove: '&c&lПеремикайте інструмент для видалення перед відновленням!\n&r&7Ви повинні вимкнути інструмент UNIFIN' #'&c&lTOGGLE THE REMOVAL TOOL BEFORE\n&c&lREBINDING!\n&r&7You must turn off the unbind tool before you\n&7can rebind moves again'
+      Selected: '&a&lВ даний час обраний\n&r&7Клацніть на слот, щоб зв’язати цю здатність до!' #'&a&lCURRENTLY SELECTED\n&r&7Click a slot to bind to this move to!'
+      Info: '&e&lКлацніть для отримання додаткової інформації!\n&r&7Клацніть, щоб відобразити більше інформації про цю можливість!' #'&e&lCLICK FOR MORE INFO!\n&r&7Click to display more information about this move!'
+    Edit:
+      Title: '&eДодати/видалити магічні типи' #'&eAdd/Remove Elements'
+      Lore: '&7Відредагуйте магію, якою гравець може використовувати' #'&7Edit the elements {player|you} can bend'
+    Info:
+      'Off':
+        Title: '&eПеремістіть інструНе вистачатит довідки &7(Off)' #'&eMove Help Tool &7(Off)'
+        Lore: '&7Увімкнувшись, натисніть на можливість для отримання додаткової інформації.\n&7Клацніть, щоб увімкнути' #'&7When toggled on, click on an ability for more information.\n&7Click to turn on'
+      'On':
+        Lore: '&7Увімкнувшись, натисніть на можливість для отримання додатковоїКлацніть, щоб знову вимкнутиo turn off again' #'&7When toggled on, click on an ability for more information.\n&7Click to turn off again'
+        Title: '&eПеремістіть інструмент довідки &7(На)' #'&eMove Help Tool &7(On)'
+    Combos:
+      Title: '&eПереглянути комбо' #'&eView Combos'
+      Lore: '&7Переглянути доступні комбо' #'&7View the available combos'
+    Change:
+      Title: '&eЗмініть тип магії' #'&eChange Element'
+      LoreTime: '&7Ви можете змінити свою магію в: {time}' #'&7You can change your element in: {time}'
+      Lore: '&7Змініть свій головний тип магії' #'&7Change your main bending element'
+    Title: 'Магічне меню конфігурації' #'Bending Options
+    Bind:
+      AbilityLore: '&a&lВ даний час обраний\n&r&7Клацніть на слот, щоб зв’язати цю здатність!' #'&a&lCURRENTLY SELECTED\n&r&7Click a slot to bind to this move to!'
+  Common:
+    Page:
+      Next:
+        Lore: '&7Клацніть, щоб перейти на наступну сторінку здібностей' #'&7Click to go to the next page of moves'
+        Title: '&eНаступна сторінка &7(&e{current}&7/&e{max}&7)' #'&eNext Page &7(&e{current}&7/&e{max}&7)'
+      Back:
+        Lore: '&7Клацніть, щоб повернутися до меню Magic Configuration' #'&7Click to return to the bending menu'
+        Title: '&eПовернутися до магічного меню' #'&eReturn to bending menu'
+      Previous:
+        Lore: '&7Клацніть, щоб перейти на попередню сторінку здібностей' #'&7Click to go to the previous page of moves'
+        Title: '&eПопередня сторінка &7(&e{current}&7/&e{max}&7)' #'&ePrevious Page &7(&e{current}&7/&e{max}&7)'
+  Errors:
+    FailedToOpen: '&cПомилка сталася під час спроби відкрити магічне меню.Будь ласка, повідомте про це своєму адміністратору або розробнику плагіна!' #'&cAn error occurred while trying to open the bending interface. Please report this to your admin or the plugin developer!'
+    CantEditNow: '&cВи не можете редагувати свої зв''язки прямо зараз!' #'&cYou cannot edit your binds right now!'
+    SlotOutOfRange: '&cПомилка: Зв''язування слотів поза діапазоном!Будь ласка, зв''яжіться з StrangeOne101 про це!' #'&cError: Slot binding out of range! Please contact StrangeOne101 about this!'
+    NoAbilName: '&4Помилка: &cЗдатності не існує!Будь ласка, зв''яжіться з StrangeOne101 про це!' #'&4Error: &cMove doesn''t exist! Please contact StrangeOne101 about this!'
+    DupePreset: '&cУ вас вже є попередньо встановлений {preset}!' #'&cYou already have a preset named {preset}!'
+    MaxPresets: '&cВи не можете створити більше {max} пресетів!' #'&cYou cannot create anymore than {max} presets!'
+    NoTouchy: '&cЧарівне меню не можна підробити!' #'&cThe bending gui cannot be tampered with!'
+    NoBinds: '&cВи не можете створити попередньо встановлений без будь -яких зв''язків!' #'&cYou cannot create a preset without any binds!'
+    ClickEvent: '&cПід час обробки Clickevent сталася помилка.Будь ласка, повідомте про це своєму адміністратору або розробнику плагіна!' #'&cAn error occurred while processing the clickevent. Please report this to your admin or the plugin developer!'
+    Disabled: '&cНаразі є проблема з Bendinggui.Зверніться до свого адміністратора!' #'&cThere is a problem with BendingGUI at the moment. Please contact your admin!'
+    InvalidPresetName: '&cНедійсне попередньо встановлене ім''я!У нього не повинно бути не пробілів, ні спеціальних персонажів!' #'&cInvalid preset name! It must have no spaces or special characters!'
+    NoAbilityDescription: '&7✯ ✯ ✯ Ця здатність не має набору описів!Помилка власника сервера про нього! ✯ ✯ ✯' # '&7✯ ✯ ✯ This move doesn''t have a description set! Bug your server owner about it! ✯ ✯ ✯'
+  Edit:
+    Back:
+      Title: '&eСпинка' #'&eBack'
+      Lore: '&7Поверніться до попереднього меню' #'&7Return to the previous menu'
+    RemoveAll:
+      Confirm:
+        'No':
+          Lore: '&7Поверніться до магічного меню' #'&7Return to the element menu'
+          Title: '&c&lНІ' #'&c&lNO'
+        Title: 'Ти впевнений?' #'Are you sure?
+        'Yes':
+          Lore: '&7Ви впевнені, що хочете видалити всю магію?' #'&7Are you sure you want to remove all {player|your} elements?'
+          Title: '&a&lТАК' #'&a&lYES'
+      Title: '&cВидаліть усі магічні типи' #'&cRemove All Elements'
+      Lore: '&eЦе видалить всю магію' #'&eThis will remove all {player|your} existing elements'
+    Element:
+      Lore:
+        HasNot: '&7Натисніть, щоб стати {elementcolor}{element}{bender}&7!' #'&7Click to make &e{player|yourself} &7{a} {elementcolor}{element}{bender}&7!'
+        Has: '&7Натисніть, щоб видалити {elementcolor}{element}{bending}&7!' #'&7Click to take away &e{player|your} {elementcolor}{element}{bending}&7!'
+      Title: '{elementcolor}&l{element}' #'{elementcolor}&l{element}'
+    Title: 'Додати/видалити магічні типи' #'Edit {player|your} elements
+Staff:
+  Mist: '&4Засновник ProjectKorra' #'&4ProjectKorra Founder'
+  Contributor: '&5дописувач ProjectKorra' #'&5ProjectKorra Contributor'
+  Admin: '&4Адміністратор ProjectKorra' #'&4ProjectKorra Administrator'
+  Developer: '&5Розробник ProjectKorra' #'&5ProjectKorra Developer'
+Generic:
+  NoElementBending: '' #' element'
+  List1: '{item}'
+  List2: '{item} і {item}'
+  List3: '{item}, {item} і {item}'
+  List4: '{item}, {item}, {item} і {item}'
+  An: '' #'an
+  Their: 'їх' #'their
+  Yourself: 'себе' #'yourself
+  Your: 'вони' #'your
+  A: '' #'a
+  They: 'Вони' #'they
+  You: 'ви є' #'you
+Item:
+  Title: '&aНалаштувати згинання' #'&aConfigure Bending'
+  Lore: '&7Клацніть правою кнопкою миші, щоб налаштувати згинання!' #'&7Right click to configure your bending!'

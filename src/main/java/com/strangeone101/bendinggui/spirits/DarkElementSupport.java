@@ -21,7 +21,7 @@ public class DarkElementSupport implements ElementSupport, ChooseSupport {
 
     @Override
     public String getLangChooseTitle() {
-        return "&9Choose &3&lDark Spirit";
+        return "&9Choose &3&lDARK SPIRIT";
     }
 
     @Override
