@@ -1,5 +1,6 @@
 package com.strangeone101.bendinggui.menus;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,7 @@ public class MenuSelectElement extends MenuBase
 					switchMenu(player, menu_);
 				}
 			};
-			item.setDescriptions(List.of(new LangBuilder("Display.Common.Page.Back.Lore").toString().split("\n")));
+			item.setDescriptions(Arrays.asList(new LangBuilder("Display.Common.Page.Back.Lore").toString().split("\n")));
 			this.addMenuItem(item, 18);
 		}
 

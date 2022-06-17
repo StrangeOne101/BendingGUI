@@ -106,7 +106,7 @@ public class MenuSelectPresets extends MenuBase
 				switchMenu(player, previousMenu);
 			}
 		};
-		item.setDescriptions(List.of((ChatColor.GRAY + new LangBuilder("Display.Common.Page.Back.Lore").toString()).split("\n")));
+		item.setDescriptions(Arrays.asList((ChatColor.GRAY + new LangBuilder("Display.Common.Page.Back.Lore").toString()).split("\n")));
 		this.addMenuItem(item, getInventory().getSize() - 9); //Bottom left
 
 		this.addMenuItem(getCreatePreset(), getInventory().getSize() - 5);
@@ -136,7 +136,7 @@ public class MenuSelectPresets extends MenuBase
 		boolean bound = bPlayer != null && abilities.equals(bPlayer.getAbilities()); //Check the abilities match the current binds
 
 		String name = ChatColor.YELLOW + new LangBuilder("Display.Presets.Global.Title").preset(preset, abilities).toString();
-		List<String> lore = new ArrayList<>(List.of((ChatColor.GRAY + new LangBuilder("Display.Presets.Global.Lore").preset(preset, abilities).toString()).split("\n")));
+		List<String> lore = new ArrayList<>(Arrays.asList((ChatColor.GRAY + new LangBuilder("Display.Presets.Global.Lore").preset(preset, abilities).toString()).split("\n")));
 
 		if (deleteMode) {
 			lore.add("");
@@ -187,7 +187,7 @@ public class MenuSelectPresets extends MenuBase
 		boolean bound = bPlayer != null && abilities.equals(bPlayer.getAbilities()); //Check the abilities match the current binds
 
 		String name = ChatColor.YELLOW + new LangBuilder("Display.Presets.Preset.Title").preset(preset.getName(), abilities).toString();
-		List<String> lore = new ArrayList<>(List.of((ChatColor.GRAY + new LangBuilder("Display.Presets.Preset.Lore").preset(preset.getName(), abilities).toString()).split("\n")));
+		List<String> lore = new ArrayList<>(Arrays.asList((ChatColor.GRAY + new LangBuilder("Display.Presets.Preset.Lore").preset(preset.getName(), abilities).toString()).split("\n")));
 
 		if (deleteMode) {
 			lore.add("");
@@ -296,7 +296,7 @@ public class MenuSelectPresets extends MenuBase
 	public MenuItem getRemoveToggle() {
 		String onOff = deleteMode ? "On" : "Off";
 		String name = new LangBuilder("Display.Presets.Delete." + onOff + ".Title").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString();
-		List<String> lore = List.of(new LangBuilder("Display.Presets.Delete." + onOff + ".Lore").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString().split("\n"));
+		List<String> lore = Arrays.asList(new LangBuilder("Display.Presets.Delete." + onOff + ".Lore").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString().split("\n"));
 
 		MenuItem item = new MenuItem(ChatColor.RED + name, Material.BARRIER) {
 			@Override
@@ -317,7 +317,7 @@ public class MenuSelectPresets extends MenuBase
 		String createOrMax = presets.size() >= max ? "Max" : "Create";
 
 		String name = ChatColor.YELLOW + new LangBuilder("Display.Presets." + createOrMax + ".Title").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString();
-		List<String> lore = List.of((ChatColor.GRAY + new LangBuilder("Display.Presets." + createOrMax + ".Lore").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString()).split("\n"));
+		List<String> lore = Arrays.asList((ChatColor.GRAY + new LangBuilder("Display.Presets." + createOrMax + ".Lore").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString()).split("\n"));
 
 		MenuSelectPresets instance = this;
 
@@ -405,17 +405,17 @@ public class MenuSelectPresets extends MenuBase
 	public static Map<String, List<Material>> getKeyedDefaults() {
 		Map<String, List<Material>> defaults = new HashMap<>();
 
-		List<Material> arena = List.of(Material.BOW, Material.GOLDEN_SWORD, Material.IRON_SWORD, Material.DIAMOND_SWORD, Material.NETHERITE_SWORD);
-		List<Material> survival = List.of(Material.LEATHER_HELMET, Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET, Material.COMPASS, Material.CLOCK);
-		List<Material> water = List.of(Material.POTION, Material.SNOWBALL, Material.WATER_BUCKET, Material.ICE, Material.BLUE_ICE, Material.SNOW_BLOCK);
-		List<Material> fire = List.of(Material.FIRE_CHARGE, Material.COAL, Material.BLAZE_POWDER, Material.FLINT_AND_STEEL, Material.NETHER_BRICK);
-		List<Material> earth = List.of(Material.GRASS_BLOCK, Material.GRANITE, Material.STONE, Material.GREEN_TERRACOTTA);
-		List<Material> air = List.of(Material.FEATHER, Material.STICK, Material.STRING, Material.QUARTZ_BLOCK, Material.GLASS, Material.WHITE_WOOL);
-		List<Material> chi = List.of(Material.ARROW, Material.LEATHER_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.IRON_LEGGINGS, Material.FLINT);
-		List<Material> metal = List.of(Material.IRON_INGOT, Material.IRON_BLOCK, Material.IRON_PICKAXE, Material.IRON_CHESTPLATE);
-		List<Material> global = List.of(Material.IRON_SWORD, Material.DIAMOND_SWORD, Material.BOW, Material.SHIELD, Material.SPECTRAL_ARROW);
-		List<Material> avatar = List.of(Material.PURPLE_DYE, Material.END_CRYSTAL, Material.NETHER_STAR, Material.BEACON, Material.PURPLE_TERRACOTTA);
-		List<Material> spirit = List.of(Material.PURPLE_DYE, Material.BLUE_WOOL, Material.TUBE_CORAL_BLOCK, Material.LAPIS_LAZULI, Material.ENDER_PEARL);
+		List<Material> arena = Arrays.asList(Material.BOW, Material.GOLDEN_SWORD, Material.IRON_SWORD, Material.DIAMOND_SWORD, Material.NETHERITE_SWORD);
+		List<Material> survival = Arrays.asList(Material.LEATHER_HELMET, Material.IRON_HELMET, Material.GOLDEN_HELMET, Material.DIAMOND_HELMET, Material.TURTLE_HELMET, Material.COMPASS, Material.CLOCK);
+		List<Material> water = Arrays.asList(Material.POTION, Material.SNOWBALL, Material.WATER_BUCKET, Material.ICE, Material.BLUE_ICE, Material.SNOW_BLOCK);
+		List<Material> fire = Arrays.asList(Material.FIRE_CHARGE, Material.COAL, Material.BLAZE_POWDER, Material.FLINT_AND_STEEL, Material.NETHER_BRICK);
+		List<Material> earth = Arrays.asList(Material.GRASS_BLOCK, Material.GRANITE, Material.STONE, Material.GREEN_TERRACOTTA);
+		List<Material> air = Arrays.asList(Material.FEATHER, Material.STICK, Material.STRING, Material.QUARTZ_BLOCK, Material.GLASS, Material.WHITE_WOOL);
+		List<Material> chi = Arrays.asList(Material.ARROW, Material.LEATHER_LEGGINGS, Material.GOLDEN_LEGGINGS, Material.IRON_LEGGINGS, Material.FLINT);
+		List<Material> metal = Arrays.asList(Material.IRON_INGOT, Material.IRON_BLOCK, Material.IRON_PICKAXE, Material.IRON_CHESTPLATE);
+		List<Material> global = Arrays.asList(Material.IRON_SWORD, Material.DIAMOND_SWORD, Material.BOW, Material.SHIELD, Material.SPECTRAL_ARROW);
+		List<Material> avatar = Arrays.asList(Material.PURPLE_DYE, Material.END_CRYSTAL, Material.NETHER_STAR, Material.BEACON, Material.PURPLE_TERRACOTTA);
+		List<Material> spirit = Arrays.asList(Material.PURPLE_DYE, Material.BLUE_WOOL, Material.TUBE_CORAL_BLOCK, Material.LAPIS_LAZULI, Material.ENDER_PEARL);
 
 		defaults.put("arena", arena);
 		defaults.put("pvp", arena);

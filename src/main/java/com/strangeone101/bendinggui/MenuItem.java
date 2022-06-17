@@ -1,6 +1,7 @@
 package com.strangeone101.bendinggui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -77,7 +78,7 @@ public abstract class MenuItem{
 	}
 	
 	public void addDescription(String line) {
-		this.lore.addAll(List.of(line.split("\\n")));
+		Collections.addAll(this.lore, line.split("\\n"));
 	}
 	
 	public void setMenu(MenuBase menu) {

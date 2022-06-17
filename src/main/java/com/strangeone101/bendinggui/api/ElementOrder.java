@@ -1,5 +1,6 @@
 package com.strangeone101.bendinggui.api;
 
+import com.google.common.collect.ImmutableList;
 import com.projectkorra.projectkorra.Element;
 import com.strangeone101.bendinggui.spirits.SpiritsSupport;
 
@@ -110,8 +111,8 @@ public class ElementOrder {
 
         ORDER = sortByValue(ORDER);
 
-        PARENT_ELEMENTS = ORDER.keySet().stream().filter(e -> !(e instanceof Element.SubElement)).collect(Collectors.toUnmodifiableList());
-        SUBELEMENTS = ORDER.keySet().stream().filter(e -> (e instanceof Element.SubElement)).map(e -> (Element.SubElement)e).collect(Collectors.toUnmodifiableList());
+        PARENT_ELEMENTS = ORDER.keySet().stream().filter(e -> !(e instanceof Element.SubElement)).collect(ImmutableList.toImmutableList());
+        SUBELEMENTS = ORDER.keySet().stream().filter(e -> (e instanceof Element.SubElement)).map(e -> (Element.SubElement)e).collect(ImmutableList.toImmutableList());
     }
 
     public static int between(int a, int b) {
