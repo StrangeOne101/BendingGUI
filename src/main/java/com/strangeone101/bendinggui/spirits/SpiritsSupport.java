@@ -179,30 +179,19 @@ public class SpiritsSupport {
     }
 
     private static boolean checkSpiritClasspath() {
-        try {
-            Class.forName("me.xnuminousx.spirits.elements.SpiritElement");
-            SPIRIT = Element.getElement("Spirit");
-            LIGHT_SPIRIT = Element.getElement("LightSpirit");
-            DARK_SPIRIT = Element.getElement("DarkSpirit");
-            return true;
-        } catch (ClassNotFoundException e) {
+        String[] paths = {"me.xnuminousx.spirits.elements.SpiritElement", "me.numin.spirits.utilities.SpiritElement",
+                "me.numin.spirits.SpiritElement"};
+
+        for (String path : paths) {
             try {
-                Class.forName("me.numin.spirits.utilities.SpiritElement");
+                Class.forName(path);
                 SPIRIT = Element.getElement("Spirit");
                 LIGHT_SPIRIT = Element.getElement("LightSpirit");
                 DARK_SPIRIT = Element.getElement("DarkSpirit");
                 return true;
-            } catch (ClassNotFoundException e1) {
-                try {
-                    Class.forName("me.numin.spirits.SpiritElement");
-                    BendingGUI.log.severe("Wrong Spirits version! You are using the one from GitHub, which has a different classpath!");
-                    BendingGUI.log.severe("You MUST be using Spirits BETA-1.0.13! 1.0.14 or higher WILL NOT WORK!");
-                    e1.printStackTrace();
-                } catch (ClassNotFoundException ignored) {}
-            }
-
+            } catch (ClassNotFoundException e) {}
         }
+        BendingGUI.log.warning("Failed to find a Spirit version that BendingGUI is compatible with!");
         return false;
     }
-
 }
