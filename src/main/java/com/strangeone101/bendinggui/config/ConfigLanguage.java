@@ -254,7 +254,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Chat.Toggle.Player.On", "&aYour bending has been toggled back on.");
 		defaults.put("Chat.Toggle.Player.Off", "&cYour bending has been toggled off. You will not be able to use most abilities until you toggle it back.");
 		defaults.put("Chat.Toggle.NoPermission", "&cYou don't have permission to toggle your bending!");
-		defaults.put("Chat.Combo.Help", "{abilitycolor}{ability} (Combo) -");
+		defaults.put("Chat.Combo.Help", "&l{abilitycolor}{ability} (Combo) -");
 		defaults.put("Chat.Bind.Ability", "{abilitycolor}{ability} &ebound to slot {slot}!");
 		defaults.put("Chat.Bind.Remove", "&cRemoved {abilitycolor}{ability}&c from slot {slot}!");
 		defaults.put("Chat.Bind.RemoveAll", "&cRemoved all bound moves from slots!");

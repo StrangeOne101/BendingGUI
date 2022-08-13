@@ -1069,6 +1069,7 @@ public class MenuBendingOptions extends MenuBase
 	
 	public static boolean canBendCombo(String combo, Player player) {
 		if (!ComboManager.getDescriptions().containsKey(combo)) return false; //Hidden Combo
+		if (!player.hasPermission("bending.ability." + combo)) return false;
 		ComboAbilityInfo info = ComboManager.getComboAbilities().get(combo);
 		BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
 		for (AbilityInformation abi : info.getAbilities()) {
