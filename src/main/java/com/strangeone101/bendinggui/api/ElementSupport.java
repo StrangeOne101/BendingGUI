@@ -2,7 +2,7 @@ package com.strangeone101.bendinggui.api;
 
 import com.projectkorra.projectkorra.Element;
 import com.strangeone101.bendinggui.config.ConfigStandard;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 
 public interface ElementSupport {
