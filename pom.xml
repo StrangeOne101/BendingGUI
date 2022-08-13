@@ -6,14 +6,14 @@
 
     <groupId>com.strangeone101</groupId>
     <artifactId>bendinggui</artifactId>
-    <version>1.5.1</version>
+    <version>1.6</version>
     <packaging>jar</packaging>
 
     <name>BendingGUI</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <projectkorra.version>1.9.3</projectkorra.version>
+        <projectkorra.version>ROKU-1.13</projectkorra.version>
         <maven.compiler.release>8</maven.compiler.release>
     </properties>
 
