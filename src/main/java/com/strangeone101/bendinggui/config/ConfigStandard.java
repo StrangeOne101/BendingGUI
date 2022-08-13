@@ -44,10 +44,16 @@ public class ConfigStandard extends ConfigBase {
 	private boolean destroyOnStore;
 	private boolean destroyOnStoreChests;
 
+	private boolean giveFirstJoin;
+	private boolean giveChangeWorld;
+
 	private boolean showSubElements;
 	private int abilityTrim;
 	private int elementTrim;
 	private int overviewTrim;
+
+	private boolean showChoosePromptOnFirstJoin;
+	private boolean hideUnusableElements;
 	
 	public ConfigStandard() {
 		super("config.yml");
@@ -100,12 +106,16 @@ public class ConfigStandard extends ConfigBase {
 		defaults.put("Item.Destroy.OnThrow", false);
 		defaults.put("Item.Destroy.OnStoreInChests", false);
 		defaults.put("Item.Destroy.OnStore", true);
+		defaults.put("Item.Give.FirstJoin", true);
+		defaults.put("Item.Give.ChangeWorld", false);
 		defaults.put("Item.Enabled", true);
 
 		defaults.put("Display.ShowSubElementsOnPlayer", false);
 		defaults.put("Display.AbilityDescriptionTrim", 45);
 		defaults.put("Display.PlayerOverviewTrim", 55);
 		defaults.put("Display.ElementDescriptionTrim", 50);
+		defaults.put("Display.ShowChoosePromptOnFirstJoin", false);
+		defaults.put("Display.HideNonUsableElements", false);
 
 		for (Element customElement : BendingGUI.INSTANCE.getSupportedElements()) {
 			ElementSupport support = BendingGUI.INSTANCE.getSupportedElement(customElement);
@@ -178,10 +188,15 @@ public class ConfigStandard extends ConfigBase {
 		destroyOnStoreChests = getBoolean("Item.Destroy.OnStoreInChests");
 		destroyOnStore = getBoolean("Item.Destroy.OnStore");
 
+		giveFirstJoin = getBoolean("Item.Give.FirstJoin");
+		giveChangeWorld = getBoolean("Item.Give.ChangeWorld");
+
 		showSubElements = getBoolean("Display.ShowSubElementsOnPlayer");
 		abilityTrim = getInteger("Display.AbilityDescriptionTrim");
 		elementTrim = getInteger("Display.ElementDescriptionTrim");
 		overviewTrim = getInteger("Display.PlayerOverviewTrim");
+		showChoosePromptOnFirstJoin = getBoolean("Display.ShowChoosePromptOnFirstJoin");
+		hideUnusableElements = getBoolean("Display.HideNonUsableElements");
 
 		if (abilityTrim < 1) abilityTrim = 45;
 		if (elementTrim < 1) elementTrim = 55;
@@ -247,5 +262,21 @@ public class ConfigStandard extends ConfigBase {
 
 	public int getOverviewTrim() {
 		return overviewTrim;
+	}
+
+	public boolean doGiveFirstJoin() {
+		return giveFirstJoin;
+	}
+
+	public boolean doGiveChangeWorld() {
+		return giveChangeWorld;
+	}
+
+	public boolean doShowChoosePromptOnFirstJoin() {
+		return showChoosePromptOnFirstJoin;
+	}
+
+	public boolean doHideUnusableElements() {
+		return hideUnusableElements;
 	}
 }

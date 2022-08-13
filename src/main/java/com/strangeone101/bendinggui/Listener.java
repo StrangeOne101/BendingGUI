@@ -1,7 +1,10 @@
 package com.strangeone101.bendinggui;
 
 import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
+import com.projectkorra.projectkorra.configuration.ConfigManager;
+import com.projectkorra.projectkorra.event.BendingPlayerCreationEvent;
 import com.strangeone101.bendinggui.config.ConfigStandard;
+import com.strangeone101.bendinggui.menus.MenuSelectElement;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,6 +20,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -176,8 +180,27 @@ public class Listener implements org.bukkit.event.Listener {
 					e.getPlayer().sendMessage(ChatColor.RED + "[BendingGUI] If you wish to disable this message, you can do so in the config.");
 				}
 			}
-
 		}, 1L);
+	}
+
+	@EventHandler
+	public void onBendingPlayerCreate(BendingPlayerCreationEvent event) {
+		if (ConfigStandard.getInstance().doShowChoosePromptOnFirstJoin()) {
+			MenuBendingOptions menu = new MenuBendingOptions(event.getBendingPlayer().getPlayer()); //We use this menu and not the choose menu
+			menu.openMenu(event.getBendingPlayer().getPlayer());								     //Because this has a good redirect with messages and perm checks
+		}
+		if (ConfigStandard.getInstance().doGiveFirstJoin()) {
+			addCompass(event.getBendingPlayer().getPlayer());
+		}
+	}
+
+	@EventHandler
+	public void onWorldChange(PlayerChangedWorldEvent event) {
+		if (ConfigStandard.getInstance().doGiveChangeWorld()) {
+			if (!ConfigManager.defaultConfig.get().getStringList("Properties.DisabledWorlds").contains(event.getPlayer().getWorld().getName())) {
+				addCompass(event.getPlayer());
+			}
+		}
 	}
 
 	@EventHandler
@@ -205,6 +228,15 @@ public class Listener implements org.bukkit.event.Listener {
 
 	private boolean isChest(Inventory inventory) {
 		return inventory.getType() == InventoryType.CHEST && (inventory.getSize() == 9 * 3 || inventory.getSize() == 9 * 6) && inventory.getHolder() instanceof Chest;
+	}
+
+	private void addCompass(Player player) {
+		if (ConfigStandard.getInstance().doUseItem() && player.hasPermission("bendinggui.command")) {
+			ItemStack stack = ConfigStandard.getInstance().getItem();
+			if (!player.getInventory().contains(stack)) {
+				player.getInventory().addItem(stack);
+			}
+		}
 	}
 
 	public static void chatListen(Player player, Consumer<String> onChat, long timeout, Runnable onTimeout) {

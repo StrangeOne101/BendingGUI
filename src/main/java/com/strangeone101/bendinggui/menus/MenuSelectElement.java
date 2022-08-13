@@ -53,12 +53,15 @@ public class MenuSelectElement extends MenuBase
 	
 	public void update()
 	{
-		this.addMenuItem(this.getChooseElement(Element.FIRE), 2 + 9);
-		this.addMenuItem(this.getChooseElement(Element.WATER), 3 + 9);
-		this.addMenuItem(this.getChooseElement(Element.CHI), 4 + 9);
-		this.addMenuItem(this.getChooseElement(Element.EARTH), 5 + 9);
-		this.addMenuItem(this.getChooseElement(Element.AIR), 6 + 9);
-		
+		Element[] coreElements = {Element.FIRE, Element.WATER, Element.CHI, Element.EARTH, Element.AIR};
+
+		for (int i = 0; i < 5; i++) {
+			//If they either have the permission for the element, or they shouldn't be hidden (default)
+			if (!ConfigStandard.getInstance().doHideUnusableElements() || canBend(coreElements[i], thePlayer)) {
+				this.addMenuItem(this.getChooseElement(coreElements[i]), 2 + 9 + i);
+			}
+		}
+
 		if (menu_ != null)
 		{
 			MenuItem item = new MenuItem(ChatColor.YELLOW + new LangBuilder("Display.Common.Page.Back.Title").toString(), Material.ARROW) {
@@ -72,9 +75,10 @@ public class MenuSelectElement extends MenuBase
 			this.addMenuItem(item, 18);
 		}
 
+		//For all custom elements that have custom support added
 		for (Element customElement : BendingGUI.INSTANCE.getSupportedElements()) {
 			ElementSupport support = BendingGUI.INSTANCE.getSupportedElement(customElement);
-			if (support instanceof ChooseSupport) {
+			if (support instanceof ChooseSupport && canBend(support.getElement(), thePlayer)) {
 				this.addMenuItem(this.getChooseElement(support.getElement()), ((ChooseSupport) support).getChooseMenuIndex());
 			}
 		}
@@ -101,7 +105,7 @@ public class MenuSelectElement extends MenuBase
 			@Override
 			public void run(Player player) 
 			{
-				if (thePlayer instanceof Player && !(((Player)thePlayer).hasPermission("bending." + element.getName().toLowerCase())) && thePlayer == openPlayer)
+				if (!canBend(element, thePlayer) && thePlayer == openPlayer)
 				{
 					player.sendMessage(ChatColor.RED + new LangBuilder("Chat.Choose.NoPermissionElement").element(element).toString());
 					player.closeInventory();
@@ -201,5 +205,9 @@ public class MenuSelectElement extends MenuBase
 		
 		this.update();
 		super.openMenu(player);
+	}
+
+	private static boolean canBend(Element element, OfflinePlayer player) {
+		return !(player instanceof Player) || ((Player)player).hasPermission("bending." + element.getName().toLowerCase());
 	}
 }
