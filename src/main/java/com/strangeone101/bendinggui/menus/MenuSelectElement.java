@@ -138,7 +138,11 @@ public class MenuSelectElement extends MenuBase
 				GeneralMethods.saveElements(bPlayer);
 				GeneralMethods.saveSubElements(bPlayer);
 				
-				player.closeInventory();
+				if (ConfigStandard.getInstance().doCloseMenuOnChoose()) player.closeInventory();
+				else {
+					MenuBendingOptions newMenu = new MenuBendingOptions((Player)thePlayer);
+					newMenu.openMenu(player);
+				}
 			}
 		}, new RunnablePlayer() {
 			

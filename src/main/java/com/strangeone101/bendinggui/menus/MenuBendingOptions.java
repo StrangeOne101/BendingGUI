@@ -125,7 +125,15 @@ public class MenuBendingOptions extends MenuBase
 					//player.sendMessage(ChatColor.YELLOW + "Info for " + c);
 					//String s = CoreAbility.getAbility(move).getElement() == Element.Air ? "Air" : (CoreAbility.getAbility(move).getElement() == Element.Earth ? "Earth" : (CoreAbility.getAbility(move).getElement() == Element.Water ? "Water" : (CoreAbility.getAbility(move).getElement() == Element.Fire ? "Fire" : (CoreAbility.getAbility(move).getElement() == Element.Chi ? "Chiblocker" : "Other"))));
 					//Tools.sendMessage(player, c + s + "." + move.toString());
-					player.sendMessage(c + CoreAbility.getAbility(move).getDescription());
+					String color = CoreAbility.getAbility(move).getElement().getColor().toString();
+					player.sendMessage(color + ChatColor.BOLD + move);
+					player.sendMessage(color + CoreAbility.getAbility(move).getDescription());
+					String instructions = CoreAbility.getAbility(move).getInstructions();
+					if (instructions != null && !instructions.equals("")) {
+						String usage = ConfigManager.languageConfig.get().getString("Commands.Help.Usage"); //PK Chat format for help
+						player.sendMessage(usage + instructions);
+					}
+
 					closeMenu(player);
 					return;
 				}
@@ -278,7 +286,14 @@ public class MenuBendingOptions extends MenuBase
 						//player.sendMessage(ChatColor.YELLOW + "Info for " + c1 + move.toString());
 						//String s = CoreAbility.getAbility(move).getElement() == Element.Air ? "Air" : (CoreAbility.getAbility(move).getElement() == Element.Earth ? "Earth" : (CoreAbility.getAbility(move).getElement() == Element.Water ? "Water" : (CoreAbility.getAbility(move).getElement() == Element.Fire ? "Fire" : (CoreAbility.getAbility(move).getElement() == Element.Chi ? "Chiblocker" : "Other"))));
 						//Tools.sendMessage(player, c1 + s + "." + move.toString());
-						player.sendMessage(c1 + CoreAbility.getAbility(move).getDescription());
+						String color = CoreAbility.getAbility(move).getElement().getColor().toString();
+						player.sendMessage(color + ChatColor.BOLD + move);
+						player.sendMessage(color + CoreAbility.getAbility(move).getDescription());
+						String instructions = CoreAbility.getAbility(move).getInstructions();
+						if (instructions != null && !instructions.equals("")) {
+							String usage = ConfigManager.languageConfig.get().getString("Commands.Help.Usage"); //PK Chat format for help
+							player.sendMessage(usage + instructions);
+						}
 						closeMenu(player);
 						return;
 					}

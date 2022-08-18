@@ -185,12 +185,14 @@ public class Listener implements org.bukkit.event.Listener {
 
 	@EventHandler
 	public void onBendingPlayerCreate(BendingPlayerCreationEvent event) {
-		if (ConfigStandard.getInstance().doShowChoosePromptOnFirstJoin()) {
-			MenuBendingOptions menu = new MenuBendingOptions(event.getBendingPlayer().getPlayer()); //We use this menu and not the choose menu
-			menu.openMenu(event.getBendingPlayer().getPlayer());								     //Because this has a good redirect with messages and perm checks
-		}
-		if (ConfigStandard.getInstance().doGiveFirstJoin()) {
-			addCompass(event.getBendingPlayer().getPlayer());
+		if (event.getBendingPlayer().getElements().size() == 0 && !event.getBendingPlayer().isPermaRemoved()) {
+			if (ConfigStandard.getInstance().doShowChoosePromptOnFirstJoin()) {
+				MenuBendingOptions menu = new MenuBendingOptions(event.getBendingPlayer().getPlayer()); //We use this menu and not the choose menu
+				menu.openMenu(event.getBendingPlayer().getPlayer());								     //Because this has a good redirect with messages and perm checks
+			}
+			if (ConfigStandard.getInstance().doGiveFirstJoin()) {
+				addCompass(event.getBendingPlayer().getPlayer());
+			}
 		}
 	}
 

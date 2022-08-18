@@ -53,6 +53,7 @@ public class ConfigStandard extends ConfigBase {
 	private int overviewTrim;
 
 	private boolean showChoosePromptOnFirstJoin;
+	private boolean closeMenuOnChoose;
 	private boolean hideUnusableElements;
 	
 	public ConfigStandard() {
@@ -116,6 +117,7 @@ public class ConfigStandard extends ConfigBase {
 		defaults.put("Display.ElementDescriptionTrim", 50);
 		defaults.put("Display.ShowChoosePromptOnFirstJoin", false);
 		defaults.put("Display.HideNonUsableElements", false);
+		defaults.put("Display.CloseMenuOnChoose", false);
 
 		for (Element customElement : BendingGUI.INSTANCE.getSupportedElements()) {
 			ElementSupport support = BendingGUI.INSTANCE.getSupportedElement(customElement);
@@ -197,6 +199,7 @@ public class ConfigStandard extends ConfigBase {
 		overviewTrim = getInteger("Display.PlayerOverviewTrim");
 		showChoosePromptOnFirstJoin = getBoolean("Display.ShowChoosePromptOnFirstJoin");
 		hideUnusableElements = getBoolean("Display.HideNonUsableElements");
+		closeMenuOnChoose = getBoolean("Display.CloseMenuOnChoose");
 
 		if (abilityTrim < 1) abilityTrim = 45;
 		if (elementTrim < 1) elementTrim = 55;
@@ -278,5 +281,9 @@ public class ConfigStandard extends ConfigBase {
 
 	public boolean doHideUnusableElements() {
 		return hideUnusableElements;
+	}
+
+	public boolean doCloseMenuOnChoose() {
+		return closeMenuOnChoose;
 	}
 }
