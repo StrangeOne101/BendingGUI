@@ -2,7 +2,7 @@
 
 BendingGUI is side-plugin for ProjectKorra that adds a custom interface for players to use with bending.
 
-<p align="center"><img src="hack_one.png" height=440 width =400 /></p>
+<p align="center"><img src="docs/menu.png" height=440 width =400 /></p>
 
 ### Feature List:
 
@@ -15,6 +15,7 @@ BendingGUI is side-plugin for ProjectKorra that adds a custom interface for play
 - Toggle your bending off and on with the toggle tool
 - Combos can be shown with the combo toggle
 - BendingBoard can be toggled (if it's installed on the server).
+- Presets can be created and bound via the menu
 - Admins or OPs can edit everyone's bending without leaving the GUI
 
 ### Commands:
@@ -37,7 +38,7 @@ There is also a */bending gui* command if you like things nice and tidy!
 
 ### How to use:
 
-<p align="center"><img src="hack_two.png" height=440 width =400 /></p>
+<p align="center"><img src="docs/guide.png" height=440 width=400 /></p>
 
 Moves/Abilities are displayed along the top of the interface, with arrows to go to the next page, etc. To bind a move, you simply click the move you want to bind and then click the slot you want to bind it to (the stained glass). Slots with moves will be colored and will display what move they are, and can also be removed with the removal tool (the barrier icon).
 
@@ -52,7 +53,9 @@ The main configuration file is found at `/plugins/BendingGUI/config.yml`. In the
   
 Every line in the plugin can be modified in the `/plugins/BendingGUI/language.yml`. This includes the name of the item given to players to change their bending, but also includes the descriptions for all abilities and descriptions of elements. You can add moves into this file to add support for addons that do not have a description.
 
+For more information, see https://github.com/StrangeOne101/BendingGUI/wiki#configuration
+
 ### Requirements:
 
 - Spigot 1.16+
-- ProjectKorra 1.9.3+
+- ProjectKorra 1.9.0-1.9.3
