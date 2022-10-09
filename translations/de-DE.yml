@@ -1,0 +1,546 @@
+# Translation from English to German by lythox (Discord: lythox#8254)
+
+# Original Text is displayed as comments for maintenance and corrections
+# I tried to keep as close to the original as possible
+# Some translations weren't really possible to keep without mistakes due to the variables used and the differences in grammar
+# You can message me for any questions regarding the translation
+
+Abilities:
+  IceWall: Erschaft eine Eiswand vor dem Nutzer # Creates a wall of ice in front of the user
+  Combo-Sanctuary: Erschaffe eine schützende Barriere, die auch deine Licht Geister stärkt # Create a protective barrier that also buffs your fellow Light Spirits
+  FirePunch: Erlaubt dem Nutzer mit nur einem Schlag, einen Gegner zu schaden und ihn in Brand zu setzen # Allows the user to damage and set fire to their enemy with just one punch
+  Deafen: Deafen placeholder here
+  CombustBeam: CombustBeam placeholder here
+  Combo-Pandemonium: Korrumpiert den freien Willen aller Einheiten um dich herum, indem sie ins Zentrum der Fähigkeit gezogen werden # Corrupts the free will of all entities around you by pulling them towards the center of this ability
+  LavaThrow: Erlaubt dem Nutzer Lavawellen auf sein Ziel zu schleudern # Allows the user to hurl waves of lava at a target
+  AirSwipe: Lässt einen größeren Windstoß frei, welcher Gegenstände und Kreaturen wegstößt  # Releases a wider gust of air, pushing mobs and items
+  PlantWhip: Schafft eine Rebe von Blättern, die schnell ein Ziel peitschen können
+  Shadow: Verwandle dich in Dunkelheit um allem auszuweichen während du durch die Dunkelheit streichst # Transform yourself into the darkness to evade everything as you blip through the darkness instantly
+  Combo-Maelstrom: Sauge alles und jeden in einen tiefen Strudel! # Suck everyone and everything up in a deep whirlpool!
+  EnergyBeam: EnergyBeam placeholder here
+  Combo-FireWheel: Schleudere ein drehendes Rad aus Feuer auf deine Gegner # Hurl a spinning wheel of fire towards your enemies!
+  VocalMimicry: VocalMimicry placeholder here
+  EarthGlove: Greife deine Gegner mit einem Handschuh aus Erde. Du kannst auch andere Handschuhe zerstören # Throw a glove of earth at your enemies to grab them. You can also destroy other gloves
+  Combo-EarthShards: EarthShards placeholder here
+  QuickWeld: Nutze das Metall in deinem Inventar um deine Werkzeuge zu reparieren # Use the metal in your inventory to repair your metal tools
+  Shelter: Erschaffe einen sicheren Ort für dich und einen anderen Spieler # Create a safe haven for you or another player for a while
+  Combo-Levitation: Levitation placeholder here
+  OctopusForm: Bendige das Wasser um dich herum in Form eines Oktopus # Creates a octopus of water around the user
+  LavaSurge: LavaSurge placeholder here
+  RapidPunch: Erlaubt dem Nutzer schneller anzugreifen und während der Schaden erhöht wird # Allows the user to attack faster while dealing more damage
+  MagnetShield: Stößt alle Metallobjekte ab, die auf den Nutzer zuschleudern # Repels all metal objects hurling towards the user
+  Smokescreen: Setzt Rauch frei und lässt alle nahen Spieler erblinden # Releases smoke and blinds all nearby players
+  HighJump: Lässt den Nutzer hoch in die Luft springen #  Makes the user jump high in the air
+  FireShield: Lässt den Nutzer einen Schild aus Feuer um sich herum erschaffen # Allows the user to create a shield of fire in front of them
+  Lightning: Erlaubt es dem Nutzer einen Blitz abzufeuern # Allows the user to release a strike of lightning
+  WarriorStance: Macht die Attacken des Nutzers stärker, aber der Nutzer wird verletzbarer # Makes the user's attacks more powerful but also makes the user more vulnerable
+  Tremorsense: Erlaubt es den Nutzer Luftlöcher (Höhlen) in der Nähe zu sehen # Allows the user to see nearby airpockets (caves)
+  Combo-WaterFlow: Erschaffe einen riesigen Strom aus Wasser, welcher deine Feinde wegfegt # Create a huge torrent of water that can sweep away your enemies!
+  Zephyr: Nutze Luft um deinen und den Fall anderer zu verlangsamen # Use air to slow the fall of you and entities around you
+  Electrify: Electrify placeholder here
+  DaggerThrow: Erlaubt den Nutzer einen Pfeilhagel auf sein Ziel zu feuern # Allows the user to rapidfire arrows towards a target
+  Extraction: Erlaubt dem Nutzer Metalle direkt aus dem Erz zu ziehen # Allows the user to extract metals directly from the ore
+  GaleGust: Erzeuge einen starken wind um Feinde wegzustoßen # Create a strong wind to blow away enemies
+  Float: Verwende deine geistigen Kräftige, um in der Luft zu schweben # Use your spirit powers to float in the air
+  EarthSurf: Erlaubt dem Nutzer Erde zu reiten um sich schneller fortzubewegen # Allows the user to ride on earth to scale the terrain fast
+  Drain: Fülle alle Flaschen in deinem Inventar mit dem Wasser aus den Pflanzen um dich herum # Fill up all bottles in your inventory from the water in plants around you!
+  ElementSphere: Erschaft eine Kugel aus allen Elementen um den Nutzer, was ihm ermöglicht alle vier ELemente gleichzeitig zu bändigen # Creates a sphere of all the elements around the user, allowing them to use all four at once
+  IceBlast: Sprengt ein Stück Eis in Richtung deines Ziels # Blasts a chunk of ice towards your target
+  Suffocate: Bedigt die Luft aus der Lunge eines anderen Spielers # Bends the air right out of another player's lungs
+  Combo-MistShards: Lasse Wasser verdampfen und gefriere Teile davon um Eis auf deine Gegner zu werfen # Evaporate water and freeze parts of it to throw ice at your enemies
+  Evade: Manipuliere die Luft um dich herum um Angriffen auszuweichen # Manipulate the air around you to quickly eveade incoming attacks
+  Combo-FlyingKick: Springe in die Luft und trete dein Ziel # Jump in the air and kick your target
+  AirSpout: Erlaubt dem Nutzer auf einem Luft Turm zu laufen # Allows the user to walk on a spout of air
+  WallRun: Klicke um schnell Wände hoch zu rennen # Click rapidly to run up walls
+  Crumble: Verwandle Erde in Sand # Turn earth into sand
+  IceClaws: Erschafft Eis an deiner Hand, welches dein Ziel schaden und es verlangsamen kann # Creates ice on your hand that can damage and slow your target
+  Catapult: Erlaubt dem Nutzer sich in die Luft zu katapultieren in dem er sich von der Erde unter sich abstößt # Allows the user to catapult themselves through the air by launching themselves up from the earth
+  Combo-FireSpin: Erschaffe einen riesigen Ring aus Feuer um dich herum, welcher Schaden macht und einen hohen Rückstoß hat # Create a huge ring of fire around you that does damage and huge knockback!
+  Illumination: Erlaubt dem Nutzer eine Flamme zu halten und dadurch im Dunkeln zu sehen # Allows the bender to see by holding a flame
+  Enlightenment: Erleuchte dich und andere Licht Geister um euch zu stärken # Enlighten you and other light spirits in the area to power everyone up
+  Combo-FlameBreath: FlameBreath placeholder here
+  HealingWaters: Erlaubt dem Nutzer sich oder andere mit Wasser zu heilen #  Allows the user to heal with water
+  Combo-JetBlaze: Erzeuge eine stärkere Flamme unter deinem FireJet wenn du ihn benutzt # Blaze it up as you launch from your powerful FireJet!
+  HeatControl: Erlaubt dem Nutzer Feuer zu löschen und selber nicht zu brennen # Allows the user to put out fire and not burn
+  Explode: Explode placeholder here
+  BanBlaze: Lade einen tödlichen Admin-Angriff auf welcher jeden Nutzer "Bannt", der getroffen wird # Charge up a deadly admin-blast that 'bans' any user it hits!
+  Torrent: Erschafft einen Ring aus Wasser um den Nutzer, welcher dazu verwendet werden kann Ziele wegzudrücken oder einzufrieren # Creates a ring of water around the user which can be used to freeze targets or push them away
+  FireBall: Erschafft einen Feuerball, welcher auf andere Spieler geworfen werden kann # Creates a fireball that can be cast towards a user
+  Shockwave: Lässt eine starke Druckwelle aus Erde frei, welche Gegner in die Luft Schleudert # Releases a powerful shockwave of earth that sends targets flying
+  AirBurst: Erschafft einen starken Luftstoß, welcher Gegner wegstoßen kann # Creates a powerful gust of air that can blow away your enemies
+  MetalCable: Lässt dich dich an dein Ziel ranziehen oder das Ziel an dich heranziehen. Du kannst auch dein Ziel in die Richtung werfen in die du guckst # Allows you to either pull yourself to your target or the target to you. You can also throw the target in the direction you are looking
+  AirSuction: Zieht alle Kreaturen zu dem Nutzer # Pulls all mobs and items towards the the user
+  Shrapnel: Werfe Eisen- oder Goldklumpen auf deine Gegner # Throw iron or gold nuggets at your enemies
+  Combo-Infest: Markiere den Boden mit Chaos-Energie, welche Monster stärkt und allem anderen schadet # Mark the ground with chaotic energy that buffs monsters and harms everything else
+  ArcSpark: Schießt Blitze in die Richtung in die du guckst # Shoots lightning in the direction you are looking
+  RaiseEarth: Erschafft Wände oder Säulen aus Erde vor dem Nutzer # Creates walls or columns of earth in front of the user
+  NinjaStance: Erlaubt einem Chi-Blocker schneller und mehr wie ein Ninja zu werden # Allows a chiblocker to become faster and more ninja-like
+  Fissure: Erzeugt eine Schneise aus Lava, die Kreaturen verschluckt # Creates a line of lava that can swallow up mobs
+  MetalFragments: Erlaubt dem Nutzer Metall Splitter auf ein Ziel zu schießen # Allows the bender to shoot fragments of metal towards a target
+  CactusBlast: Werfe Kakteen, wenn du in der Wüste kämpfst # Fight in the desert by throwing cactus!
+  Combo-Crevice: Erschafft einen Spalt im Boden, welcher andere Spieler verschluckt # Creates a crevice in the ground that can swallow players!
+  EarthPillar: Zieht eine Säule aus Erde aus dem Boden, in der Richtung, in die du guckst # Pulls a pillar of earth out in whatever direction you look
+  EarthShard: Erlaubt dem Nutzer mehrere Erdbrocken aufzuheben und auf ein Ziel zu schleudern # Allows the user to pickup multiple chunks of earth and hurl them towards their target
+  MudSurge: Schleudert Schlamm auf ein Ziel # Hurls mud towards a target
+  FireDisc: Schleudert eine Feuerscheibe auf dein Ziel. Die Scheibe kann durch manche Blöcke durchschneiden # Hurls a spinning disc of fire at your target. It can also cut through some blocks
+  FireBurst: Setze alles um dich herum in Brand # Sets fire to everything around you
+  Combo-AirWheel: Eine verbesserte Version des AirScooter erlaubt dem Nutzer bis zu zweimal so schnell zu sein wie mit dem normalen AirScooter # An improved version of AirScooter allowing the user to be much up to twice as fast as the regular AirScooter
+  Bulwark: Erschaffe einen Schild aus Erde vor dir # Raise a shield of earth in front of you
+  WakeFishing: Erlaubt dem Nutzer sein Bändigen zu nutzen um zu Fischen # Allows the user to use waterbending to fish
+  Combo-Awakening: Rufe Licht Geister zur Hilfe, die dich im Kampf gegen dunkle Geister unterstützen # Summon Light Spirits to your aid that will assist you against other Dark Spirits
+  EarthArmor: Nutze Erde als Rüstung über einen kurzen Zeitraum # Uses earth as armor for short periods of time
+  Combo-TurboJet: TurboJet placeholder here
+  FireComet: Lade deinen Schuss mit der Kraft eines Kometen auf um ihn auf deine Gegner zu werfen # Charge up the power of an entire comet to throw towards your enemies
+  LightBeam: Lade deine positive Energy in einen tödlichen Strahl # Charge up your positive energy to release a deadly beam
+  FireBlast: Feuert einen Ball aus Feuer auf deinen Gegner # Blasts a ball of fire towards your enemy
+  EarthTunnel: Erlaubt dem Nutzer einen Tunnel in die Erde zu graben # Allows the user to tunnel through the earth
+  DarkBeam: Lade deinen negative Energie in einen tödlichen Strahl # Charge up your negative energy to release a deadly beam
+  Combo-WaterGimbal: Kontrolliere zwei Wasserstöme gleichzeitig! # Control two torrents of water at once!
+  OwnerState: Der Avatarzustand mit der Kraft des Admins auf das nächste Level gebracht # The avatar state, buffed with the power of an admin to the extreme!
+  Combo-Skyrocket: Schieße dich selbst in die Luft bevor die mit einem tödlichen Aufprall auf die Erde zurückschießt # Skyrocket yourself into the air before slamming back to earth with a deadly impactschmelzen
+  Combo-JetBlast: Starte deinen FireJet mit einem lauten Knall # Launch with a boom as your launch with a powerful FireJet!
+  AirPunch: Erlaubt dem Nutzer in kurzen Abständen mit Luftstößen zu schlagen # Allows the user to punch in rapid succession with blasts of air
+  Dig: Dig placeholder here
+  FireJet: Nutze dein Feuer um über kurze Distanzen zu fliegen # Allows the user to fly for short distances with fire
+  Combo-RockSlide: RockSlide placeholder here
+  AirBlast: Lässt einen Luftstoß frei, der alle Kreaturen und Gegenstände wegstößt # Releases a blast of air that pushes all mobs and items
+  QuickStrike: Erlaubt dem Nutzer schnell anzugreifen. Es ist möglich dabei das Chi des Ziels zu blockieren # Allows the user to attack quickly with a chance to chi block the target
+  Combo-MagmaBlast: Werfe Magmabälle auf deine Gegner! # Throw balls of magma at your enemies!
+  Wish: Nutze deine positive Energie um einen Wunsch zu erschaffen, der dich später heilen wird # Use your positive energy to create a wish that will heal you later on
+  WaterArms: Erlaubt dem Nutzer Arme aus Wasser zu erschaffen, welche vielseitig eingesetzt werden können # Allows the user to use water to create arms with lots of different abilities
+  FrostBreath: Erlaubt dem Nutzer seinen Atem zu gefrieren um Zielen zu schaden und sie zu verlangsamen # Allows the user to freeze their breath, damaging and slowing their targets
+  SwiftKick: Schadet dem Ziel und hat eine hohe Chance sein Chi zu blockieren, wenn der Nutzer in der Luft ist # Damages the target with a high chance of blocking their chi, if the user is in the air
+  WaterBubble: Erlaubt dem Nutzer sich unter Wasser in einer Luftblase fortzubewegen # Allows the user to travel underwater with a bubble of air around them
+  Combo-LeafStorm: LeafStorm placeholder here
+  Combo-Phase: Du kannst dich selbst dematerialisieren um durch jede Wand gehen zu können # Dematerialize yourself to be able to phase through any kind of wall
+  FireShots: Schieße viele kurze Feuerbälle auf ein Ziel # Allows the user to cast multiple and short fireballs towards a target
+  Combo-Tailwind: Tailwind placeholder here
+  Discharge: Erzeuge Elektrizität um deine Ziele zu grillen # Creates a powerful bolt of electricity to fry your targets
+  Possess: Du kannst besitz von einer anderen Person ergreifen um ihr von Innen zu schaden # Jump inside the body of another to possess and harm them
+  WaterSpout: Erlaubt dem Nutzer auf einem Turm aus Wasser zu stehen # Allows the user to stand on a spout of water
+  SpiritBeam: Lässt einen mächtigen Strahl als Avatargeist frei. Der Nutzer muss im Avatarzustand sein. # Releases a powerful blast as the spirit of the avatar. The user must be in the AvatarState to use this move.
+  LavaFlux: Erzeugt eine Lavawelle die auf ein Ziel geschleudert werden kann # Creates a wave of lava that can be hurled towards a target
+  IceCrawl: IceCrawl placeholder here
+  FireBreath: Erlaubt dem Nutzer Feuer zu atmen # Allows the user to breathe a powerful breath of fire
+  MetalClips: Erlaubt dem Nutzer Metalscheiben auf ein Ziel zu werden und es zu fangen # Allows the user to fire slices of metal at a target and capture them
+  Jets: Jets placeholder here
+  AirBlade: Erzeugt eine mächtige Luftklinge # Creates a powerful blade of air that damages mobs and players
+  EarthBlast: Schießt einen Erdhaufen wohin der Nutzer es will # Blasts a chunk of earth wherever the user wants it to go
+  EarthShot: Hebe einen Erdhaufen aus dem Boden um ihn auf deine Gegner zu werfen. Du kannst nach dem Werfen die Flugbahn beeinflussen oder den Block vor dem Werfen zu Magma schmelzen # Pull a chunk of earth from the ground to throw at your enemies. After throwing you can control its movement. You can also melt it into a block of magma before throwing
+  Combo-WeakeningJab: WeakeningJab placeholder here
+  Combo-Twister: Create a twister to suck up and blow away your opponents!
+  Bloodbending: 'Erlaubt dem Nutzer das Blut in anderen Spielern und Kreaturen zu Bändigen' # Allows the user to manipulate other players and mobs with their bending
+  AirScooter: 'Erlaubt dem Nutzer Auf einer Luftkugel zu reiten um sich schneller fortzubewegen' # Allows the user to ride a ball of air to scale across terrain fast
+  Combo-Immobilize: Friere deine Gegner für ein paar Sekunden ein! # Freeze your enemies for a few seconds!
+  IceBreath: Nutze deinen Atem um Wasser und kreaturen einzufrieren # Use your breath to freeze water and mobs
+  BloodPuppet: Ermöglicht die Manipulation von Kreaturen und Spielern, damit sie sich gegenseitig schaden # Allows the manipulation of mobs and players to make them damage each other
+  Accretion: Werfe mehrere Erdblöcke auf deinen Gegner. Für jeden Block, der trifft wird er verlangsamt # Throw multiple chunks of Earth towards an enemy slowing them for each block that hits them
+  Combo-FireKick: Erzeugt einen Feuerbogen an deinen Füßen # Create a small arc of fire from your feet!
+  MetalHook: Erlaubt dem Bändiger sich mit Metallbändigen einen Greifhaken zu machen um sich an Oberflächen ran zu ziehen # Allows the bender to use metalbending to hook or grapple onto a surface and pull themselves in
+  PhaseChange: Erlaubt dem Nutzer Wasser zu gefrieren und Eis zu schmelzen # Allows the user to freeze and melt water
+  Onslaught: Stürme auf dein Ziel zu während du es mit deiner dunklen Energie korrumpierst # Charge towards your target while corrupting them with your dark energy
+  Paralyze: Erlaubt dem Nutzer andere Bändiger zu paralysieren # Allows the user to paralyze other benders and block their bending
+  Combo-Nightmare: Infiziere alles um dich herum mit negativer Energie # Infect everything around you with negative energy to debuff them for a while
+  Agility: Schieße nach vorne mit Links-Klick oder steige auf indem du schleichst. # Dash with left click or soar with sneak!
+  Shackle: Fange deinen Angreifer in einem Feld aus dunkler Energie # Trap your attacker in a field of dark energy while you get away
+  EarthKick: Erlaubt dem Nutzer die Erde zu treten um mehrere Haufen auf seine Gegner zu schleudern # Allows the user to kick the earth and hurl chunks at their opponent
+  Flight: Erlaubt dem Nutzer frei durch die Luft zu fliegen # Allows the user to fly freely in the sky
+  WaterManipulation: Erlaubt dem Nutzer Wasser auf ein Ziel zu schießen # Allows the user to fire water at a target
+  EarthGrab: Erlaubt dem Nutzer andere Kreaturen und Spieler mit Erde zu fangen # Allows the user to trap other mobs and players in earth
+  Strike: Stürme auf dein Ziel zu und beiße es. Diese Fähigkeit lässt dich sofort über deinem Ziel erscheinen # Rush up to your target and bite them. This will make you appear above the target instantly
+  Meditate: Erlaubt dem Nutzer für eine kurze Zeit stärker zu werden # Allows the user to become stronger for short periods of time after meditating
+  AirBreath: Verstärke deinen Atem um andere Kreaturen wegzustoßen # Releases a powerful breath of air that knocks back your target
+  SandBlast: Schießt Sand auf ein Ziel, was es temporär erblinden lässt # Blasts sand towards an enemy, temporarily blinding them
+  Combo-SwiftStream: Ziehe Feinde mit dir durch die Luft während du fliegst # Pull all enemies along with you as you fly!
+  Combo-AirSweep: Erzeuge einen Luftstrom, der deine Feinde von den Füßen haut # Create a sweeping current of air that can sweep enemies off their feet!
+  Combo-ChiblockJab: ChiblockJab placeholder here
+  Combustion: Erzeuge mit deinen Gedanken ein Projektil, was bei Berührung explodiert # Creates a fire-like projectile with their the user's mind
+  Combo-IceBullet: Erschaffe einen Eisdom, der Eissplitter schießen kann # Make a dome of ice and that can shoot shards of ice!
+  Combo-FireWave: Erzeuge eine riesige Feuerwand, die wächst während sie sich vorwärts bewegt # Create a massive wall of fire that advances forward and grows in size
+  Combo-IceDrill: IceDrill placeholder here
+  Alleviate: Heile dich und andere indem du alle negativen Effekte entfernst und Regeneration und Nachtsicht gibst # Heal yourself or others by clearing all negative effects and giving regen and night vision
+  MagmaSlap: MagmaSlap placeholder here
+  Surge: Erzeugt eine Welle oder einen Schild aus Wasser oder Eis # Creates a wave or a shield of water and ice
+  RazorLeaf: Drehe Blätter extrem schnell um sie extrem scharf und gefährlich zu machen # Spin leaves around really fast to make them extremely sharp and dangerous
+  Tornado: Erzeugt einen Tornado, welcher andere Nutzer bewegt # Creates a tornado of air that will misplace other users
+  LavaFlow: Erzeugt einen Lavasee aus der Erde um dich herum oder an dem Punkt auf den du guckst # Turns earth into a pool or lava or creates a ring of lava around the user
+  Intoxicate: Opfere deine Gesundheit um dein Ziel mit hoch toxischer Energie zu beeinflussen # Sacrifice your health to imbue your target with extremely toxic energy
+  Backstab: Treffe einen Spieler am Rücken um sein Chi zu blocken und hohen schaden zu machen # Hit the user in their back to block their chi and deal a lot of damage
+  EarthLine: Zieht eine Linie aus gehobener Erde, welche allen Kreaturen und Spielern schadet # Creates a line of risen earth that inflicts damage on all mobs and players that it hits
+  Blaze: Erzeugt einen mächtigen Ring aus Feuer um dich herum # Releases a powerful ring of fire around you
+  PlantArmor: Erlaubt dem Nutzer aus Blättern Rüstung zu machen # Allows the user to create basic armor for themselves with leaves
+  AcrobatStance: Macht den Nutzer schneller und stärker verbraucht aber mehr Energie # Makes the users faster and stronger but uses more energy in the process
+  AvatarState: Nutzer im Avatarzustand sind stärker als normale Bändiger. Ihr Bändigen ist um ein Vielfaches Stärker und sie nehmen deutlich weniger Schaden durch Angriffe. # Users in the Avatar State are much more powerful than normal benders. Their bending power is multiplied heavily and they take far less damage from attacks.
+  Combo-AirSlam: Trete deinen Gegner in die Luft und trete ihn weg! # Kick your enemy up in the air then kick them away!
+  Combo-AirStream: Erzeugt einen Luftstrom, welcher von dem Spieler für eine Weile kontrolliert werden kann # Creates a current of air that can be controlled by the player for a while
+  EarthSmash: Erlaubt dem Nutzer einen Großen Haufen Erde zu nehmen und zu werfen # Allows the user to grab a huge chunk of earth and throw it
+  Combo-EarthDome: Umringe dich (oder andere) mit Erde zum Schutz # Surround yourself (or others) in earth for protection
+  Jab: Jab placeholder here
+  Collapse: Zieht Erde runter # Collapses or pulls down the earth
+  WallOfFire: Erzeuge eine Wand aus Feuer, die alle Projektile und Kreaturen abhält # Creates wall of fire that blocks all incoming projectiles and mobs
+  AirShield: Erzeuge einen Schild aus Luft # Shield yourself from everything using air
+  Combo-IceWave: Gefriere deine WaterWave # Freeze your WaterWave to damage enemies that you hit!
+  Vanish: Löse dich in Luft auf und tauche eine bestimmte Distanz später wieder auf # Vanish into thin air and reappear a distance away
+  Orb: Platziere einen Orb positiver Energie, der allem schadet, das ihm zu nah kommt # Place an orb of positive energy that harms anything that crosses it
+  EarthGuard: EarthGuard placeholder here
+  LavaDisc: Schmelze einen Erdblock in eine Lavascheibe, die geworfen werden kann # Melts a block of earth into a disk of lava that can be thrown
+  LightningBurst: Erlaubt dem Nutzer einen Blitz zu laden und ihn in alle Richtungen loszulassen # Allows the user to charge lightning and release it in all directions at once
+  Bolt: Lade einen mächtigen Blitz auf, um ihn auf dein Ziel zu schießen # Charge a powerful lightning to be released on your target
+  SonicWave: SonicWave placeholder here
+  AirGlide: Erlaubt dem Nutzer zu gleiten statt zu fallen # Allows the user to glide down safely instead of falling
+  LavaDisk: LavaDisk placeholder here
+  Corruption: Rufe dunkle Geister um das Land und andere Geister zu infizieren # Summon Dark Spirits to spread corruption to the land and other spirits
+  Safeguard: Erzeuge einen Schild um dich zu schützen, während du dich bewegst # Create a personal shield to protect you as you move
+  Combo-EarthPillars: Werfe andere Spieler in die Luft indem du plötzlich die Erde unter ihnen hebst # Send players flying into the air by raising the earth bellow them suddenly
+  SonicBlast: Erzeuge einen ohrenbeteubenden Knall, welcher hohen Schaden an anderen Kreaturen macht # Creates an ear-piecing sonicblast that does high damage to other mobs and players
+  ChargeBolt: ChargeBolt placeholder here
+  IceSpike: Ziehe eine Eisspitze unter deinem Gegner hervor # Pulls a spike of ice up from bellow your enemy
+  MetalShred: Erlaubt dem Nutzer eine Metallwand zu zerfetzen um durchgehen zu können # Allows the user to shred a metal wall to gain access through it
+  BloodRip: Reiße Lebewesen das Blut aus Körper # Rip the blood out of living things with bloodbending
+  Combo-Rejuvenate: Markiere den Boden mit positiever Energie, welche andere heilt, aber dunklen Geistern schadet # Mark the ground with positive energy that heals others but damages dark spirits
+Display:
+  Choose:
+    LightSpirit:
+      Lore: '&7Ein Lichtgeist ist ein Geist, welcher reich an Energie und in perfektem Gleichgewicht ist. Weil sie Wesen reiner Energie sind, können sie anders mit der Welt interagieren als materielle Wesen.' # '&7A Light Spirit is a spirit rich in energy that is perfectly balanced. Because they are a being pure of energy, they are able to interact with the world differently to other beings'
+      Title: '&bWähle &3&lLICHTGEIST' # '&bChoose &3&lLIGHT SPIRIT'
+    DarkSpirit:
+      Title: '&9Wähle &3&lDUNKLER GEIST' # '&9Choose &3&lDARK SPIRIT'
+      Lore: '&7Ein Dunkler Geist ist ein Geist welcher von dunkler Energie und von Chaos-Energie befallen wurde. Weil sie Wesen reiner Energie sind, können sie anders mit der Welt interagieren als materielle Wesen.' # '&7A Dark Spirit is a spirit corrupted by dark and chaotic energy. Because  they are a being pure of energy, they are able to interact with the world differently to other beings'
+    Earth:
+      Title: '&aWähle &2&l{ELEMENT}' '&aChoose &2&l{ELEMENT}'
+      Lore: '&7Earthbenders can manipulate almost anything natrual from the earth. Earthebenders take no fall damage while landing on blocks they can bend and some skilled benders can even bend sand, metal or lava!'
+    Water:
+      Title: '&9Wähle &1&l{ELEMENT}' # '&9Choose &1&l{ELEMENT}'
+      Lore: '&7Wasserbändiger können alles manipulieren, was Wasser in sich hat, was Pflanzen, Eis und natürlich Wasser betrifft. Sie können außerdem extrem schnell schwimmen und Wasser nach belieben gefrieren.' # '&7Waterbenders can manipulate anything with water in them, including ice, plants and of course, water. They can freeze and thaw ice at will, and can also swim extremely fast in water.'
+    PermRemoved:
+      Admin: Dem Spieler wurde die Fähigkeit zu bändigen permanent entfernt! # This player has had their bending permanently removed!
+      Self: Du kannst kein Element wählen, da dein Bändigen permanent entfernt wurde! # You cannot choose an element because your bending has been permanently removed!
+    Confirm:
+      'Nein' # 'No':
+        Title: '&c&lNEIN' # '&c&lNO'
+        Lore: '&7Kehre zum vorherigen Menü zurück' # '&7Return to the previous menu'
+      'Ja' # 'Yes':
+        Title: '&a&lJA' # '&a&lYES'
+        Lore: '&7Bist du sicher, dass du {elementcolor}{element} &7wählen willst? Du kannst deine Entscheidung nicht mehr ändern!' # '&7Are you sure you want to choose {elementcolor}{element}&7? This cannot be changed!'
+      Title: '{Element} wählen?' # Choose {element}?
+    NoPerm: Du hast keine Erlaubnis dieses Element zu wählen! # You don't have permission to choose this element!
+    Chi:
+      Lore: '&7Chi-Blocken ist zwar kein Element, aber es ist eine Kampfkunst, die den Nutzer schneller und agiler macht als andere Bändiger. Chi-Blocker sind in der Lage ihre Feinde zu paralysieren und temporär ihr Bändigen zu nehmen.' # '&7Chiblocking isn''t stricly an element but it is a form of art that makes the user faster and more agile than other benders. Chiblockers can paralyze other benders, take their bending away and can fight extremely well.'
+      Title: '&eWähle &6&l{ELEMENT}' # '&eChoose &6&lCHIBLOCKER'
+    Air:
+      Title: '&fWähle &7&l{ELEMENT}' # '&fChoose &7&l{ELEMENT}'
+      Lore: '&7Luftbändiger sind in der Lage Luft zu manipulieren, was sie extrem schnell und agil macht. Außerdem haben Luftbändiger eine stärkere Verbindung zu der Geisterwelt.' # '&7Airbenders can manipulate air at will, making them extremely fast and agile and have a powerful connection with spirits. They can also jump higher, run faster and they take no fall damage when they hit the ground.'
+    Fire:
+      Lore: '&7Feuerbändiger können Feuer mit bloßen Händen erzeugen. Sie haben eine höhere Resistenz zu Feuer und sind in manchen Fällen komplett immun. Manche begabte Feuerbändiger können sogar Blitze erzeugen.' # '&7Firebenders can create fire with their bare fists. They are more prone to fire based damage and in some cases are completely fire resistant. Some skilled firebenders can even create lightning, making them very dangerous.'
+      Title: '&cWähle &4&l{ELEMENT}' # '&cChoose &4&l{ELEMENT}'
+    Title: Bitte wähle ein Element # Please select an element!
+  Main:
+    Slot:
+      Disabled:
+        Toggled: '&cBändigen ist deaktiviert' # '&cBending is disabled!'
+        Multi: '&c&lDU KANNST DEINE FÄHIGKEITEN GERADE NICHT BEARBEITEN!\n&r&7Du verwendest eine Multi-Fähigkeit und musst erst aufhören sie zu benutzen!' # '&c&lYOU CANNOT EDIT YOUR BINDS RIGHT NOW!\n&r&7You are using a multi-ability move and must stop\n&7using it before you can bind again!'
+        ToggledLore: '&7Aktiviere dein Bändigen zum Verwenden!' # '&7Enable bending to use again!'
+      Empty:
+        Lore: '&7Es sind keine Fähigkeiten an diesen Slot gebunden!\n\n&7Klicke eine Fähigkeit und einen Slot um die Fähigkeit an den Slot zu binden!' # '&7Nothing is currently bound to this slot!\n\n&7Click a move and click a slot to bind!'
+        Title: '&cSlot {slot} &7(Leer)' # '&cSlot {slot} &7(Empty)'
+      Full:
+        Lore: '&7In Verwendung: {abilitycolor}&l{ability}\n\n&7Klicke eine Fähigkeit und einen Slot um die Fähigkeit an den Slot zu binden.' # '&7Currently bound: {abilitycolor}&l{ability}\n\n&7To bind a new move, click a move then click\n&7the slot you want to bind it to.'
+        Title: '{abilitycolor}Slot {slot} &7({abilitycolor}{ability}&7)'
+      Remove: '&c&lKLICKE UM ZU ENTFERNEN!\n&r&7Klicke um {ability} von dem Slot zu entfernen!' # '&c&lCLICK TO REMOVE!\n&r&7Click to remove {ability} from this slot!'
+      Selected: '&a&lIN VERWENDUNG!\n&r&7Klicke auf eine Fähigkeit um sie an diesen Slot zu binden' # '&a&lCURRENTLY SELECTED!\n&r&7Click a move to bind to this slot!'
+      Offline: '&c&lDU KANNST NICHT DAS BÄNDIGEN EINES SPIELERS BEARBEITEN, DER OFFLINE IST!\n&r&7Du kannst nicht das Bändigen eines Spielers bearbeiten, der offline ist!' # '&c&lCANNOT MODIFY BENDING OF OFFLINE PLAYERS!\n&r&7You can''t modify the bending of players that are offline!'
+      Info: '&e&lKLICK FÜR MEHR INFO!\n&r&7Klicke um mehr Informationen anzuzeigen!' # '&e&lCLICK FOR MORE INFO!\n&r&7Click to display more information about this move!'
+    Remove:
+      'Aus' # 'Off':
+        Lore: '&7Erlaubt dir Fähigkeiten aus ihren Slots zu entfernen.\n&7Klicke um zu aktivieren\n&7UMSCHALT+Klick um alle Fähigkeiten zu entfernen' # '&7Allows you to remove bound moves to {their|your} slots.\n&7Click to turn on\n&7SHIFT click to remove all your bound moves'
+        Title: '&cEntfernen-Werkzeug &7(Aus)' # '&cRemoval Tool &7(Off)'
+      'An' # 'On':
+        Lore: '&7Erlaubt dir Fähigkeiten aus ihren Slots zu entfernen.\n&7Klicke um zu deaktivieren\n&7UMSCHALT+Klick um alle Fähigkeiten zu entfernen' # '&7Allows you to remove bound moves to {their|your} slots.\n&7Click to turn off again\n&7SHIFT click to remove all your bound moves'
+        Title: '&cEntfernen-Werkzeug &7(An)' # '&cRemoval Tool &7(On)'
+      AbilityLore: '&c&lSCHALTE DAS ENTFERNEN-WERKZEUG UM\n&c&lBEVOR DU NEUE FÄHIGKEITEN AUSRÜSTEST!\n&r&7Du musst das Werkzeug ausschalten\n&r&7bevor du wieder Fähigkeiten ausrüsten kannst' # '&c&lTOGGLE THE REMOVAL TOOL BEFORE\nREBINDING!\n&r&7You must turn off the unbind tool before you\ncan rebind moves again'
+    Presets:
+      Title: '&Voreinstellungen' # '&eView Presets'
+      Lore: '&7Sehe, lade, oder erstelle Voreinstellungen für {their|your} Fähigkeiten' # '&7View, bind or create presets for {their|your} binds'
+    Overview:
+      Element:
+        Metal: Metallbändigen # Metalbend
+        Ice: Eisbändigen # ''
+        Healing: Heilen # Heal
+        Blood: Blutbändigen # Bloodbend
+        Sand: Sandbändigen # Sandbend
+        BlueFire: Benutzt Blaues Feuer # use Blue Fire
+        Spirit: '&3Geist' # '&3Spirit'
+        Lightning: Benutzt Blitz # use Lightning
+        DarkSpirit: '&9Dunkler Geist' # '&9DarkSpirit'
+        Combustion: Brand # Combust
+        Air: '&7Luftbändiger' # '&7Airbender'
+        Sound: Schallbändigen # Soundbend
+        Earth: '&aErdbändiger' # '&aEarthbender'
+        Lava: Lavabend
+        Chi: '&6Chiblocker'
+        LightSpirit: '&bLicht Geist' # '&bLightSpirit'
+        Water: '&9Wasserbändiger' # '&9Waterbender'
+        Flight: Flug # Fly
+        Fire: '&cFirebender'
+        Spiritual: Spirituelle Projektion # Spiritually Project
+        Plant: Pflanzenbändigen # Plantbend
+      Lore:
+        AvatarSelf: '&5Du bist der Avatar!' # '&5You are the avatar!'
+        Avatar: '&5Dieser Spieler ist der Avatar!' # '&5They are the avatar!'
+        Who: '&e&lKlicke um das Bändigen eines anderen Spielers zu sehen' # '&e&lClick to view other players bending'
+        SubList: '(Kann {list})' # (Can {list})
+        AdminWho: '&e&lKlicke um das Bändigen eines anderen Spielers\n&e&lzu sehen und zu bearbeiten' # '&e&lClick to view and edit other \n&e&lplayers bending'
+        ElementPrefix: '&7Momentan:' # '&7{they|you} are currently {a}:'
+      Title:
+        Others: '&e{player}s Bändigen' # '&e{player}''{s} Bending'
+        Self: '&eDein Bändigen' # '&eYour Bending'
+    Board:
+      'An' # 'On':
+        Lore: '&7Klicke um das Bending Board umzuschalten' # '&7Click to toggle the bending board'
+        Title: '&aSchalte das Bending Board um &7(AKTIV)' # '&aToggle BendingBoard &7(ACTIVE)'
+      'Aus' # 'Off':
+        Lore: '&7Klicke um das Bending Board umzuschalten' # '&7Click to toggle the bending board'
+        Title: '&cSchalte das Bending Board um &7(INAKTIV)' # '&cToggle BendingBoard &7(INACTIVE)'
+    Ability:
+      Remove: '&c&lSCHALTE DAS ENTFERNEN-WERKZEUG VORHER UM!\n&r&7Du musst das Entfernen-Werkzeug erst deaktivieren\n&7bevor du neue Fähigkeiten verwenden kannst' # '&c&lTOGGLE THE REMOVAL TOOL BEFORE\n&c&lREBINDING!\n&r&7You must turn off the unbind tool before you\n&7can rebind moves again'
+      Selected: '&aIN VERWENDUNG\n&r&7Klicke auf einen Slot , an den Diese Fähigkeit gebunden werden soll' # '&a&lCURRENTLY SELECTED\n&r&7Click a slot to bind to this move to!'
+      Info: '&e&lKLICKE FÜR MEHR INFORMATIONEN!\n&r&7Klicke um mehr Informationen zu dieser Fähigkeit anzuzeigen!' # '&e&lCLICK FOR MORE INFO!\n&r&7Click to display more information about this move!'
+    Change:
+      Title: '&eElement ändern' # '&eChange Element'
+      LoreTime: '&7Du kannst dein Element in {time} ändern' # '&7You can change your element in: {time}'
+      Lore: '&7Ändere dein haupt Element' # '&7Change your main bending element'
+    Title: Optionen # Bending Options
+    Bind:
+      AbilityLore: '&a&lIN VERWENDUNG\n&r&7Klicke aud einen Slot, an den diese Fähigkeit gebunden werden soll!' # '&a&lCURRENTLY SELECTED\n&r&7Click a slot to bind to this move to!'
+    Combos:
+      Lore: '&7Sehe die verfügbaren Combos' # '&7View the available combos'
+      Title: '&eSehe die Combos' # '&eView Combos'
+    ComboAbility:
+      Title: '{abilitycolor}{ability} (Combo)'
+    Toggle:
+      'Aus' # 'Off':
+        Lore: '7Klicke um {their|your} Bändigen wieder zu aktivieren' # '&7Click to re-enable {their|your} bending'
+        Title: '&aBändigen aktivieren' # '&aEnable Bending'
+      'An' # 'On':
+        Title: 'Bändigen deaktivieren' # '&cDisable Bending'
+        Lore: '&7Klicke um {their|your} Bändigen zu deaktivieren' # '&7Click to disable {their|your} bending'
+    Edit:
+      Title: '&eElemente hinzufügen/entfernen' # '&eAdd/Remove Elements'
+      Lore: '&7Bearbeite die Elemente, die gebändigt werden' # '&7Edit the elements {player|you} can bend'
+    Info:
+      'Aus' # 'Off':
+        Title: '&eFähigkeiten Hilfe &7(Aus)' # '&eMove Help Tool &7(Off)'
+        Lore: '&7Wenn aktiviert, klicke auf eine Fähigkeit um mehr Informationen anzuzeigen. \n&7Klicke um zu aktivieren' # '&7When toggled on, click on an ability for more information.\n&7Click to turn on'
+      'An' # 'On':
+        Lore: '&7Wenn aktiviert, klicke auf eine Fähigkeit um mehr Informationen anzuzeigen. \n&7Klicke um zu deaktivieren' # '&7When toggled on, click on an ability for more information.\n&7Click to turn off again'
+        Title: '&eFähigkeiten Hilfe &7(An)' # '&eMove Help Tool &7(On)'
+  Players:
+    You: '&e{player} &8(Du)' # '&e{player} &8(You)'
+    Back:
+      Title: '&eKehre zum Bändigen-Menü zurück' # '&eReturn to bending menu'
+      Lore: '&7Klicke um zum Bändigen-Menü zurück zukehren' # '&7Click to return to bending menu'
+    Offline: '&7{player}'
+    ToggleOffline:
+      'Aus' # 'Off':
+        Title: '&cVerstecke Spieler, die offline sind' # '&cHide Offline Players'
+        Lore: '&7Klicke um Spieler zu verstecken, die offline sind' # '&7Click to hide offline players'
+      'An' # 'On':
+        Title: '&cZeige Spieler, die offline sind' # '&cShow Offline Players'
+        Lore: '&7Klicke um Spieler zu zeigen, die offline sind' # '&7Click to show offline players'
+    NonBender: '&7(Nicht-Bändiger)' # '&7(Non-bender)'
+    Admin:
+      ChooseClick: '&c&lKLICKE UM DAS BÄNDIGEN DES SPIELERS ZU SEHEN' # '&c&lCLICK TO CHOOSE THEIR BENDING'
+      Click: '&c&lKLICKE UM BÄNDIGEN ZU SEHEN' # '&c&lCLICK TO VIEW BENDING'
+    Title: Bändigen eines anderen Spielers # Other Player's Bending
+    Online: '&e{player}'
+  Presets:
+    Slot:
+      Empty:
+        Title: '&cSlot {slot} &7(Leer)' # '&cSlot {slot} &7(Empty)'
+        Lore: '&7Nichts ist an diesen Slot gebunden!' # '&7Nothing is currently bound to this slot!'
+      Full:
+        Title: '{abilitycolor}Slot {slot} &7({abilitycolor}{ability}&7)' # '{abilitycolor}Slot {slot} &7({abilitycolor}{ability}&7)'
+        Lore: '&7In Verwendung: {abilitycolor}{ability}' # '&7Currently bound: {abilitycolor}{ability}'
+    Delete:
+      Confirm:
+        'Nein' # 'No':
+          Lore: '&7Kehre zum Voreinstellung-Menü zurück' # '&7Return to the preset menu'
+          Title: '&c&lNEIN' # '&c&lNO'
+        'Ja' # 'Yes':
+          Lore: '&7Das wird die Voreinstellung für immer löschen! (Eine sehr lange Zeit!)' # '&7This will delete the preset forever! (A very long time!)'
+          Title: '&a&lJA' # '&a&lYES'
+        Title: Lösche die Voreinstellung '{preset}' # Delete preset '{preset}'?
+      'An' # 'On':
+        Title: '&cLösche eine Voreinstellung &7(&eAn&7)' # '&cDelete a preset &7(&eOn&7)'
+        Lore: '&7Lösche eine Voreinstellung für immer\n\n&c&lKLICKE UM EINE VOREINSTELLUNG ZU LÖSCHEN' # '&7Delete an existing preset forever\n\n&c&lCLICK A PRESET TO DELETE'
+      'Aus' # 'Off':
+        Title: '&cLösche eine Voreinstellung &7(Aus)' # '&cDelete a preset &7(Off)'
+        Lore: '&7Lösche eine Voreinstellung für immer\n\n&eKlicke hier und dann auf eine Voreinstellung um sie zu löschen' # '&7Delete an existing preset forever\n\n&eClick this and then click a preset to delete it'
+    Title: 'Auswahl' # Preset Selector
+    Create:
+      Confirm:
+        Title: Erstelle Voreinstellung '{preset}'? # Create preset '{preset}'?
+        'Nein': # 'No':
+          Lore: '&7Return to the preset menu'
+          Title: '&c&lNO'
+        'Ja': # 'Yes':
+          Lore: '&7Das wird eine Voreinstellung basierend auf {their|your} aktuellen Fähigkeiten' # '&7This will create a new preset using {their|your} current binds'
+          Title: '&a&lJA' # '&a&lYES'
+      Lore: '&7Erstelle eine Voreinstellung basierend auf {their|your} aktuellen Fähigkeiten' # '&7Make a new preset based on {their|your} current binds'
+      Title: '&eErstelle eine neue Voreinstellung' # '&eCreate a new preset'
+    Global:
+      DeleteLore: '&cDu kannst keine globale Voreinstellung löschen!' # '&cYou can''t delete a global preset!'
+      BoundLore: '&aIn Verwendung' # '&aCurrently bound'
+      Title: '&9Server Voreinstellung: &c{presetcolor}{preset}' # '&9Server Preset: &c{presetcolor}{preset}'
+      BindLore: '&e&lKlicke um die Voreinstellung zu laden' # '&e&lClick to bind this preset!'
+      Lore: 'Diese Voreinstellung wurde von dem Server definiert\n\n&e> {slot1}\n&e> {slot2}\n&e> {slot3}\n&e> {slot4}\n&e> {slot5}\n&e> {slot6}\n&e> {slot7}\n&e> {slot8}\n&e> {slot9}' # '&7This is a preset defined by the server\n\n&e> {slot1}\n&e> {slot2}\n&e> {slot3}\n&e> {slot4}\n&e> {slot5}\n&e> {slot6}\n&e> {slot7}\n&e> {slot8}\n&e> {slot9}'
+      Empty: '&8(Leer)' # '&8(Empty)'
+    Preset:
+      BoundLore: '&a&lIn Verwendung' # '&a&lCurrently bound'
+      Title: '&c{presetcolor}{preset}'
+      BindLore: '&e&lKlicke um diese Voreinstellung zu laden!' # '&e&lClick to bind this preset!'
+      Empty: '&8(Leer)' # '&8(Empty)'
+      DeleteLore: '&c&lKlicke um die Voreinstellung zu entfernen!' # '&c&lClick to delete this preset!'
+      Lore: '&e> {slot1}\n&e> {slot2}\n&e> {slot3}\n&e> {slot4}\n&e> {slot5}\n&e> {slot6}\n&e> {slot7}\n&e> {slot8}\n&e> {slot9}'
+    Empty:
+      Title: '&7Keine Voreinstellungen :(' # '&7No Presets :('
+      Lore: '&8Du hast keine Voreinstellungen. Möchtest du welche erstellen?' # '&8You don''t have any presets. Want to make some?'
+    Max:
+      Lore: '&7Du kannst keine weiteren Voreinstellungen erstellen! \n&7Du musst erst eine Voreinstellung entfernen!' # '&7You cannot create anymore presets! You must\n&7delete an existing one before another one\n&7can be created'
+      Title: '&eVoreinstellung erstellen' # '&eCreate Preset'
+  Errors:
+    CantEditNow: '&cDu kannst deine Fähigkeiten gerade nicht bearbeiten!' # '&cYou cannot edit your binds right now!'
+    SlotOutOfRange: '&cFehler: Der slot ist außer Reichweite! Bitte informiere StangeOne101 darüber!' # '&cError: Slot binding out of range! Please contact StrangeOne101 about this!'
+    NoAbilName: '&4Fehler: &cDie Fähigkeit existiert nicht! Bitte informiere StrangeOne101 darüber!' # '&4Error: &cMove doesn''t exist! Please contact StrangeOne101 about this!'
+    MaxPresets: '&cDu kannst nicht mehr als {max} Voreinstellungen erstellen!' # '&cYou cannot create anymore than {max} presets!'
+    NoTouchy: '&cDu kannst hier nichts ändern!' # '&cThe bending gui cannot be tampered with!'
+    NoBinds: '&cDu kannst keine leere Voreinstellung erstellen' # '&cYou cannot create a preset without any binds!'
+    ClickEvent: 'Beim verarbeiten des ClickEvent ist ein Fehler aufgetreten. Bitte kontaktiere einen Server-Admistrator oder Plugin-Entwickler' # '&cAn error occurred while processing the clickevent. Please report this to your admin or the plugin developer!'
+    Disabled: '&cEs gibt momentan ein Problem mit BendingGUI. Bitte kontaktiere einen Administrator!' # '&cThere is a problem with BendingGUI at the moment. Please contact your admin!'
+    InvalidPresetName: '&cDer Name ist ungültig! Der Name darf weder Leerzeichen noch Sonderzeichen haben!' # '&cInvalid preset name! It must have no spaces or special characters!'
+    NoAbilityDescription: '&c✯ ✯ ✯ Die Fähigkeit hat noch keine Beschreibung! Nerve deinen Server-Administrator damit! ✯ ✯ ✯' # '&7✯ ✯ ✯ This move doesn''t have a description set! Bug your server owner about it! ✯ ✯ ✯'
+    FailedToOpen: '&cBeim Öffnen des Bending-Interface ist ein Fehler aufgetreten. Bitte kontaktiere den Server-Administrator oder den Plugin-Entwickler!' # '&cAn error occurred while trying to open the bending interface. Please report this to your admin or the plugin developer!'
+    DupePreset: '&cDu hast bereits eine Voreinstellung mit dem Namen {preset}!' # '&cYou already have a preset named {preset}!'
+  Common:
+    Page:
+      Back:
+        Title: 'Kehre zum Bändigen Menü zurück' # '&eReturn to bending menu'
+        Lore: 'Klicke um wieder zum Bändigen Menü zu gehen' # '&7Click to return to the bending menu'
+      Next:
+        Lore: 'Klicke um zu der nächsten Seite zu gehen' # '&7Click to go to the next page of moves'
+        Title: '&eNächste Seite &7(&e{current}&7/&e{max}&7)' # '&eNext Page &7(&e{current}&7/&e{max}&7)'
+      Previous:
+        Lore: '&7Klicke um zu der vorherigen Seite zu gehen' # '&7Click to go to the previous page of moves'
+        Title: '&eVorherige Seite &7(&e{current}&7/&e{max}&7)' # '&ePrevious Page &7(&e{current}&7/&e{max}&7)'
+  Edit:
+    RemoveAll:
+      Confirm:
+        'Nein' # 'No':
+          Title: '&c&lNEIN' # '&c&lNO'
+          Lore: '&7Kehre zu dem Element Menü zurück' # '&7Return to the element menu'
+        'Ja': # 'Yes':
+          Lore: '&7Bist du sicher, dass du alle Elemente von {player|you} entfernen willst?' # '&7Are you sure you want to remove all {player|your} elements?'
+          Title: '&a&lJA' # '&a&lYES'
+        Title: 'Bist du sicher?' # Are you sure?
+      Lore: '&eDas wird alle vorhanden Elemente entfernen!' # '&eThis will remove all {player|your} existing elements'
+      Title: '&cEntferne alle Elemente' # '&cRemove All Elements'
+    Element:
+      Title: '{elementcolor}&l{element}'
+      Lore:
+        HasNot: '&7Klicke um &e{player|yourself} &7einen {elementcolor}{element}{bender}&7 zu machen!' # '&7Click to make &e{player|yourself} &7{a} {elementcolor}{element}{bender}&7!'
+        Has: '&7Klicke um &e{player|your} {elementcolor}{element}{bending}&7 zu entfernen!' # '&7Click to take away &e{player|your} {elementcolor}{element}{bending}&7!'
+    Title: 'Bearbeite {player|your} Elemente' # Edit {player|your} elements
+    Back:
+      Title: '&eZurück' # '&eBack'
+      Lore: '&7Kehre zum vorherigen Menü zurück' # '&7Return to the previous menu'
+Chat:
+  Edit:
+    Remove:
+      Admin: '&e{player} is kein {elementcolor}{element}{bender}&e mehr!' # '&e{player} is no longer {a} {elementcolor}{element}{bender}&e!'
+      Self: '&eDein {elementcolor}{element}{bending}&e wurde entfernt' # '&eYour {elementcolor}{element}{bending}&e has been removed!'
+    Admin:
+      Offline: '&cDu kannst nicht das Bändigen von einem Spieler bearbeiten, der offline ist!' # '&cYou can''t edit an offline players bending right now!'
+    Add:
+      Admin: '&e{player} ist jetzt {a} {elementcolor}{element}{bender}&e!' # '&e{player} is now {a} {elementcolor}{element}{bender}&e!'
+      Self: '&eDu bist jetzt {a} {elementcolor}{element}{bender}!' # '&eYou are now {a} {elementcolor}{element}{bender}&e!'
+    NoPermission: '&cDu hast keine Erlaubnis das Bändigen dieses Spielers zu bearbeiten!' # '&cYou don''t have permission to edit this player''s bending!'
+    RemoveAll:
+      Self: '&cDeine Elemente wurden entfern! Du musst ein neues Element wählen, wählen um wieder zu bändigen.' # '&cYour elements have been removed! You will need to choose a new element to bend again!'
+      Admin: '&c{player}s Elemente wurden entfernt!' # '&c{player}''{s} elements have been removed!'
+  Command:
+    NoPlayer: '&cBeim Finden des Spielers ist ein Fehler aufgetreten!' # '&cError while finding player!'
+    AlreadyChosen: '&cDu hast dieses Element bereits!' # '&cYou have already chosen an element!'
+    Usage: '&eBefehlsverwendung ist /gui oder /gui <choose/version/reload> oder /gui [Spieler]' # '&eCommand usage is /gui or /gui <choose/version/reload> or /gui [player]'
+    PlayerOnly: '&cTut mir Leid Kumpel! Wenn du kein Spieler bist kannst du diesen Befehl nicht ausführen!' # '&cSorry bud! Only players can run this command!'
+    Reload: '&eBendingGUI wurde neu geladen!' # '&eBendingGUI Reloaded!'
+    GiveItem: '&aRight click the compass to configure your bending!'
+    VersionWarning: '&cEs kann nicht garantiert werden, dass diese ProjectKorra version unterstützt ist.' # '&cSupport for this version of ProjectKorra is not guaranteed.'
+    Version: '&eBendingGUI läuft auf Version {version}, für ProjectKorra Version {pkversion}' # '&eBendingGUI is version {version}, for ProjectKorra version {pkversion}'
+    NoEditPermission: '&cDu hast keine Erlaubnis das Bändigen eines anderen Spielers zu bearbeiten!' # '&cYou don''t have permission to edit other players bending!'
+    NoPermission: '&cDu hast keine Erlaubnis diesen Befehl auszuführen!' # '&cYou don''t have permission to run this command!'
+  Toggle:
+    Admin:
+      'Aus': '&cDu hast {player}s Bändigen deaktiviert!' # 'Off': '&cYou toggled {player}''{s} bending off!'
+      'An': '&aDu hast {player}s Bendingen aktiviert!' # 'On': '&aYou toggled {player}''{s} bending on!'
+      NoPermission: '&cDu hast keine Erlaubnis das Bändigen dieses Spielers umzuschalten!' # '&cYou don''t have permission to toggle this player''s bending!'
+    NoPermission: '&cDu hast keine Erlaubnis dein Bändigen umzuschalten!' # '&cYou don''t have permission to toggle your bending!'
+    Player:
+      'An': 'Dein Bändigen wurde aktiviert.' # 'On': '&aYour bending has been toggled back on.'
+      'Aus': '&cDein Bändigen wurde deaktiviert. Du wirst nicht in der Lage die meisten deiner Fähigkeiten einzusetzen bis du es wieder aktivierst.' # 'Off': '&cYour bending has been toggled off. You will not be able to use most abilities until you toggle it back.'
+  Choose:
+    Admin:
+      NoPermission: '&cDu hast keine Erlaubnis das Bändigen dieses Spielers zu bestimmen!' # '&cYou don''t have permission to choose this player''s bending!'
+      PermaRemoved: '&cDem Spieler wurde für immer sein Bändigen genommen' # '&cThis player has had their bending permanently removed!'
+    ChooseNow: '&aDu bist noch kein bändiger! Bitte wähle ein Element!' # '&aYou aren''t a bender yet! Please choose an element!'
+    PermaRemoved: '&cDu kannst kein Element wählen, da dein Bändigen für immer entfernt wurde!' # '&cYou cannot choose an element because your bending has been permanently removed!'
+    Rechoose:
+      NoPermission: '&cDu hast keine Erlaubnis dein Element zu ändern' # '&cYou don''t have permission to change your element!'
+    NoPermissionElement: '&cDu hast keine Erlaubnis dieses Element zu wählen!' # '&cYou don''t have permission to choose this element!'
+    CantChoose: '&cDu musst ein Element haben um dein Bändigen zu modifizieren!' # '&cYou must have an element to modify your bending!'
+    ChangeCooldown: '&cYou kannst dein Element erst wieder in {time} ändern!' # '&cYou cannot change your element for another {time}!'
+    Success:
+      Admin: '&e{player} is now {a} {elementcolor}{element}{bender}&e!' # '&e{player} is now {a} {element}{bender}&e!'
+      Self: '&eDu bist jetzt {a} {elementcolor}{element}{bender}&e!' # '&eYou are now {a} {elementcolor}{element}{bender}&e!'
+  Presets:
+    MaxPresets: '&cDu kannst nicht mehr als {max} Voreinstellungen haben!' # '&cYou cannot create anymore than {max} presets!'
+    DupePreset: '&cDu hast bereits eine Voreinstellung mit dem Namen {preset}!' # '&cYou already have a preset named {preset}!'
+    InvalidPresetName: '&cDer eingegebene Name ist ungültig! Der Name darf weder Leerzeichen noch Sonderzeichen beinhalten!' # '&cInvalid preset name! It must have no spaces or special characters!'
+    Create:
+      Prompt: '&eBitte gib den Name für {player|your} new preset unten ein oder schreibe "abbrechen"!' # '&ePlease enter the name for {player|your} new preset bellow, or type "cancel"!'
+      CancelInput: abbrechen
+      Timeout: '&cDie Erstellung der Voreinstellung wurde wegen Timeout/Inakitivität abgebrochen' # '&cPreset creation canceled due to timeout/inactivity'
+      Success: '&aNeue Voreinstellung &{presetcolor}{color} &aerstellt' # '&aNew preset &e{presetcolor}{preset}&a created!'
+    NoBinds: '&cDu kannst keine leere Voreinstellung erstellen!' # '&cYou cannot create a preset without any binds!'
+    CantBind: '&cKann keine Voreinstellung laden, die Fähigkeiten enthält die du nicht nutzen kannst! Hast du dein Element geändert?' # '&cCannot bind a preset filled with abilities you cannot use! Did you change element?'
+    BindFailed: '&eDu hast die Voreinstellung {presetcolor}{preset} &egeladen' # '&eYou have bound your {presetcolor}{preset} &epreset!'
+    Delete: '&eDu hast {player|your} {presetcolor}{preset} &eVoreinstellung gelöscht!' # '&eYou deleted {player|your} {presetcolor}{preset} &epreset!'
+    Bind: '&eDu hast die Voreinstellung {presetcolor}{preset} &egeladen!' # '&eYou have bound your {presetcolor}{preset} &epreset!'
+  Bind:
+    RemoveAll: '&cAlle Fähigkeiten wurden von deinen Slots entfernt!' # '&cRemoved all bound moves from slots!'
+    Ability: '{abilitycolor}{ability} &ewurde an Slot {slot} gebunden!' # '{abilitycolor}{ability} &ebound to slot {slot}!'
+    Remove: '{abilitycolor}{ability} &c wurde von Slot {slot} entfernt!' # '&cRemoved {abilitycolor}{ability}&c from slot {slot}!'
+  Board:
+    Offline: '&aKann das Bending Board nicht umschalten, wenn der Spieler offline ist' # '&aCan''t toggle an offline player''s bending board.'
+  Combo:
+    Help: '&l{abilitycolor}{ability} (Combo) -' # '&l{abilitycolor}{ability} (Combo) -'
+Staff:
+  Mist: '&4ProjectKorra Gründer' # '&4ProjectKorra Founder'
+  Admin: '&4ProjectKorra Administrator'
+  Contributor: '&5ProjectKorra Beitragender' # '&5ProjectKorra Contributor'
+  Developer: '&5ProjectKorra Entwickler' # '&5ProjectKorra Developer'
+Generic:
+  NoElementBending: ' Element' # ' element'
+  List1: '{item}'
+  List2: '{item} und {item}' # '{item} and {item}'
+  List3: '{item}, {item} und {item}' # '{item}, {item} and {item}'
+  List4: '{item}, {item}, {item} und {item}' # '{item}, {item}, {item} and {item}'
+  Yourself: dich # yourself
+  Your: dein # your
+  A: ein # a
+  An: ein # an
+  Their: sein/ihre # their
+  They: er/sie # they
+  You: du # you
+Item:
+  Lore: '&7Rechts-Klick um dein Bändigen zu konfigurieren' # '&7Right click to configure your bending!'
+  Title: '&aBändigen konfigurieren' # '&aConfigure Bending'
