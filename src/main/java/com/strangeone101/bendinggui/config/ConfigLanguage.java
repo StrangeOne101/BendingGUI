@@ -492,6 +492,50 @@ public class ConfigLanguage extends ConfigBase {
 		abilities.put("Combo-IceWave", "Freeze your WaterWave to damage enemies that you hit!");
 		
 		abilities.put("Combo-Immobilize", "Freeze your enemies for a few seconds!");
+		
+		// New Ability descriptions
+        	// Water
+        	abilities.put("IceBreath", "Use your breath to freeze water and mobs");
+        	abilities.put("RazorLeaf", "Spin leaves around really fast to make them extremely sharp and dangerous");
+
+		// Combos
+		abilities.put("Combo-MistShards", "Evaporate water and freeze parts of it to throw ice at your enemies");
+
+		// Earth
+		abilities.put("EarthGlove",
+			"Throw a glove of earth at your enemies to grab them. You can also destroy other gloves");
+		abilities.put("Crumble", "Turn earth into sand");
+		abilities.put("MetalCable",
+			"Allows you to either pull yourself to your target or the target to you. You can also throw the target in the direction you are looking");
+		abilities.put("Shrapnel", "Throw iron or gold nuggets at your enemies");
+		abilities.put("Bulwark", "Raise a shield of earth in front of you");
+		abilities.put("EarthShot",
+			"Pull a chunk of earth from the ground to throw at your enemies. After throwing you can control its movement. You can also melt it into a block of magma before throwing");
+		abilities.put("Accretion",
+			"Throw multiple chunks of Earth towards an enemy slowing them for each block that hits them");
+
+		// Fire
+		abilities.put("ArcSpark", "shoots lightning in the direction you are looking");
+		abilities.put("FireDisc", "Hurls a spinning disc of fire at your target. It can also cut through some blocks");
+		abilities.put("Bolt", "Charge a powerful lightning to be released on your target");
+
+		// Combos
+		abilities.put("Combo-FireWave", "Create a massive wall of fire that advances forward and grows in size");
+
+		// Air
+		abilities.put("Zephyr", "Use air to slow the fall of you and entities around you");
+		abilities.put("GaleGust", "Create a strong wind to blow away enemies");
+		abilities.put("Evade", "Manipulate the air around you to quickly eveade incoming attacks");
+
+		// Combos
+		abilities.put("Combo-AirWheel",
+			"An improved version of AirScooter allowing the user to be much up to twice as fast as the regular AirScooter");
+
+		// Chi
+		abilities.put("NinjaStance", "Allows a chiblocker to become faster and more ninja-like");
+
+		// Combos
+		abilities.put("Combo-FlyingKick", "Jump in the air and kick your target");
 
 		for (CoreAbility ability : CoreAbility.getAbilities()) {
 			if (ability instanceof PassiveAbility || ability.isHiddenAbility()) continue;
