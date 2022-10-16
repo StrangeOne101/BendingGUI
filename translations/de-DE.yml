@@ -9,24 +9,24 @@ Abilities:
   IceWall: Erschaft eine Eiswand vor dem Nutzer # Creates a wall of ice in front of the user
   Combo-Sanctuary: Erschaffe eine schützende Barriere, die auch deine Licht Geister stärkt # Create a protective barrier that also buffs your fellow Light Spirits
   FirePunch: Erlaubt dem Nutzer mit nur einem Schlag, einen Gegner zu schaden und ihn in Brand zu setzen # Allows the user to damage and set fire to their enemy with just one punch
-  Deafen: Deafen placeholder here
-  CombustBeam: CombustBeam placeholder here
+  Deafen: Lasse einen Spieler taub werden, indem du die Schallwellen um ihn herum bändigst # Cause a player to go deaf by bending the sound waves around them
+  CombustBeam: Schieße einen Energiestrahl aus deiner Stirn # Fire a beam of energy from your forehead
   Combo-Pandemonium: Korrumpiert den freien Willen aller Einheiten um dich herum, indem sie ins Zentrum der Fähigkeit gezogen werden # Corrupts the free will of all entities around you by pulling them towards the center of this ability
   LavaThrow: Erlaubt dem Nutzer Lavawellen auf sein Ziel zu schleudern # Allows the user to hurl waves of lava at a target
   AirSwipe: Lässt einen größeren Windstoß frei, welcher Gegenstände und Kreaturen wegstößt  # Releases a wider gust of air, pushing mobs and items
-  PlantWhip: Schafft eine Rebe von Blättern, die schnell ein Ziel peitschen können
+  PlantWhip: Schafft eine Rebe von Blättern, die schnell ein Ziel peitschen können # Creates a vine of leaves that can quickly whip a target
   Shadow: Verwandle dich in Dunkelheit um allem auszuweichen während du durch die Dunkelheit streichst # Transform yourself into the darkness to evade everything as you blip through the darkness instantly
   Combo-Maelstrom: Sauge alles und jeden in einen tiefen Strudel! # Suck everyone and everything up in a deep whirlpool!
-  EnergyBeam: EnergyBeam placeholder here
+  EnergyBeam: EnergyBeam placeholder here # An ability only to be used by the avatar. it allows the user to focus their energy into a destructive beam
   Combo-FireWheel: Schleudere ein drehendes Rad aus Feuer auf deine Gegner # Hurl a spinning wheel of fire towards your enemies!
-  VocalMimicry: VocalMimicry placeholder here
+  VocalMimicry: Bändige deine eigenen Schallwellen, um jedes Geräusch zu immitieren # Bend your own sound waves to mimic any sound
   EarthGlove: Greife deine Gegner mit einem Handschuh aus Erde. Du kannst auch andere Handschuhe zerstören # Throw a glove of earth at your enemies to grab them. You can also destroy other gloves
-  Combo-EarthShards: EarthShards placeholder here
+  Combo-EarthShards: Mache kleine Erdsplitter aus deinen Erdhandschuhen # Turn your earth gloves into multiple tiny shards
   QuickWeld: Nutze das Metall in deinem Inventar um deine Werkzeuge zu reparieren # Use the metal in your inventory to repair your metal tools
   Shelter: Erschaffe einen sicheren Ort für dich und einen anderen Spieler # Create a safe haven for you or another player for a while
-  Combo-Levitation: Levitation placeholder here
+  Combo-Levitation: Benutze deine Essenz, indem du dich selbst schwächst um in die Leere einzutreten und Wind zu werden # Use your essence by weakening yourself to enter the void and become wind
   OctopusForm: Bendige das Wasser um dich herum in Form eines Oktopus # Creates a octopus of water around the user
-  LavaSurge: LavaSurge placeholder here
+  LavaSurge: Wirf eine Lavawelle in die Richtung, in die du guckst # Throw a wave of lava in the direction you are looking
   RapidPunch: Erlaubt dem Nutzer schneller anzugreifen und während der Schaden erhöht wird # Allows the user to attack faster while dealing more damage
   MagnetShield: Stößt alle Metallobjekte ab, die auf den Nutzer zuschleudern # Repels all metal objects hurling towards the user
   Smokescreen: Setzt Rauch frei und lässt alle nahen Spieler erblinden # Releases smoke and blinds all nearby players
@@ -37,7 +37,7 @@ Abilities:
   Tremorsense: Erlaubt es den Nutzer Luftlöcher (Höhlen) in der Nähe zu sehen # Allows the user to see nearby airpockets (caves)
   Combo-WaterFlow: Erschaffe einen riesigen Strom aus Wasser, welcher deine Feinde wegfegt # Create a huge torrent of water that can sweep away your enemies!
   Zephyr: Nutze Luft um deinen und den Fall anderer zu verlangsamen # Use air to slow the fall of you and entities around you
-  Electrify: Electrify placeholder here
+  Electrify: Setze Metalle und Wasser unter Strom # Electrify metallic blocks and water
   DaggerThrow: Erlaubt den Nutzer einen Pfeilhagel auf sein Ziel zu feuern # Allows the user to rapidfire arrows towards a target
   Extraction: Erlaubt dem Nutzer Metalle direkt aus dem Erz zu ziehen # Allows the user to extract metals directly from the ore
   GaleGust: Erzeuge einen starken wind um Feinde wegzustoßen # Create a strong wind to blow away enemies
@@ -58,11 +58,11 @@ Abilities:
   Combo-FireSpin: Erschaffe einen riesigen Ring aus Feuer um dich herum, welcher Schaden macht und einen hohen Rückstoß hat # Create a huge ring of fire around you that does damage and huge knockback!
   Illumination: Erlaubt dem Nutzer eine Flamme zu halten und dadurch im Dunkeln zu sehen # Allows the bender to see by holding a flame
   Enlightenment: Erleuchte dich und andere Licht Geister um euch zu stärken # Enlighten you and other light spirits in the area to power everyone up
-  Combo-FlameBreath: FlameBreath placeholder here
+  Combo-FlameBreath: Lässt den Nutzer Feuer atmen und die Luft um das Feuer herum explodieren # Enables the user to breath fire and combust the air around it at will
   HealingWaters: Erlaubt dem Nutzer sich oder andere mit Wasser zu heilen #  Allows the user to heal with water
   Combo-JetBlaze: Erzeuge eine stärkere Flamme unter deinem FireJet wenn du ihn benutzt # Blaze it up as you launch from your powerful FireJet!
   HeatControl: Erlaubt dem Nutzer Feuer zu löschen und selber nicht zu brennen # Allows the user to put out fire and not burn
-  Explode: Explode placeholder here
+  Explode: Erzeuge eine Explosion wo du hinguckst # Cause an explosion where you are looking
   BanBlaze: Lade einen tödlichen Admin-Angriff auf welcher jeden Nutzer "Bannt", der getroffen wird # Charge up a deadly admin-blast that 'bans' any user it hits!
   Torrent: Erschafft einen Ring aus Wasser um den Nutzer, welcher dazu verwendet werden kann Ziele wegzudrücken oder einzufrieren # Creates a ring of water around the user which can be used to freeze targets or push them away
   FireBall: Erschafft einen Feuerball, welcher auf andere Spieler geworfen werden kann # Creates a fireball that can be cast towards a user
@@ -89,7 +89,7 @@ Abilities:
   WakeFishing: Erlaubt dem Nutzer sein Bändigen zu nutzen um zu Fischen # Allows the user to use waterbending to fish
   Combo-Awakening: Rufe Licht Geister zur Hilfe, die dich im Kampf gegen dunkle Geister unterstützen # Summon Light Spirits to your aid that will assist you against other Dark Spirits
   EarthArmor: Nutze Erde als Rüstung über einen kurzen Zeitraum # Uses earth as armor for short periods of time
-  Combo-TurboJet: TurboJet placeholder here
+  Combo-TurboJet: Mache deine Jets noch stärker indem du all deine Kraft auf einmal einsetzt # Make your Jets more powerful by releasing all your power at once
   FireComet: Lade deinen Schuss mit der Kraft eines Kometen auf um ihn auf deine Gegner zu werfen # Charge up the power of an entire comet to throw towards your enemies
   LightBeam: Lade deine positive Energy in einen tödlichen Strahl # Charge up your positive energy to release a deadly beam
   FireBlast: Feuert einen Ball aus Feuer auf deinen Gegner # Blasts a ball of fire towards your enemy
@@ -100,9 +100,9 @@ Abilities:
   Combo-Skyrocket: Schieße dich selbst in die Luft bevor die mit einem tödlichen Aufprall auf die Erde zurückschießt # Skyrocket yourself into the air before slamming back to earth with a deadly impactschmelzen
   Combo-JetBlast: Starte deinen FireJet mit einem lauten Knall # Launch with a boom as your launch with a powerful FireJet!
   AirPunch: Erlaubt dem Nutzer in kurzen Abständen mit Luftstößen zu schlagen # Allows the user to punch in rapid succession with blasts of air
-  Dig: Dig placeholder here
+  Dig: Grabe dich wie ein Maulwurfdachs durch die Erde # Dig yourself through the earth like badgermoles
   FireJet: Nutze dein Feuer um über kurze Distanzen zu fliegen # Allows the user to fly for short distances with fire
-  Combo-RockSlide: RockSlide placeholder here
+  Combo-RockSlide: Rutsche über die Erde # Slide over the earth
   AirBlast: Lässt einen Luftstoß frei, der alle Kreaturen und Gegenstände wegstößt # Releases a blast of air that pushes all mobs and items
   QuickStrike: Erlaubt dem Nutzer schnell anzugreifen. Es ist möglich dabei das Chi des Ziels zu blockieren # Allows the user to attack quickly with a chance to chi block the target
   Combo-MagmaBlast: Werfe Magmabälle auf deine Gegner! # Throw balls of magma at your enemies!
@@ -111,24 +111,24 @@ Abilities:
   FrostBreath: Erlaubt dem Nutzer seinen Atem zu gefrieren um Zielen zu schaden und sie zu verlangsamen # Allows the user to freeze their breath, damaging and slowing their targets
   SwiftKick: Schadet dem Ziel und hat eine hohe Chance sein Chi zu blockieren, wenn der Nutzer in der Luft ist # Damages the target with a high chance of blocking their chi, if the user is in the air
   WaterBubble: Erlaubt dem Nutzer sich unter Wasser in einer Luftblase fortzubewegen # Allows the user to travel underwater with a bubble of air around them
-  Combo-LeafStorm: LeafStorm placeholder here
+  Combo-LeafStorm: Nutze deine Pflanzenrüstung um einen Sturm aus Blättern um dich zu erzeugen # Use your plant armor to create a storm of leaves around you
   Combo-Phase: Du kannst dich selbst dematerialisieren um durch jede Wand gehen zu können # Dematerialize yourself to be able to phase through any kind of wall
   FireShots: Schieße viele kurze Feuerbälle auf ein Ziel # Allows the user to cast multiple and short fireballs towards a target
-  Combo-Tailwind: Tailwind placeholder here
+  Combo-Tailwind: Erzeuge Rückenwind um schneller zu werden # Create a tailwind to become faster
   Discharge: Erzeuge Elektrizität um deine Ziele zu grillen # Creates a powerful bolt of electricity to fry your targets
   Possess: Du kannst besitz von einer anderen Person ergreifen um ihr von Innen zu schaden # Jump inside the body of another to possess and harm them
   WaterSpout: Erlaubt dem Nutzer auf einem Turm aus Wasser zu stehen # Allows the user to stand on a spout of water
   SpiritBeam: Lässt einen mächtigen Strahl als Avatargeist frei. Der Nutzer muss im Avatarzustand sein. # Releases a powerful blast as the spirit of the avatar. The user must be in the AvatarState to use this move.
   LavaFlux: Erzeugt eine Lavawelle die auf ein Ziel geschleudert werden kann # Creates a wave of lava that can be hurled towards a target
-  IceCrawl: IceCrawl placeholder here
+  IceCrawl: Schieße eine dünne Eislinie nach vorne # Launch a narrow line of ice forward
   FireBreath: Erlaubt dem Nutzer Feuer zu atmen # Allows the user to breathe a powerful breath of fire
   MetalClips: Erlaubt dem Nutzer Metalscheiben auf ein Ziel zu werden und es zu fangen # Allows the user to fire slices of metal at a target and capture them
-  Jets: Jets placeholder here
+  Jets: Erzeuge Düsen unter deinen Füßen um zu schweben oder zu fliegen # Create a jet below your feet to fly or hover
   AirBlade: Erzeugt eine mächtige Luftklinge # Creates a powerful blade of air that damages mobs and players
   EarthBlast: Schießt einen Erdhaufen wohin der Nutzer es will # Blasts a chunk of earth wherever the user wants it to go
   EarthShot: Hebe einen Erdhaufen aus dem Boden um ihn auf deine Gegner zu werfen. Du kannst nach dem Werfen die Flugbahn beeinflussen oder den Block vor dem Werfen zu Magma schmelzen # Pull a chunk of earth from the ground to throw at your enemies. After throwing you can control its movement. You can also melt it into a block of magma before throwing
-  Combo-WeakeningJab: WeakeningJab placeholder here
-  Combo-Twister: Create a twister to suck up and blow away your opponents!
+  Combo-WeakeningJab: Schwäche die Verteidigung deines Gegners # Damage your enemies defences
+  Combo-Twister: Erzeuge einen Wirbel um deine Gegner wegzublasen # Create a twister to suck up and blow away your opponents!
   Bloodbending: 'Erlaubt dem Nutzer das Blut in anderen Spielern und Kreaturen zu Bändigen' # Allows the user to manipulate other players and mobs with their bending
   AirScooter: 'Erlaubt dem Nutzer Auf einer Luftkugel zu reiten um sich schneller fortzubewegen' # Allows the user to ride a ball of air to scale across terrain fast
   Combo-Immobilize: Friere deine Gegner für ein paar Sekunden ein! # Freeze your enemies for a few seconds!
@@ -153,13 +153,13 @@ Abilities:
   SandBlast: Schießt Sand auf ein Ziel, was es temporär erblinden lässt # Blasts sand towards an enemy, temporarily blinding them
   Combo-SwiftStream: Ziehe Feinde mit dir durch die Luft während du fliegst # Pull all enemies along with you as you fly!
   Combo-AirSweep: Erzeuge einen Luftstrom, der deine Feinde von den Füßen haut # Create a sweeping current of air that can sweep enemies off their feet!
-  Combo-ChiblockJab: ChiblockJab placeholder here
+  Combo-ChiblockJab: Ein Jab mit einer hohen Chance das Chi deines Gegners zu blockieren # A jab with a high chance of blocking your opponents chi
   Combustion: Erzeuge mit deinen Gedanken ein Projektil, was bei Berührung explodiert # Creates a fire-like projectile with their the user's mind
   Combo-IceBullet: Erschaffe einen Eisdom, der Eissplitter schießen kann # Make a dome of ice and that can shoot shards of ice!
   Combo-FireWave: Erzeuge eine riesige Feuerwand, die wächst während sie sich vorwärts bewegt # Create a massive wall of fire that advances forward and grows in size
-  Combo-IceDrill: IceDrill placeholder here
+  Combo-IceDrill: Erzeuge eine riesige Eisspitze um durch Blöcke zu bohren # Create a massive spike of ice to drill through blocks
   Alleviate: Heile dich und andere indem du alle negativen Effekte entfernst und Regeneration und Nachtsicht gibst # Heal yourself or others by clearing all negative effects and giving regen and night vision
-  MagmaSlap: MagmaSlap placeholder here
+  MagmaSlap: Wirf Magma auf deine Gegner, um sie in die Luft zu werfen # Throw magma at your enemies throwing them in the air
   Surge: Erzeugt eine Welle oder einen Schild aus Wasser oder Eis # Creates a wave or a shield of water and ice
   RazorLeaf: Drehe Blätter extrem schnell um sie extrem scharf und gefährlich zu machen # Spin leaves around really fast to make them extremely sharp and dangerous
   Tornado: Erzeugt einen Tornado, welcher andere Nutzer bewegt # Creates a tornado of air that will misplace other users
@@ -175,25 +175,25 @@ Abilities:
   Combo-AirStream: Erzeugt einen Luftstrom, welcher von dem Spieler für eine Weile kontrolliert werden kann # Creates a current of air that can be controlled by the player for a while
   EarthSmash: Erlaubt dem Nutzer einen Großen Haufen Erde zu nehmen und zu werfen # Allows the user to grab a huge chunk of earth and throw it
   Combo-EarthDome: Umringe dich (oder andere) mit Erde zum Schutz # Surround yourself (or others) in earth for protection
-  Jab: Jab placeholder here
+  Jab: Eine Fundamentale Fähigkeit um deine Gegner oft zu schlagen # A basic ability to quickly punch your opponents
   Collapse: Zieht Erde runter # Collapses or pulls down the earth
   WallOfFire: Erzeuge eine Wand aus Feuer, die alle Projektile und Kreaturen abhält # Creates wall of fire that blocks all incoming projectiles and mobs
   AirShield: Erzeuge einen Schild aus Luft # Shield yourself from everything using air
   Combo-IceWave: Gefriere deine WaterWave # Freeze your WaterWave to damage enemies that you hit!
   Vanish: Löse dich in Luft auf und tauche eine bestimmte Distanz später wieder auf # Vanish into thin air and reappear a distance away
   Orb: Platziere einen Orb positiver Energie, der allem schadet, das ihm zu nah kommt # Place an orb of positive energy that harms anything that crosses it
-  EarthGuard: EarthGuard placeholder here
+  EarthGuard: Bändige Metall oder Erde um Rüstung zu machen # Bend earth or metal to form armor
   LavaDisc: Schmelze einen Erdblock in eine Lavascheibe, die geworfen werden kann # Melts a block of earth into a disk of lava that can be thrown
   LightningBurst: Erlaubt dem Nutzer einen Blitz zu laden und ihn in alle Richtungen loszulassen # Allows the user to charge lightning and release it in all directions at once
   Bolt: Lade einen mächtigen Blitz auf, um ihn auf dein Ziel zu schießen # Charge a powerful lightning to be released on your target
-  SonicWave: SonicWave placeholder here
+  SonicWave: Erschaffe Ultraschallwellen, die Übelkeit erzeugen, wenn eine Kreatur davon getroffen wird # Create ultrasonic waves that cause nausea when an entity is hit
   AirGlide: Erlaubt dem Nutzer zu gleiten statt zu fallen # Allows the user to glide down safely instead of falling
-  LavaDisk: LavaDisk placeholder here
+  LavaDisk: Erschaffe eine Scheibe aus geschmolzener Erde, die deinen Befehlen folgt # Create a disk of molten earth to follow your command
   Corruption: Rufe dunkle Geister um das Land und andere Geister zu infizieren # Summon Dark Spirits to spread corruption to the land and other spirits
   Safeguard: Erzeuge einen Schild um dich zu schützen, während du dich bewegst # Create a personal shield to protect you as you move
   Combo-EarthPillars: Werfe andere Spieler in die Luft indem du plötzlich die Erde unter ihnen hebst # Send players flying into the air by raising the earth bellow them suddenly
   SonicBlast: Erzeuge einen ohrenbeteubenden Knall, welcher hohen Schaden an anderen Kreaturen macht # Creates an ear-piecing sonicblast that does high damage to other mobs and players
-  ChargeBolt: ChargeBolt placeholder here
+  ChargeBolt: Lade Elektrizität, um sie in mächtigen Blitzen zu entladen # Charge up electricity to be released in powerful bolts
   IceSpike: Ziehe eine Eisspitze unter deinem Gegner hervor # Pulls a spike of ice up from bellow your enemy
   MetalShred: Erlaubt dem Nutzer eine Metallwand zu zerfetzen um durchgehen zu können # Allows the user to shred a metal wall to gain access through it
   BloodRip: Reiße Lebewesen das Blut aus Körper # Rip the blood out of living things with bloodbending

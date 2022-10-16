@@ -425,6 +425,7 @@ public class ConfigLanguage extends ConfigBase {
 		abilities.put("Possess", "Jump inside the body of another to possess and harm them");
 		abilities.put("Vanish", "Vanish into thin air and reappear a distance away");
 		abilities.put("Combo-Phase", "Dematerialize yourself to be able to phase through any kind of wall");
+		abilities.put("Combo-Levitation", "Use your essence by weakening yourself to enter the void and become wind");
 
 		//Light Spirits
 		abilities.put("Shelter", "Create a safe haven for you or another player for a while");
@@ -493,49 +494,72 @@ public class ConfigLanguage extends ConfigBase {
 		
 		abilities.put("Combo-Immobilize", "Freeze your enemies for a few seconds!");
 		
-		// New Ability descriptions
-        	// Water
-        	abilities.put("IceBreath", "Use your breath to freeze water and mobs");
-        	abilities.put("RazorLeaf", "Spin leaves around really fast to make them extremely sharp and dangerous");
-
-		// Combos
-		abilities.put("Combo-MistShards", "Evaporate water and freeze parts of it to throw ice at your enemies");
-
-		// Earth
-		abilities.put("EarthGlove",
-			"Throw a glove of earth at your enemies to grab them. You can also destroy other gloves");
-		abilities.put("Crumble", "Turn earth into sand");
-		abilities.put("MetalCable",
-			"Allows you to either pull yourself to your target or the target to you. You can also throw the target in the direction you are looking");
-		abilities.put("Shrapnel", "Throw iron or gold nuggets at your enemies");
-		abilities.put("Bulwark", "Raise a shield of earth in front of you");
-		abilities.put("EarthShot",
-			"Pull a chunk of earth from the ground to throw at your enemies. After throwing you can control its movement. You can also melt it into a block of magma before throwing");
-		abilities.put("Accretion",
-			"Throw multiple chunks of Earth towards an enemy slowing them for each block that hits them");
-
-		// Fire
-		abilities.put("ArcSpark", "shoots lightning in the direction you are looking");
-		abilities.put("FireDisc", "Hurls a spinning disc of fire at your target. It can also cut through some blocks");
-		abilities.put("Bolt", "Charge a powerful lightning to be released on your target");
-
-		// Combos
-		abilities.put("Combo-FireWave", "Create a massive wall of fire that advances forward and grows in size");
-
-		// Air
-		abilities.put("Zephyr", "Use air to slow the fall of you and entities around you");
-		abilities.put("GaleGust", "Create a strong wind to blow away enemies");
+		// Hyperion abilities
 		abilities.put("Evade", "Manipulate the air around you to quickly eveade incoming attacks");
 
-		// Combos
-		abilities.put("Combo-AirWheel",
-			"An improved version of AirScooter allowing the user to be much up to twice as fast as the regular AirScooter");
+		abilities.put("EarthGlove", "Throw a glove of earth at your enemies to grab them. You can also destroy other gloves");
+		abilities.put("MetalCable", "Allows you to either pull yourself to your target or the target to you. You can also throw the target in the direction you are looking");
+		abilities.put("EarthShot", "Pull a chunk of earth from the ground to throw at your enemies. After throwing you can control its movement. You can also melt it into a block of magma before throwing");
+		abilities.put("LavaDisk", "Create a disk of molten earth to follow your command");
+		abilities.put("EarthGuard", "Bend earth or metal to form armor");
+		
+		abilities.put("Bolt", "Charge a powerful lightning to be released on your target");
 
-		// Chi
+		abilities.put("IceBreath", "Use your breath to freeze water and mobs");
+		abilities.put("IceCrawl", "Launch a narrow line of ice forward");
+
+		// Hyperion Combos
+		abilities.put("Combo-AirWheel", "An improved version of AirScooter allowing the user to be much up to twice as fast as the regular AirScooter");
+
+		abilities.put("Combo-FireWave", "Create a massive wall of fire that advances forward and grows in size");
+		
+		abilities.put("Combo-IceDrill", "Create a massive spike of ice to drill through block");
+
+		// ProjectAddons abilities
+		abilities.put("Zephyr", "Use air to slow the fall of you and entities around you");
+		abilities.put("GaleGust", "Create a strong wind to blow away enemies");
+		abilities.put("SonicWave", "Create ultrasonic waves that cause nausea when an entity is hit");
+		abilities.put("Deafen", "Cause a player to go deaf by bending the sound waves around them");
+
+		abilities.put("Bulwark", "Raise a shield of earth in front of you");
+		abilities.put("Accretion", "Throw multiple chunks of Earth towards an enemy slowing them for each block that hits them");
+		abilities.put("Shrapnel", "Throw iron or gold nuggets at your enemies");
+		abilities.put("Crumble", "Turn earth into sand");
+		abilities.put("MagmaSlap", "Throw magma at your enemies throwing them in the air");
+		abilities.put("Dig", "Dig yourself through the earth like badgermoles");
+		abilities.put("LavaSurge", "Throw a wave of lava in the direction you are looking");
+
+		abilities.put("FireDisc", "Hurls a spinning disc of fire at your target. It can also cut through some blocks");
+		abilities.put("ArcSpark", "shoots lightning in the direction you are looking");
+		abilities.put("ChargeBolt", "Charge up electricity to be released in powerful bolts");
+		abilities.put("Jets", "Create a jet below your feet to fly or hover");
+		abilities.put("Explode", "Cause an explosion where you are looking");
+		abilities.put("Electrify", "Electrify metallic blocks and water");
+		abilities.put("CombustBeam", "Fire a beam of energy from your forehead");
+
+		abilities.put("RazorLeaf", "Spin leaves around really fast to make them extremely sharp and dangerous");
+
 		abilities.put("NinjaStance", "Allows a chiblocker to become faster and more ninja-like");
+		abilities.put("Jab", "A basic ability to quickly punch your opponents");
+		
+		abilities.put("EnergyBeam", "An ability only to be used by the avatar. it allows the user to focus their energy into a destructive beam");
 
-		// Combos
+		// ProjectAddons combos
+		abilities.put("Combo-Tailwind", "Create a tailwind to become faster");
+		abilities.put("VocalMimicry", "Bend your own sound waves to mimic any sound");
+		
+		abilities.put("Combo-RockSlide", "Slide over the earth");
+		abilities.put("Combo-EarthShards", "Turn your earth gloves into multiple tiny shards");
+		
+		abilities.put("Combo-TurboJet", "Make your Jets more powerful by releasing all your power at once");
+		abilities.put("Combo-FlameBreath", "Enables the user to breath fire and combust the air around it at will");
+		
+		abilities.put("Combo-MistShards", "Evaporate water and freeze parts of it to throw ice at your enemies");
+		abilities.put("Combo-Leafstorm", "Use your plant armor to create a storm of leaves around you");
+
 		abilities.put("Combo-FlyingKick", "Jump in the air and kick your target");
+		abilities.put("Combo-ChiblockJab", "A jab with a high chance of blocking your opponents chi");
+		abilities.put("Combo-WeakeningJab", "Damage your enemies defences");
 
 		for (CoreAbility ability : CoreAbility.getAbilities()) {
 			if (ability instanceof PassiveAbility || ability.isHiddenAbility()) continue;
