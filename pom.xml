@@ -13,8 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <projectkorra.version>ROKU-1.13</projectkorra.version>
-        <maven.compiler.release>8</maven.compiler.release>
+        <projectkorra.version>1.11.3</projectkorra.version>
     </properties>
 
     <build>
@@ -24,7 +23,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
-                    <release>8</release>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -67,12 +67,12 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
+            <version>1.20.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.projectkorra</groupId>
-            <artifactId>projectkorra</artifactId>
+            <artifactId>core</artifactId>
             <version>${projectkorra.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -80,12 +80,6 @@
             <groupId>com.jedk1</groupId>
             <artifactId>jedcore</artifactId>
             <version>2.9.6.2-Spigot1.18-PK1.9.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.xnuminousx</groupId>
-            <artifactId>spirits</artifactId>
-            <version>BETA-1.0.13</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

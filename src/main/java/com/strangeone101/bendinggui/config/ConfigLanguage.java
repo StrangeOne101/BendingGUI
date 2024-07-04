@@ -187,7 +187,7 @@ public class ConfigLanguage extends ConfigBase {
 		defaults.put("Display.Main.Overview.Element.Fire", "&cFirebender");
 		defaults.put("Display.Main.Overview.Element.Chi", "&6Chiblocker");
 		defaults.put("Display.Main.Overview.Element.Flight", "Fly");
-		defaults.put("Display.Main.Overview.Element.SpiritualProjection", "Spiritually Project");
+		defaults.put("Display.Main.Overview.Element.Spiritual", "Spiritually Project");
 		defaults.put("Display.Main.Overview.Element.Sand", "Sandbend");
 		defaults.put("Display.Main.Overview.Element.Metal", "Metalbend");
 		defaults.put("Display.Main.Overview.Element.Lava", "Lavabend");

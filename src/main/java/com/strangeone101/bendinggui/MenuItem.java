@@ -10,7 +10,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
 public abstract class MenuItem{
@@ -59,9 +58,8 @@ public abstract class MenuItem{
         meta.setLore(lore);
         meta.setDisplayName(getText());
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); //So weapons don't show damage, etc. Kinda pointless for UIs
-		meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS); //So effects show on water bottles
 		if (meta instanceof PotionMeta) {
-			((PotionMeta) meta).setBasePotionData(new PotionData(PotionType.WATER));
+			((PotionMeta) meta).setBasePotionType(PotionType.WATER);
 		}
         slot.setItemMeta(meta);
 

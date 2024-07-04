@@ -81,7 +81,7 @@ public class Util {
     public static void addGlow(ItemStack itemStack) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-		itemMeta.addEnchant(Enchantment.LUCK, 1, true);
+		itemMeta.addEnchant(Enchantment.AQUA_AFFINITY, 1, true);
 		itemStack.setItemMeta(itemMeta);
     }
 

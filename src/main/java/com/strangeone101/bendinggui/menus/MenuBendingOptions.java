@@ -99,13 +99,8 @@ public class MenuBendingOptions extends MenuBase
 		CoreAbility ability = CoreAbility.getAbility(move);
 		Element mainElement = ability.getElement();
 		Material mat = ConfigStandard.getInstance().getAbilityIconMaterial(mainElement);
-
-		if (mainElement instanceof SubElement) 
-		{
-			mainElement = ((SubElement)mainElement).getParentElement();
-		}
 		
-		final ChatColor c = BendingGUI.getColor(mainElement);
+		final ChatColor c = ability.getElement().getColor();
 
 		MenuItem item = new MenuItem(c + move, mat) {
 

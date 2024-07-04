@@ -37,7 +37,10 @@ public class ConfigStandard extends ConfigBase {
 	private boolean glow;
 
 	private boolean adminAlerts;
+	private boolean adminModelData;
 	private boolean useItem;
+
+	private int modelDataBase;
 
 	private boolean destroyOnDeath;
 	private boolean destroyOnThrow;
@@ -100,6 +103,9 @@ public class ConfigStandard extends ConfigBase {
 		defaults.put("DisplayIcons.Chi", Material.STICK);
 
 		defaults.put("Admin.Alerts", true);
+		defaults.put("Admin.ShowModelData", false);
+		defaults.put("Admin.BaseModelData", 11070);
+		defaults.put("Admin.UniqueAbilityModelData", true);
 
 		defaults.put("Item.Material", Material.COMPASS);
 		defaults.put("Item.Glow", false);
@@ -178,6 +184,8 @@ public class ConfigStandard extends ConfigBase {
 		}
 
 		adminAlerts = getBoolean("Admin.Alerts");
+		adminModelData = getBoolean("Admin.ShowModelData");
+		modelDataBase = getInteger("Admin.ModelDataBase");
 		useItem = getBoolean("Item.Enabled");
 
 		item = getMaterial("Item.Material");
