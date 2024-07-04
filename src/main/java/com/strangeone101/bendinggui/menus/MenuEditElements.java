@@ -133,6 +133,7 @@ public class MenuEditElements extends MenuBase
 			}
 		};
 		item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Edit.RemoveAll.Lore").yourOrPlayer(thePlayer, openPlayer).plural(thePlayer.getName()).player(thePlayer).toString());
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 33);
 		return item;
 	}
 	
@@ -221,6 +222,7 @@ public class MenuEditElements extends MenuBase
 		String lore = new LangBuilder(key + ".Lore." + (b ? "Has" : "HasNot")).yourOrPlayer(player, openPlayer).anOrA(element.getName()).element(element).player(player).toString();
 
 		item.setDescriptions(Util.lengthSplit(lore, 58));
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + Util.getMagicNumber(element) + 1);
 		if (BendingPlayer.getBendingPlayer(player).hasElement(element)) {
 			item.setEnchanted(true);
 		}
@@ -246,6 +248,7 @@ public class MenuEditElements extends MenuBase
 		};
 		//String s1 = this.prev == null ? "Exit menu and return to your normal inventory" : "Return to the previous menu";
 		item.addDescription(ChatColor.DARK_GRAY + new LangBuilder(key + ".Lore").toString());
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 32);
 		return item;
 	}
 	

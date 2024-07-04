@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Util;
+import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -49,6 +50,7 @@ public class MenuConfirm extends MenuBase
 		};
 		confirm.setDescriptions(Util.lengthSplit(ChatColor.GRAY + this.contextProvider.apply(
 				new LangBuilder("Display." + lang + ".Confirm.Yes.Lore")).toString(), 45));
+		confirm.setModelData(ConfigStandard.getInstance().getModelDataBase());
 		return confirm;
 	}
 	
@@ -63,6 +65,7 @@ public class MenuConfirm extends MenuBase
 			}
 		};
 		cancel.setDescriptions(Util.lengthSplit(ChatColor.GRAY + this.contextProvider.apply(new LangBuilder("Display." + lang + ".Confirm.No.Lore")).toString(), 45));
+		cancel.setModelData(ConfigStandard.getInstance().getModelDataBase());
 		return cancel;
 	}
 }

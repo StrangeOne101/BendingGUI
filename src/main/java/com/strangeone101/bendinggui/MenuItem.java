@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.strangeone101.bendinggui.config.ConfigStandard;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -12,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;
 
-public abstract class MenuItem{
+public abstract class MenuItem {
 
 	protected List<String> lore = new ArrayList<String>();
 	protected MenuBase menu;
@@ -21,6 +23,7 @@ public abstract class MenuItem{
 	protected String text;
 	protected boolean isShiftClicked = false;
 	protected boolean isEnchanted = false;
+	protected int modelData = 0;
 	
 	public MenuItem(String text, Material icon, int number) {
 		this.text = text;
@@ -55,9 +58,17 @@ public abstract class MenuItem{
 	public ItemStack getItemStack() {
 		ItemStack slot = new ItemStack(getIcon(), getNumber());
         ItemMeta meta = slot.getItemMeta();
-        meta.setLore(lore);
+
+		List<String> clonedLore = new ArrayList<>(lore);
+
+		if (ConfigStandard.getInstance().isAdminModelData()) {
+			clonedLore.add(ChatColor.GRAY + "Model Data: " + modelData);
+		}
+
+        meta.setLore(clonedLore);
         meta.setDisplayName(getText());
 		meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES); //So weapons don't show damage, etc. Kinda pointless for UIs
+		meta.setCustomModelData(modelData);
 		if (meta instanceof PotionMeta) {
 			((PotionMeta) meta).setBasePotionType(PotionType.WATER);
 		}
@@ -85,5 +96,13 @@ public abstract class MenuItem{
 	
 	public boolean isShiftClicked() {
 		return this.isShiftClicked;
+	}
+
+	public int getModelData() {
+		return modelData;
+	}
+
+	public void setModelData(int modelData) {
+		this.modelData = modelData;
 	}
 }

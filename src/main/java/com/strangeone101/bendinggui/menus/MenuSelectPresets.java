@@ -20,8 +20,10 @@ import com.strangeone101.bendinggui.BendingGUI;
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.Listener;
 import com.strangeone101.bendinggui.RunnablePlayer;
+import com.strangeone101.bendinggui.Util;
 import com.strangeone101.bendinggui.api.ElementSupport;
 import com.strangeone101.bendinggui.config.ConfigPresets;
+import com.strangeone101.bendinggui.config.ConfigStandard;
 import com.strangeone101.bendinggui.spirits.SpiritsSupport;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -106,6 +108,7 @@ public class MenuSelectPresets extends MenuBase
 				switchMenu(player, previousMenu);
 			}
 		};
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 32);
 		item.setDescriptions(Arrays.asList((ChatColor.GRAY + new LangBuilder("Display.Common.Page.Back.Lore").toString()).split("\n")));
 		this.addMenuItem(item, getInventory().getSize() - 9); //Bottom left
 
@@ -174,6 +177,7 @@ public class MenuSelectPresets extends MenuBase
 			}
 		};
 		item.setDescriptions(lore);
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 2048);
 
 		if (bound) item.setEnchanted(true);
 
@@ -243,6 +247,8 @@ public class MenuSelectPresets extends MenuBase
 			}
 		};
 		item.setDescriptions(lore);
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 2048);
+
 
 		if (bound) item.setEnchanted(true);
 
@@ -290,6 +296,8 @@ public class MenuSelectPresets extends MenuBase
 
 		MenuItem item = new Blank(ChatColor.YELLOW + itemname, mat);
 		item.setDescriptions(Arrays.asList((ChatColor.GRAY + desc).split("\n")));
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + Util.getMagicNumber(CoreAbility.getAbility(move).getElement()) + 256);
+
 		return item;
 	}
 
@@ -306,6 +314,7 @@ public class MenuSelectPresets extends MenuBase
 			}
 		};
 		item.setDescriptions(lore);
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 2049);
 		item.setEnchanted(deleteMode);
 		return item;
 	}
@@ -385,6 +394,7 @@ public class MenuSelectPresets extends MenuBase
 		};
 
 		item.setDescriptions(lore);
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 2050);
 
 		return item;
 	}
@@ -392,6 +402,7 @@ public class MenuSelectPresets extends MenuBase
 	public MenuItem getEmptyPresetThing() {
 		MenuItem item = new Blank(ChatColor.YELLOW + new LangBuilder("Display.Presets.Empty.Title").toString(), Material.GRAY_DYE);
 		item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Presets.Empty.Lore").toString());
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 2051);
 		return item;
 	}
 

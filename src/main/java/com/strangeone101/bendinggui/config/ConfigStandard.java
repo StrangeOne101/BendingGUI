@@ -41,6 +41,7 @@ public class ConfigStandard extends ConfigBase {
 	private boolean useItem;
 
 	private int modelDataBase;
+	private boolean uniqueAbilityModels;
 
 	private boolean destroyOnDeath;
 	private boolean destroyOnThrow;
@@ -156,6 +157,18 @@ public class ConfigStandard extends ConfigBase {
 		return defaults;
 	}
 
+	public boolean isAdminModelData() {
+		return adminModelData;
+	}
+
+	public int getModelDataBase() {
+		return modelDataBase;
+	}
+
+	public boolean isUniqueAbilityModels() {
+		return uniqueAbilityModels;
+	}
+
 	@Override
 	public void load() {
 		if (YamlConfiguration.loadConfiguration(getFile()).contains("General.Description.Fire")) { //Old config
@@ -186,6 +199,7 @@ public class ConfigStandard extends ConfigBase {
 		adminAlerts = getBoolean("Admin.Alerts");
 		adminModelData = getBoolean("Admin.ShowModelData");
 		modelDataBase = getInteger("Admin.ModelDataBase");
+		uniqueAbilityModels = getBoolean("Admin.UniqueAbilityModelData");
 		useItem = getBoolean("Item.Enabled");
 
 		item = getMaterial("Item.Material");

@@ -1,18 +1,31 @@
 package com.strangeone101.bendinggui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.jogamp.common.util.ArrayHashSet;
+import com.projectkorra.projectkorra.Element;
+import com.projectkorra.projectkorra.ability.CoreAbility;
+import com.strangeone101.bendinggui.config.ConfigStandard;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import static com.projectkorra.projectkorra.Element.*;
+
 public class Util {
+
+	private static List<Element> elementMagicNumbers = new ArrayList<>();
+	private static Map<CoreAbility, Integer> abilityMagicNumbers = new HashMap<>();
 	
 	public static String getStaff(UUID id) {
 		String key = "";
@@ -24,7 +37,7 @@ public class Util {
 			case "96f40c81-dd5d-46b6-9afe-365114d4a082":    // Coolade
 			case	"833a7132-a9ec-4f0a-ad9c-c3d6b8a1c7eb": // Jacklin213
 			case	"4eb6315e-9dd1-49f7-b582-c1170e497ab0": // jedk1
-			case	"d7757be8-86de-4898-ab4f-2b1b2fbc3dfa": // StrangeOne101
+
 			case	"3b5bdfab-8ae1-4794-b160-4f33f31fde99": // kingbirdy
 			case	"1c30007f-f8ef-4b4e-aff0-787aa1bc09a3": // Sorin
 			case	"623df34e-9cd4-438d-b07c-1905e1fc46b6": // Loony
@@ -39,14 +52,17 @@ public class Util {
 			case	"9c18ff57-04b3-4841-9726-9d64373d0d65": // coastyo
 			case	"c364ffe2-de9e-4117-9735-6d14bde038f6": // Carbogen
 			case	"9636d66a-bff8-48e4-993e-68f0e7891c3b":  // Runefist
-					key = "Staff.Contributor"; break;
-			case "592fb564-701a-4a5e-9d65-13f7ed0acf59":    // Vahagn
-			case	"e98a2f7d-d571-4900-a625-483cbe6774fe": // Aztl
 			case	"7bb267eb-cf0b-4fb9-a697-27c2a913ed92": // Finn
 			case	"81adae76-d647-4b41-bfb0-8166516fa189": // AlexTheCoder
+			case    "592fb564-701a-4a5e-9d65-13f7ed0acf59":    // Vahagn
+			case	"e98a2f7d-d571-4900-a625-483cbe6774fe": // Aztl
+			case	"f6c4aac7-9cc2-4da2-9038-e26bb808461d": // Tyson / xLumos
+					key = "Staff.Contributor"; break;
 			case	"5031c4e3-8103-49ea-b531-0d6ae71bad69": // Simplicitee
 			case	"5e7db6d3-add9-4aab-b1fc-3dda8f5713f4": // Prride
-			case	"f6c4aac7-9cc2-4da2-9038-e26bb808461d": // Tyson / xLumos
+			case	"d7757be8-86de-4898-ab4f-2b1b2fbc3dfa": // StrangeOne101
+			case 	"476ca51b-ec04-431b-87da-dd22b20aa8bf": // Just-a-human
+			case 	"71d42b35-dd94-408e-941d-88d4a61031c7": //Dreig
 					 key = "Staff.Developer"; break;
 			default: key = null;
 
@@ -76,6 +92,42 @@ public class Util {
 	@SuppressWarnings("deprecation")
 	public static String getStaff(String playerName) {
 		return getStaff(Bukkit.getOfflinePlayer(playerName).getUniqueId());
+	}
+
+	public static int getMagicNumber(Element element) {
+        if (elementMagicNumbers.isEmpty()) {
+			for (Element parentElement : Element.getMainElements()) {
+				elementMagicNumbers.add(parentElement);
+			}
+			elementMagicNumbers.add(AVATAR);
+			for (Element subElement : Element.getSubElements()) {
+				elementMagicNumbers.add(subElement);
+			}
+			for (Element addonElement : Element.getAddonElements()) {
+				elementMagicNumbers.add(addonElement);
+			}
+			for (Element addonElementSub : Element.getAddonSubElements()) {
+				elementMagicNumbers.add(addonElementSub);
+			}
+		}
+
+		return elementMagicNumbers.indexOf(element);
+	}
+
+	public static int getMagicNumber(CoreAbility ability) {
+		if (abilityMagicNumbers.isEmpty()) {
+			Map<Element, Integer> amount = new HashMap<>();
+			for (CoreAbility coreAbility : CoreAbility.getAbilities()) {
+				if (!coreAbility.isEnabled() || coreAbility.isHiddenAbility()) continue;
+
+				int localAmount = amount.getOrDefault(coreAbility.getElement(), 0);
+
+				abilityMagicNumbers.put(coreAbility, localAmount);
+				amount.put(coreAbility.getElement(), localAmount + 1);
+			}
+		}
+		int base = getMagicNumber(ability.getElement()) >> 6;
+		return base + (ConfigStandard.getInstance().isAdminModelData() ? abilityMagicNumbers.getOrDefault(ability, -1) : 0);
 	}
 
     public static void addGlow(ItemStack itemStack) {

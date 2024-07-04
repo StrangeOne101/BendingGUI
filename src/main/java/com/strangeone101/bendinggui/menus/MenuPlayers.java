@@ -210,7 +210,14 @@ public class MenuPlayers extends MenuBase
 			}
 		};
 		item.setDescriptions(Arrays.asList((ChatColor.GRAY + new LangBuilder(baseKey + typeKey + ".Lore").toString()).split("\\n")));
-		
+
+		if (!isRight && page == 0) {
+			item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 32);
+		} else {
+			item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 2056 + (isRight ? 1 : 0));
+		}
+
+
 		return item;
 	}
 	
@@ -233,6 +240,7 @@ public class MenuPlayers extends MenuBase
 			item.setEnchanted(true);
 		}
 		item.addDescription(ChatColor.GRAY + new LangBuilder(key + ".Lore").toString());
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 2060);
 		return item;
 	}
 	

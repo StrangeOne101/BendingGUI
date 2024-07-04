@@ -185,6 +185,7 @@ public class MenuSelectElement extends MenuBase
 		};
 		item.setDescriptions(Util.lengthSplit(new LangBuilder("Display.Choose." + element.getName() + ".Lore").toString(),
 				ConfigStandard.getInstance().getElementTrim()));
+		item.setModelData(Util.getMagicNumber(element) + ConfigStandard.getInstance().getModelDataBase() + 1);
 
 		return item;
 	}

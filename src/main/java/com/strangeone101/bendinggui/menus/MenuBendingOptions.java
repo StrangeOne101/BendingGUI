@@ -174,6 +174,7 @@ public class MenuBendingOptions extends MenuBase
 			desc = desc + "\n\n" + new LangBuilder("Display.Main.Ability.Selected").ability(ability).toString();
 		}
 		item.setDescriptions(Arrays.asList(desc.split("\n")));
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + Util.getMagicNumber(ability) + 128);
 		if (abilityIndex == move)
 		{
 			item.setEnchanted(true);
@@ -311,6 +312,7 @@ public class MenuBendingOptions extends MenuBase
 			}
 		};
 		item.setDescriptions(Arrays.asList((ChatColor.GRAY + desc).split("\n")));
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + Util.getMagicNumber(CoreAbility.getAbility(move).getElement()) + 256);
 		if (index == this.slotIndex)
 		{
 			item.setEnchanted(true);
@@ -352,6 +354,7 @@ public class MenuBendingOptions extends MenuBase
 			}
 		};
 		item.addDescription(ChatColor.GRAY + new LangBuilder(key + ".Lore").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString());
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 1024);
 		if (this.mode == Mode.DELETE)
 		{
 			item.setEnchanted(true);
@@ -383,6 +386,7 @@ public class MenuBendingOptions extends MenuBase
 				
 			}
 		};
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 1025);
 		item.addDescription(ChatColor.GRAY + new LangBuilder(key + "Lore").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString());
 		return item;
 	}
@@ -408,6 +412,7 @@ public class MenuBendingOptions extends MenuBase
 			}
 		};
 		item.addDescription(ChatColor.GRAY + new LangBuilder(key + ".Lore").toString());
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 1026);
 		if (this.mode == Mode.INFO)
 		{
 			item.setEnchanted(true);
@@ -459,6 +464,7 @@ public class MenuBendingOptions extends MenuBase
 				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 1027 + (isRightDirection ? 1 : 0));
 		item.setDescriptions(Arrays.asList((ChatColor.GRAY + new LangBuilder(baseKey + ".Lore").toString()).split("\\n")));
 		return item;
 	}
@@ -505,6 +511,7 @@ public class MenuBendingOptions extends MenuBase
 				item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Change.Lore").toString());
 			}
 		}
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 1029);
 		
 		return item;
 	}
@@ -522,6 +529,7 @@ public class MenuBendingOptions extends MenuBase
 			}
 		};
 		item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Combos.Lore").toString());
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 1030);
 		if (combos) item.setEnchanted(true);
 		return item;
 	}
@@ -537,6 +545,7 @@ public class MenuBendingOptions extends MenuBase
 				switchMenu(player, presetMenu);
 			}
 		};
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 1031);
 		item.addDescription(ChatColor.GRAY + new LangBuilder("Display.Main.Presets.Lore").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString());
 		return item;
 	}
@@ -579,6 +588,7 @@ public class MenuBendingOptions extends MenuBase
 				DynamicUpdater.updateMenu(thePlayer, getInstance());
 			}
 		};
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 1031);
 		item.addDescription(ChatColor.GRAY + new LangBuilder(key + "Lore").player(thePlayer).yourOrPlayer(thePlayer, openPlayer).toString());
 		return item;
 	}
@@ -650,6 +660,7 @@ public class MenuBendingOptions extends MenuBase
 			item.addDescription("");
 			item.addDescription(ChatColor.YELLOW + "" + new LangBuilder("Display.Main.Overview.Lore.Who"));
 		}
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + 1032);
 
 		return item;
 	}
@@ -710,8 +721,8 @@ public class MenuBendingOptions extends MenuBase
 		desc = desc + "\n" + new LangBuilder("Display.Main.Ability.Info").ability(coreAbility);
 		
 		item.setDescriptions(Arrays.asList(desc.split("\n")));
-		
-		
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + Util.getMagicNumber(CoreAbility.getAbility(move).getElement()) + 256);
+
 		return item;
 	}
 	
