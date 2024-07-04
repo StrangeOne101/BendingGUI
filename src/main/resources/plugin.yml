@@ -3,7 +3,7 @@ main: com.strangeone101.bendinggui.BendingGUI
 version: '${project.version}'
 depend: [ProjectKorra]
 softdepend: [JedCore, Spirits]
-api-version: 1.16
+api-version: 1.20.5
 prefix: BendingGUI
 commands:
   bendinggui:

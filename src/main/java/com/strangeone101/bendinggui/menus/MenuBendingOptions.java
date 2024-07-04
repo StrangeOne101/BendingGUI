@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.google.common.base.Strings;
 import com.projectkorra.projectkorra.event.PlayerBindChangeEvent;
 import com.strangeone101.bendinggui.LangBuilder;
 import com.strangeone101.bendinggui.api.ElementOrder;
@@ -312,7 +313,7 @@ public class MenuBendingOptions extends MenuBase
 			}
 		};
 		item.setDescriptions(Arrays.asList((ChatColor.GRAY + desc).split("\n")));
-		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + Util.getMagicNumber(CoreAbility.getAbility(move).getElement()) + 256);
+		item.setModelData(ConfigStandard.getInstance().getModelDataBase() + (Strings.isNullOrEmpty(move) ? 1 : Util.getMagicNumber(CoreAbility.getAbility(move).getElement())) + 256);
 		if (index == this.slotIndex)
 		{
 			item.setEnchanted(true);
